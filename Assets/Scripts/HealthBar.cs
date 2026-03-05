@@ -32,7 +32,6 @@ public class HealthBar : MonoBehaviour
         {
             float fillPercent = currentHealth / maxHealth;
             fillImage.fillAmount = fillPercent;
-            Debug.Log($"HealthBar: {currentHealth}/{maxHealth} = {fillPercent} fillAmount");
         }
         
         if (healthText != null && showText)

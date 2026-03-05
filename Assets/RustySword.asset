@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RustySword
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemName: Rusty Sword
-  icon: {fileID: 21300000, guid: 40aed5c4e71b8294ca6c892cc42f88a5, type: 3}
+  icon: {fileID: 21300000, guid: acd15b704be24d842ab944c5e8fd1b3c, type: 3}
   itemType: 0
   damage: 15
   attackCooldown: 0.5

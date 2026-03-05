@@ -49,8 +49,11 @@ public class PlayerController : MonoBehaviour
     
     bool isDead;
     
+    float airborneTime;
+    
     const float FALL_THRESHOLD = -0.1f;
     const float MOVE_THRESHOLD = 0.01f;
+    const float MIN_AIRBORNE_FOR_LANDING = 0.12f;
     
     void Start()
     {
@@ -206,7 +209,12 @@ public class PlayerController : MonoBehaviour
         wasGrounded = isGrounded;
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
         
-        if (!wasGrounded && isGrounded && rb.linearVelocity.y <= 0f)
+        if (!isGrounded)
+        {
+            airborneTime += Time.fixedDeltaTime;
+        }
+        
+        if (!wasGrounded && isGrounded && rb.linearVelocity.y <= 0f && airborneTime >= MIN_AIRBORNE_FOR_LANDING)
         {
             isLanding = true;
             landingTimer = landingDuration;
@@ -215,6 +223,11 @@ public class PlayerController : MonoBehaviour
             {
                 particleController.EmitParticles(moveInput, false);
             }
+        }
+        
+        if (isGrounded)
+        {
+            airborneTime = 0f;
         }
     }
     

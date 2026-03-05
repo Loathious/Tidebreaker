@@ -1,246 +1,200 @@
 using UnityEngine;
 
+/// <summary>
+/// Zombie enemy: wanders, chases player, attacks on proximity, pushes player off its top.
+/// Knockback is applied to the player on each attack hit.
+/// </summary>
 public class ZombieAI : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private Transform player;
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Animator anim;
-    [SerializeField] private SpriteRenderer sr;
-    
-    [Header("Movement Settings")]
-    [SerializeField] private float moveSpeed = 2f;
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed  = 2f;
     [SerializeField] private float chaseSpeed = 2.5f;
-    
-    [Header("Detection Settings")]
+
+    [Header("Detection & Attack")]
     [SerializeField] private float detectionRange = 8f;
-    [SerializeField] private float attackRange = 1f;
-    [SerializeField] private LayerMask playerLayer;
-    
-    [Header("Attack Settings")]
-    [SerializeField] private float attackDamage = 10f;
+    [SerializeField] private float attackRange    = 0.9f;
+    [SerializeField] private float attackDamage   = 10f;
     [SerializeField] private float attackCooldown = 1.5f;
-    
-    [Header("Wander Settings")]
-    [SerializeField] private float wanderChangeInterval = 3f;
-    [SerializeField] private float wanderPauseChance = 0.3f;
-    [SerializeField] private float wanderPauseDuration = 2f;
-    
-    private Vector2 wanderDirection;
-    private float wanderTimer;
-    private float attackTimer;
-    private bool isWanderPaused;
-    private float pauseTimer;
-    private bool isDead;
-    
-    private Health zombieHealth;
-    private Health playerHealth;
-    
+    [SerializeField] private float attackKnockback = 4f;
+
+    [Header("Wander")]
+    [SerializeField] private float wanderInterval = 3f;
+    [SerializeField] private float pauseChance    = 0.3f;
+    [SerializeField] private float pauseDuration  = 2f;
+
+    [Header("Physics")]
+    [SerializeField] private float topPushForce = 9f;
+
+    private Transform      playerTransform;
+    private Health         playerHealth;
+    private Rigidbody2D    rb;
+    private Animator       anim;
+    private SpriteRenderer sr;
+    private Health         health;
+
+    private float   attackTimer;
+    private float   wanderTimer;
+    private float   pauseTimer;
+    private float   knockbackTimer;
+    private bool    isPaused;
+    private bool    isDead;
+    private Vector2 wanderDir;
+
+    private const float KnockbackDuration = 0.35f;
+
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
-        zombieHealth = GetComponent<Health>();
-        
-        if (player == null)
+        rb     = GetComponent<Rigidbody2D>();
+        anim   = GetComponent<Animator>();
+        sr     = GetComponent<SpriteRenderer>();
+        health = GetComponent<Health>();
+
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null)
-            {
-                player = playerObj.transform;
-                playerHealth = playerObj.GetComponent<Health>();
-            }
+            playerTransform = playerObj.transform;
+            playerHealth    = playerObj.GetComponent<Health>();
         }
-        else if (playerHealth == null)
-        {
-            playerHealth = player.GetComponent<Health>();
-        }
-        
-        if (zombieHealth != null)
-        {
-            zombieHealth.OnDeath.AddListener(OnDeath);
-        }
-        
-        ChooseNewWanderDirection();
+
+        health?.OnDeath.AddListener(OnDeath);
+        PickNewWanderDir();
     }
-    
+
     void Update()
     {
-        if (isDead || player == null) return;
-        
-        attackTimer -= Time.deltaTime;
-        
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-        
-        if (distanceToPlayer <= detectionRange)
+        if (isDead || playerTransform == null) return;
+
+        attackTimer   -= Time.deltaTime;
+        knockbackTimer -= Time.deltaTime;
+
+        // Suppress AI movement while being knocked back
+        if (knockbackTimer > 0f)
         {
-            ChasePlayer(distanceToPlayer);
+            anim?.SetBool("isWalking", false);
+            return;
         }
-        else
-        {
-            Wander();
-        }
-        
-        UpdateAnimation();
+
+        float dist = Vector2.Distance(transform.position, playerTransform.position);
+        if (dist <= detectionRange) Chase(dist);
+        else                        Wander();
+
+        anim?.SetBool("isWalking", Mathf.Abs(rb.linearVelocity.x) > 0.1f);
     }
-    
+
     void FixedUpdate()
     {
-        if (isDead) return;
-        
-        if (rb.linearVelocity.magnitude > 0.1f)
-        {
-            FlipSprite();
-        }
+        if (isDead || sr == null) return;
+        if (Mathf.Abs(rb.linearVelocity.x) > 0.05f)
+            sr.flipX = rb.linearVelocity.x < 0;
     }
-    
-    void ChasePlayer(float distance)
+
+    void Chase(float dist)
     {
-        isWanderPaused = false;
-        
-        if (distance <= attackRange)
+        isPaused = false;
+
+        if (dist <= attackRange)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.3f, rb.linearVelocity.y);
-            AttackPlayer();
+            TryAttack();
         }
         else
         {
-            Vector2 directionToPlayer = (player.position - transform.position).normalized;
-            Vector2 horizontalDirection = new Vector2(directionToPlayer.x, 0f).normalized;
-            rb.linearVelocity = new Vector2(horizontalDirection.x * chaseSpeed, rb.linearVelocity.y);
+            float dir = Mathf.Sign(playerTransform.position.x - transform.position.x);
+            rb.linearVelocity = new Vector2(dir * chaseSpeed, rb.linearVelocity.y);
         }
     }
-    
+
+    void TryAttack()
+    {
+        if (attackTimer > 0f || playerHealth == null || playerHealth.IsDead) return;
+
+        playerHealth.TakeDamage(attackDamage);
+
+        Rigidbody2D playerRb = playerTransform.GetComponent<Rigidbody2D>();
+        if (playerRb != null)
+        {
+            Vector2 dir = (playerTransform.position - transform.position).normalized;
+            playerRb.AddForce(dir * attackKnockback, ForceMode2D.Impulse);
+        }
+
+        attackTimer = attackCooldown;
+    }
+
     void Wander()
     {
-        if (isWanderPaused)
+        if (isPaused)
         {
             pauseTimer -= Time.deltaTime;
             rb.linearVelocity = Vector2.zero;
-            
-            if (pauseTimer <= 0f)
-            {
-                isWanderPaused = false;
-                ChooseNewWanderDirection();
-            }
+            if (pauseTimer <= 0f) { isPaused = false; PickNewWanderDir(); }
             return;
         }
-        
+
         wanderTimer -= Time.deltaTime;
-        
         if (wanderTimer <= 0f)
         {
-            if (Random.value < wanderPauseChance)
-            {
-                isWanderPaused = true;
-                pauseTimer = wanderPauseDuration;
-                rb.linearVelocity = Vector2.zero;
-            }
-            else
-            {
-                ChooseNewWanderDirection();
-            }
+            if (Random.value < pauseChance) { isPaused = true; pauseTimer = pauseDuration; }
+            else                            PickNewWanderDir();
+            rb.linearVelocity = Vector2.zero;
+            return;
         }
-        
-        rb.linearVelocity = wanderDirection * moveSpeed;
+
+        rb.linearVelocity = new Vector2(wanderDir.x * moveSpeed, rb.linearVelocity.y);
     }
-    
-    void ChooseNewWanderDirection()
+
+    void PickNewWanderDir()
     {
-        float randomAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-        wanderDirection = new Vector2(Mathf.Cos(randomAngle), 0f).normalized;
-        wanderTimer = wanderChangeInterval;
+        wanderDir   = new Vector2(Random.value > 0.5f ? 1f : -1f, 0f);
+        wanderTimer = wanderInterval;
     }
-    
-    void AttackPlayer()
+
+    /// <summary>
+    /// Applies knockback impulse and freezes AI movement for KnockbackDuration seconds
+    /// so the velocity is not immediately overwritten by the movement logic.
+    /// </summary>
+    public void Knockback(Vector2 force)
     {
-        if (attackTimer <= 0f && playerHealth != null && !playerHealth.IsDead)
+        rb.linearVelocity = Vector2.zero;           // clear current velocity first
+        rb.AddForce(force, ForceMode2D.Impulse);
+        knockbackTimer = KnockbackDuration;
+    }
+
+    /// <summary>Detects when the player is standing on top and shoves them sideways.</summary>
+    void OnCollisionStay2D(Collision2D col)
+    {
+        if (isDead || !col.gameObject.CompareTag("Player")) return;
+
+        foreach (ContactPoint2D contact in col.contacts)
         {
-            Debug.Log("Zombie attacking player!");
-            playerHealth.TakeDamage(attackDamage);
-            
-            DamageEffect damageEffect = player.GetComponent<DamageEffect>();
-            if (damageEffect != null)
+            // normal.y > 0.6 means the contact surface faces upward → player is on top
+            if (contact.normal.y > 0.6f)
             {
-                Vector2 knockbackDir = (player.position - transform.position).normalized;
-                damageEffect.ApplyKnockback(knockbackDir);
-            }
-            
-            attackTimer = attackCooldown;
-        }
-    }
-    
-    void FlipSprite()
-    {
-        if (sr != null)
-        {
-            if (rb.linearVelocity.x > 0.1f)
-            {
-                sr.flipX = false;
-            }
-            else if (rb.linearVelocity.x < -0.1f)
-            {
-                sr.flipX = true;
+                Rigidbody2D playerRb = col.gameObject.GetComponent<Rigidbody2D>();
+                if (playerRb == null) break;
+
+                float side = col.gameObject.transform.position.x > transform.position.x ? 1f : -1f;
+                playerRb.AddForce(new Vector2(side * topPushForce, 2.5f), ForceMode2D.Impulse);
+                break;
             }
         }
     }
-    
-    void UpdateAnimation()
-    {
-        if (anim != null)
-        {
-            bool isMoving = rb.linearVelocity.magnitude > 0.1f;
-            anim.SetBool("isWalking", isMoving);
-        }
-    }
-    
+
     void OnDeath()
     {
         isDead = true;
         rb.linearVelocity = Vector2.zero;
-        
-        if (anim != null)
-        {
-            anim.SetTrigger("isDead");
-        }
-        
+        anim?.SetTrigger("isDead");
         Collider2D col = GetComponent<Collider2D>();
-        if (col != null)
-        {
-            col.enabled = false;
-        }
-        
+        if (col) col.enabled = false;
         Destroy(gameObject, 3f);
     }
-    
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (isDead) return;
-        
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Zombie collision with player - ENTER");
-            AttackPlayer();
-        }
-    }
-    
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if (isDead) return;
-        
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            AttackPlayer();
-        }
-    }
-    
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
-        
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }
+

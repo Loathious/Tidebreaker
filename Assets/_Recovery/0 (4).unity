@@ -700,7 +700,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 72.75894, y: -13.200012}
+  m_AnchoredPosition: {x: 72.75894, y: -13.199997}
   m_SizeDelta: {x: 138.9579, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &497119578
@@ -832,15 +832,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.0011337869
-    y: 0.006048387
-    width: 0.99773246
-    height: 0.9879032
+    x: 0
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 3.0625
+  orthographic size: 3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -5905,10 +5905,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc61fec5ba06dc945a3aa2cafd445507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarUI
+  slotPrefab: {fileID: 0}
   slotsParent: {fileID: 0}
-  emptyColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.4}
-  hasItemColor: {r: 0.22, g: 0.22, b: 0.22, a: 0.55}
-  equippedColor: {r: 0.85, g: 0.65, b: 0.08, a: 0.8}
+  normalColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.8}
+  selectedColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &624861438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6112,7 +6112,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.4, y: -6.73, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -6200,7 +6200,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: acd15b704be24d842ab944c5e8fd1b3c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40aed5c4e71b8294ca6c892cc42f88a5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11346,7 +11346,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 983162202}
   serializedVersion: 8
-  lengthInSec: 7
+  lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -11592,7 +11592,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.25
+      scalar: 0.15
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -16452,9 +16452,11 @@ MonoBehaviour:
   bloodParticles: {fileID: 598440469}
   bloodParticleAmount: 10
   spriteRenderer: {fileID: 1325484953}
-  hurtColor: {r: 1, g: 0.3, b: 0.3, a: 1}
   flashDuration: 0.1
+  hurtColor: {r: 1, g: 0.3, b: 0.3, a: 1}
   flashCount: 2
+  enableKnockback: 1
+  knockbackForce: 3
 --- !u!114 &1325484959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16496,13 +16498,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 671eaf531538574449fc9f96e2e6a965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  attackPoint: {fileID: 0}
   attackRange: 1.2
   enemyLayers:
     serializedVersion: 2
     m_Bits: 1
   knockbackForce: 5
-  attackCooldown: 0.5
-  damageDelay: 0.15
+  swordVisual: {fileID: 0}
+  swordRenderer: {fileID: 0}
+  idleSprite: {fileID: 21300000, guid: 40aed5c4e71b8294ca6c892cc42f88a5, type: 3}
+  attackSprites:
+  - {fileID: 21300000, guid: d3b0eb261e22b9f4cbec2ef43ae7d897, type: 3}
+  - {fileID: 21300000, guid: d93f1e71fe2fdc84987a05c31282f37a, type: 3}
+  - {fileID: 21300000, guid: 6e3e65931c63aac48a4c141c98006bd0, type: 3}
+  - {fileID: 21300000, guid: 1462694d3ebf3c444a274fe1bd70b4d7, type: 3}
+  hitEffectSprite: {fileID: 21300000, guid: 0ca4c2d7a3f1a894ca5eff8a2c4c5aad, type: 3}
+  attackAnimDuration: 0.3
+  spriteFrameDuration: 0.075
 --- !u!114 &1325484962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16515,11 +16527,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eebe97b0c793454ba661d3cac4648d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  hotbarSize: 1
+  hotbarSize: 3
   OnInventoryChanged:
     m_PersistentCalls:
       m_Calls: []
-  OnEquippedSlotChanged:
+  OnSlotChanged:
     m_PersistentCalls:
       m_Calls: []
   OnItemEquipped:
@@ -17072,19 +17084,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1415515071011566566, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: m_Size.x
-      value: 0.55
+      value: 0.60562134
       objectReference: {fileID: 0}
     - target: {fileID: 1415515071011566566, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: m_Size.y
-      value: 1.45
+      value: 1.4941111
       objectReference: {fileID: 0}
     - target: {fileID: 1415515071011566566, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: m_Offset.x
-      value: 0
+      value: -0.28975105
       objectReference: {fileID: 0}
     - target: {fileID: 1415515071011566566, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: m_Offset.y
-      value: -0.09
+      value: -0.09246349
       objectReference: {fileID: 0}
     - target: {fileID: 2046732125115152888, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: m_Pivot.x
@@ -17345,9 +17357,11 @@ MonoBehaviour:
   bloodParticles: {fileID: 951304778}
   bloodParticleAmount: 10
   spriteRenderer: {fileID: 2551983759551606045}
-  hurtColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.1
+  hurtColor: {r: 1, g: 0, b: 0, a: 1}
   flashCount: 2
+  enableKnockback: 0
+  knockbackForce: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
