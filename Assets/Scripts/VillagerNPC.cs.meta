@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4c0df7d64ea95cd4f851b5ce9f5a2986
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - rustySwordItem: {instanceID: 0}
+  - dialogUI: {instanceID: 0}
+  - tutorialText: {instanceID: 0}
+  - villagerPortrait: {fileID: 21300000, guid: 741ad856ff3076347954876ee075eda4, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

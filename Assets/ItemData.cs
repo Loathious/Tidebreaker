@@ -8,6 +8,8 @@ public class ItemData : ScriptableObject
     public ItemType itemType;
     public int damage;
     public float attackCooldown = 0.5f;
+    [Tooltip("Max hits before item breaks. 0 = unbreakable.")]
+    public int maxUses = 0;
 }
 
 public enum ItemType

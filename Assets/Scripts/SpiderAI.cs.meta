@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b2723260042502540810dd3524ba4940
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - spriteRenderer: {instanceID: 0}
+  - spriteHang: {instanceID: 0}
+  - spriteWalk1: {instanceID: 0}
+  - spriteWalk2: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

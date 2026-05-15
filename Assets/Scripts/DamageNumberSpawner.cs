@@ -16,7 +16,7 @@ public class DamageNumberSpawner : MonoBehaviour
         
         if (canvas == null)
         {
-            canvas = FindObjectOfType<Canvas>();
+            canvas = Object.FindFirstObjectByType<Canvas>();
         }
         
         if (health != null)

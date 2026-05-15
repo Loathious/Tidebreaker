@@ -20,7 +20,10 @@ public class Inventory : MonoBehaviour
     void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
         {
             Destroy(gameObject);
@@ -90,6 +93,16 @@ public class Inventory : MonoBehaviour
     public ItemData GetEquippedItem() => equippedSlot >= 0 ? hotbarItems[equippedSlot] : null;
     public ItemData[] GetHotbarItems() => hotbarItems;
     public int GetEquippedSlot() => equippedSlot;
+
+    /// <summary>Removes all items and resets equipped slot.</summary>
+    public void ClearAll()
+    {
+        for (int i = 0; i < hotbarItems.Length; i++) hotbarItems[i] = null;
+        equippedSlot = -1;
+        OnItemEquipped?.Invoke(null);
+        OnEquippedSlotChanged?.Invoke(-1);
+        OnInventoryChanged?.Invoke(hotbarItems);
+    }
 
     // Legacy compatibility
     public ItemData GetCurrentItem() => GetEquippedItem();

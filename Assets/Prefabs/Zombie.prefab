@@ -157,8 +157,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.05}
-  m_Size: {x: 0.5756464, y: 1.409184}
+  m_Offset: {x: -0.22, y: -0.14}
+  m_Size: {x: 0.7, y: 1.4}
   m_Direction: 0
 --- !u!95 &7784158124743890469
 Animator:
@@ -218,22 +218,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 816139413c19aa84bb24e38f64b87c5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieAI
-  player: {fileID: 0}
-  rb: {fileID: 0}
-  anim: {fileID: 0}
-  sr: {fileID: 0}
   moveSpeed: 1.5
   chaseSpeed: 2
+  acceleration: 10
   detectionRange: 8
   attackRange: 1
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 1
   attackDamage: 10
   attackCooldown: 1.5
-  wanderChangeInterval: 3
-  wanderPauseChance: 0.3
-  wanderPauseDuration: 2
+  attackKnockback: 3
+  wanderInterval: 3
+  pauseChance: 0.3
+  pauseDuration: 2
+  topPushForce: 8
+  pushCooldownTime: 0.4
+  knockbackDuration: 0.45
+  knockbackStunAdditional: 0.15
 --- !u!1 &3918419151010552901
 GameObject:
   m_ObjectHideFlags: 0

@@ -40,8 +40,9 @@ public class Health : MonoBehaviour
     
     public void TakeDamage(float damage)
     {
-        if (IsDead) return;
-        
+        if (IsDead || IsInvincible) return;
+
+        invincibilityTimer = invincibilityDuration;
         currentHealth -= damage;
         currentHealth = Mathf.Max(0f, currentHealth);
         
@@ -72,6 +73,21 @@ public class Health : MonoBehaviour
     public void ResetHealth()
     {
         currentHealth = maxHealth;
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    /// <summary>Used by enemy AI to override default 100 HP. Resets currentHealth too.</summary>
+    public void SetMaxHealth(float value)
+    {
+        maxHealth = Mathf.Max(1f, value);
+        currentHealth = maxHealth;
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    /// <summary>Directly sets the current health value (used by save/load).</summary>
+    public void SetCurrentHealth(float value)
+    {
+        currentHealth = Mathf.Clamp(value, 0f, maxHealth);
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }

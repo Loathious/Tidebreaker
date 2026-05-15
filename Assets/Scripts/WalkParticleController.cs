@@ -65,47 +65,39 @@ public class WalkParticleController : MonoBehaviour
     {
         Color surfaceColor = GetSurfaceColor();
         mainModule.startColor = surfaceColor;
-        
-        SetParticleDirection(velocityX);
-        
-        walkParticles.Emit(particlesPerStep);
+        EmitKicked(velocityX, particlesPerStep, surfaceColor);
     }
-    
+
     void EmitDashParticles(float velocityX)
     {
         Color surfaceColor = GetSurfaceColor();
         mainModule.startColor = surfaceColor;
-        
-        SetParticleDirection(velocityX);
-        
-        walkParticles.Emit(dashParticleAmount);
+        EmitKicked(velocityX, dashParticleAmount, surfaceColor);
     }
-    
-    void SetParticleDirection(float velocityX)
+
+    /// <summary>
+    /// Emits particles with an explicit world-space velocity so they arc backward and upward —
+    /// as if kicked off the ground by the player's foot.
+    /// </summary>
+    void EmitKicked(float velocityX, int count, Color color)
     {
-        bool movingRight = velocityX > 0;
-        
-        if (playerSprite != null)
+        // Kick direction: opposite to movement, angled upward
+        bool movingRight = playerSprite != null ? !playerSprite.flipX : velocityX > 0;
+        float kickX = movingRight ? -1f : 1f;   // fire backward
+
+        for (int i = 0; i < count; i++)
         {
-            if (playerSprite.flipX)
-            {
-                movingRight = false;
-            }
-            else
-            {
-                movingRight = true;
-            }
+            ParticleSystem.EmitParams ep = new ParticleSystem.EmitParams();
+
+            float speedH = Random.Range(1.2f, 3.0f);
+            float speedV = Random.Range(1.5f, 3.5f);
+            ep.velocity    = new Vector3(kickX * speedH, speedV, 0f);
+            ep.startColor  = color;
+            ep.startSize   = Random.Range(0.04f, 0.1f);
+            ep.startLifetime = Random.Range(0.25f, 0.55f);
+
+            walkParticles.Emit(ep, 1);
         }
-        
-        float horizontalAngle = movingRight ? 180f : 0f;
-        float upwardAngle = emissionAngle;
-        float randomAngle = Random.Range(-angleRandomness, angleRandomness);
-        
-        shapeModule.rotation = new Vector3(
-            -(upwardAngle + randomAngle),
-            0,
-            horizontalAngle
-        );
     }
     
     Color GetSurfaceColor()

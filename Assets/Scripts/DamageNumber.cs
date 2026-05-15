@@ -5,7 +5,6 @@ public class DamageNumber : MonoBehaviour
 {
     [SerializeField] private float lifetime = 1f;
     [SerializeField] private float moveSpeed = 1f;
-    [SerializeField] private float fadeSpeed = 1f;
     
     private TextMeshProUGUI text;
     private float timer;

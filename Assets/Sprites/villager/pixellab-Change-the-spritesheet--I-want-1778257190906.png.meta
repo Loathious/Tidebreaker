@@ -1,0 +1,1718 @@
+fileFormatVersion: 2
+guid: 78e761f766c09e2429767ccdf8563136
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7154721011821266152
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_0
+  - first:
+      213: 8454767250579202647
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_1
+  - first:
+      213: -9081365213142489369
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_2
+  - first:
+      213: -8296809117424211789
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_3
+  - first:
+      213: -8110473228654418488
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_4
+  - first:
+      213: -1665149901852978234
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_5
+  - first:
+      213: -837585005149311656
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_6
+  - first:
+      213: -7805369184616279357
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_7
+  - first:
+      213: -379555486644861246
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_8
+  - first:
+      213: -2354204163774129286
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_9
+  - first:
+      213: 3481980602052377421
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_10
+  - first:
+      213: -6552579527447477880
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_11
+  - first:
+      213: -4116506819183987105
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_12
+  - first:
+      213: -5452883704495891475
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_13
+  - first:
+      213: 1554909272803917055
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_14
+  - first:
+      213: -9180784973520418248
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_15
+  - first:
+      213: 3827668545295719178
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_16
+  - first:
+      213: 1341604929132085806
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_17
+  - first:
+      213: 3715182691862137981
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_18
+  - first:
+      213: 6514029341893560193
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_19
+  - first:
+      213: -6464319308209956050
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_20
+  - first:
+      213: 8395126316994453711
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_21
+  - first:
+      213: 2503419120895867669
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_22
+  - first:
+      213: -8810351079868361786
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_23
+  - first:
+      213: 3084334040792731965
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_24
+  - first:
+      213: -6457995126548229516
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_25
+  - first:
+      213: -7290790846411309495
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_26
+  - first:
+      213: 6657960456361740861
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_27
+  - first:
+      213: 6181997501150262755
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_28
+  - first:
+      213: 1236109812819726108
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_29
+  - first:
+      213: 7010850354997483252
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_30
+  - first:
+      213: 3300810643541785621
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_31
+  - first:
+      213: 167202077662497012
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_32
+  - first:
+      213: -248768614870781292
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_33
+  - first:
+      213: -8192415404927593004
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_34
+  - first:
+      213: 9214372863078825398
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_35
+  - first:
+      213: -850399341720366544
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_36
+  - first:
+      213: -864119359342495813
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_37
+  - first:
+      213: -4133110526526720255
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_38
+  - first:
+      213: 1349254500638932754
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_39
+  - first:
+      213: -4798457638354339015
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_40
+  - first:
+      213: 55322700129824388
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_41
+  - first:
+      213: 7802599259599024923
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_42
+  - first:
+      213: -6201105381674663768
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_43
+  - first:
+      213: -5120400910961344161
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_44
+  - first:
+      213: 761861030448764299
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_45
+  - first:
+      213: -6192377225871008875
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_46
+  - first:
+      213: -8490458706198139248
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_47
+  - first:
+      213: 4783686181895136893
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_48
+  - first:
+      213: 2409204032034167183
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_49
+  - first:
+      213: 637029135771409744
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_50
+  - first:
+      213: -4691750803481366123
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_51
+  - first:
+      213: -7119482325078543147
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_52
+  - first:
+      213: -6301702893708133817
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_53
+  - first:
+      213: 4337157514532577017
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_54
+  - first:
+      213: -7538387407699947833
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_55
+  - first:
+      213: 6204410522422847646
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_56
+  - first:
+      213: 3040946171892483436
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_57
+  - first:
+      213: 2135471236542062447
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_58
+  - first:
+      213: 7568911689526179201
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_59
+  - first:
+      213: -1570438160489380098
+    second: pixellab-Change-the-spritesheet--I-want-1778257190906_60
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 170
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e441a85adcaa4360800000000000000
+      internalID: 7154721011821266152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 170
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7522165e40e555570800000000000000
+      internalID: 8454767250579202647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_2
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 170
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e66d0b247288f180800000000000000
+      internalID: -9081365213142489369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_3
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 170
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b825bae010dbdc80800000000000000
+      internalID: -8296809117424211789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_4
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 170
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c5ecb5d19fc17f80800000000000000
+      internalID: -8110473228654418488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_5
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 170
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c3d6429cf234e8e0800000000000000
+      internalID: -1665149901852978234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_6
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 170
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85da1e220ec4064f0800000000000000
+      internalID: -837585005149311656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_7
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 170
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c29a2ac412cda390800000000000000
+      internalID: -7805369184616279357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_8
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 146
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c68bfdbb4c8bbaf0800000000000000
+      internalID: -379555486644861246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_9
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 146
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7b5f7149cf245fd0800000000000000
+      internalID: -2354204163774129286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_10
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 146
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4bf124c8ea725030800000000000000
+      internalID: 3481980602052377421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_11
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 146
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8810ff703af8015a0800000000000000
+      internalID: -6552579527447477880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_12
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 146
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f56b01fabda3fd6c0800000000000000
+      internalID: -4116506819183987105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_13
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 146
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: deb910059277354b0800000000000000
+      internalID: -5452883704495891475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_14
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 146
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffc307fceb5249510800000000000000
+      internalID: 1554909272803917055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_15
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 146
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83a421e55bc479080800000000000000
+      internalID: -9180784973520418248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_16
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 122
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0b9948134c9e1530800000000000000
+      internalID: 3827668545295719178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_17
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 122
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e22c4dd23965e9210800000000000000
+      internalID: 1341604929132085806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_18
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 122
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7c4f1079fafe8330800000000000000
+      internalID: 3715182691862137981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_19
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 122
+        width: 9
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18789047c2b766a50800000000000000
+      internalID: 6514029341893560193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_20
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 122
+        width: 10
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2b527fa6df1a46a0800000000000000
+      internalID: -6464319308209956050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_21
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 122
+        width: 10
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc0ecf0f7ea718470800000000000000
+      internalID: 8395126316994453711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_22
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 122
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51b3be04d6eedb220800000000000000
+      internalID: 2503419120895867669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_23
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 122
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c397f14f585bb580800000000000000
+      internalID: -8810351079868361786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_24
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 99
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d319816f771cdca20800000000000000
+      internalID: 3084334040792731965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_25
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 99
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47293e8f5a79066a0800000000000000
+      internalID: -6457995126548229516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_26
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 99
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94efbfb7a58e1da90800000000000000
+      internalID: -7290790846411309495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_27
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 99
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3a0a0a72c3d56c50800000000000000
+      internalID: 6657960456361740861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_28
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 99
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e5f96249fddac550800000000000000
+      internalID: 6181997501150262755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_29
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 99
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1f8e78535b872110800000000000000
+      internalID: 1236109812819726108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_30
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 99
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f6db07b04b8b4160800000000000000
+      internalID: 7010850354997483252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_31
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 99
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51cf227bac5decd20800000000000000
+      internalID: 3300810643541785621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_32
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 75
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f8c7cc5765025200800000000000000
+      internalID: 167202077662497012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_33
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 75
+        width: 32
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4927c5743423c8cf0800000000000000
+      internalID: -248768614870781292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_34
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 74
+        width: 31
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d55ad03891be4e80800000000000000
+      internalID: -8192415404927593004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_35
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 75
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bdffc39c4700ef70800000000000000
+      internalID: 9214372863078825398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_36
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 75
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0321887ed46c234f0800000000000000
+      internalID: -850399341720366544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_37
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 75
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb73ade55080204f0800000000000000
+      internalID: -864119359342495813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_38
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 51
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10772f0dfdd34a6c0800000000000000
+      internalID: -4133110526526720255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_39
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 51
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21f3e26d1d389b210800000000000000
+      internalID: 1349254500638932754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_40
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 51
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93b31248334786db0800000000000000
+      internalID: -4798457638354339015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_41
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 51
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48ee041e3bb84c000800000000000000
+      internalID: 55322700129824388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_42
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 51
+        width: 28
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b133029cfa6684c60800000000000000
+      internalID: 7802599259599024923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_43
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 51
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a0c48e928f31f9a0800000000000000
+      internalID: -6201105381674663768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_44
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 51
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f510092208ea0f8b0800000000000000
+      internalID: -5120400910961344161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_45
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 24
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b859c18129ca29a00800000000000000
+      internalID: 761861030448764299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_46
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 24
+        width: 13
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59b5db0c8b1401aa0800000000000000
+      internalID: -6192377225871008875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_47
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 24
+        width: 12
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09eefe48ac4db2a80800000000000000
+      internalID: -8490458706198139248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_48
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 24
+        width: 12
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d76edc4cc31136240800000000000000
+      internalID: 4783686181895136893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_49
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 24
+        width: 12
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f89d5d87d463f6120800000000000000
+      internalID: 2409204032034167183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_50
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 24
+        width: 14
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05d9a35bf9e27d800800000000000000
+      internalID: 637029135771409744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_51
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 24
+        width: 14
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 591f6df808d83eeb0800000000000000
+      internalID: -4691750803481366123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_52
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 24
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d47505cb84823d90800000000000000
+      internalID: -7119482325078543147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_53
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 2
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74ab9742b9adb88a0800000000000000
+      internalID: -6301702893708133817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_54
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 2
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fe51acb7cda03c30800000000000000
+      internalID: 4337157514532577017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_55
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 2
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ce44c0c794426790800000000000000
+      internalID: -7538387407699947833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_56
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 2
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e98a5bd6f7e7a1650800000000000000
+      internalID: 6204410522422847646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_57
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 2
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c654cb48e6c933a20800000000000000
+      internalID: 3040946171892483436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_58
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 2
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6f572286c7b2ad10800000000000000
+      internalID: 2135471236542062447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_59
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 2
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 185728e641d2a0960800000000000000
+      internalID: 7568911689526179201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pixellab-Change-the-spritesheet--I-want-1778257190906_60
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 2
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef6005640dea43ae0800000000000000
+      internalID: -1570438160489380098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 6c91216ad3d2f504c8137ac3676d57f2
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      pixellab-Change-the-spritesheet--I-want-1778257190906_0: 7154721011821266152
+      pixellab-Change-the-spritesheet--I-want-1778257190906_1: 8454767250579202647
+      pixellab-Change-the-spritesheet--I-want-1778257190906_10: 3481980602052377421
+      pixellab-Change-the-spritesheet--I-want-1778257190906_11: -6552579527447477880
+      pixellab-Change-the-spritesheet--I-want-1778257190906_12: -4116506819183987105
+      pixellab-Change-the-spritesheet--I-want-1778257190906_13: -5452883704495891475
+      pixellab-Change-the-spritesheet--I-want-1778257190906_14: 1554909272803917055
+      pixellab-Change-the-spritesheet--I-want-1778257190906_15: -9180784973520418248
+      pixellab-Change-the-spritesheet--I-want-1778257190906_16: 3827668545295719178
+      pixellab-Change-the-spritesheet--I-want-1778257190906_17: 1341604929132085806
+      pixellab-Change-the-spritesheet--I-want-1778257190906_18: 3715182691862137981
+      pixellab-Change-the-spritesheet--I-want-1778257190906_19: 6514029341893560193
+      pixellab-Change-the-spritesheet--I-want-1778257190906_2: -9081365213142489369
+      pixellab-Change-the-spritesheet--I-want-1778257190906_20: -6464319308209956050
+      pixellab-Change-the-spritesheet--I-want-1778257190906_21: 8395126316994453711
+      pixellab-Change-the-spritesheet--I-want-1778257190906_22: 2503419120895867669
+      pixellab-Change-the-spritesheet--I-want-1778257190906_23: -8810351079868361786
+      pixellab-Change-the-spritesheet--I-want-1778257190906_24: 3084334040792731965
+      pixellab-Change-the-spritesheet--I-want-1778257190906_25: -6457995126548229516
+      pixellab-Change-the-spritesheet--I-want-1778257190906_26: -7290790846411309495
+      pixellab-Change-the-spritesheet--I-want-1778257190906_27: 6657960456361740861
+      pixellab-Change-the-spritesheet--I-want-1778257190906_28: 6181997501150262755
+      pixellab-Change-the-spritesheet--I-want-1778257190906_29: 1236109812819726108
+      pixellab-Change-the-spritesheet--I-want-1778257190906_3: -8296809117424211789
+      pixellab-Change-the-spritesheet--I-want-1778257190906_30: 7010850354997483252
+      pixellab-Change-the-spritesheet--I-want-1778257190906_31: 3300810643541785621
+      pixellab-Change-the-spritesheet--I-want-1778257190906_32: 167202077662497012
+      pixellab-Change-the-spritesheet--I-want-1778257190906_33: -248768614870781292
+      pixellab-Change-the-spritesheet--I-want-1778257190906_34: -8192415404927593004
+      pixellab-Change-the-spritesheet--I-want-1778257190906_35: 9214372863078825398
+      pixellab-Change-the-spritesheet--I-want-1778257190906_36: -850399341720366544
+      pixellab-Change-the-spritesheet--I-want-1778257190906_37: -864119359342495813
+      pixellab-Change-the-spritesheet--I-want-1778257190906_38: -4133110526526720255
+      pixellab-Change-the-spritesheet--I-want-1778257190906_39: 1349254500638932754
+      pixellab-Change-the-spritesheet--I-want-1778257190906_4: -8110473228654418488
+      pixellab-Change-the-spritesheet--I-want-1778257190906_40: -4798457638354339015
+      pixellab-Change-the-spritesheet--I-want-1778257190906_41: 55322700129824388
+      pixellab-Change-the-spritesheet--I-want-1778257190906_42: 7802599259599024923
+      pixellab-Change-the-spritesheet--I-want-1778257190906_43: -6201105381674663768
+      pixellab-Change-the-spritesheet--I-want-1778257190906_44: -5120400910961344161
+      pixellab-Change-the-spritesheet--I-want-1778257190906_45: 761861030448764299
+      pixellab-Change-the-spritesheet--I-want-1778257190906_46: -6192377225871008875
+      pixellab-Change-the-spritesheet--I-want-1778257190906_47: -8490458706198139248
+      pixellab-Change-the-spritesheet--I-want-1778257190906_48: 4783686181895136893
+      pixellab-Change-the-spritesheet--I-want-1778257190906_49: 2409204032034167183
+      pixellab-Change-the-spritesheet--I-want-1778257190906_5: -1665149901852978234
+      pixellab-Change-the-spritesheet--I-want-1778257190906_50: 637029135771409744
+      pixellab-Change-the-spritesheet--I-want-1778257190906_51: -4691750803481366123
+      pixellab-Change-the-spritesheet--I-want-1778257190906_52: -7119482325078543147
+      pixellab-Change-the-spritesheet--I-want-1778257190906_53: -6301702893708133817
+      pixellab-Change-the-spritesheet--I-want-1778257190906_54: 4337157514532577017
+      pixellab-Change-the-spritesheet--I-want-1778257190906_55: -7538387407699947833
+      pixellab-Change-the-spritesheet--I-want-1778257190906_56: 6204410522422847646
+      pixellab-Change-the-spritesheet--I-want-1778257190906_57: 3040946171892483436
+      pixellab-Change-the-spritesheet--I-want-1778257190906_58: 2135471236542062447
+      pixellab-Change-the-spritesheet--I-want-1778257190906_59: 7568911689526179201
+      pixellab-Change-the-spritesheet--I-want-1778257190906_6: -837585005149311656
+      pixellab-Change-the-spritesheet--I-want-1778257190906_60: -1570438160489380098
+      pixellab-Change-the-spritesheet--I-want-1778257190906_7: -7805369184616279357
+      pixellab-Change-the-spritesheet--I-want-1778257190906_8: -379555486644861246
+      pixellab-Change-the-spritesheet--I-want-1778257190906_9: -2354204163774129286
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,1482 @@
+fileFormatVersion: 2
+guid: 22b436deaa8ba50468561e44001b0ae7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6098569425298892428
+    second: Level_1_Grass_0
+  - first:
+      213: -4146500341829933854
+    second: Level_1_Grass_1
+  - first:
+      213: -365826985426818065
+    second: Level_1_Grass_2
+  - first:
+      213: -2007191128627784504
+    second: Level_1_Grass_3
+  - first:
+      213: 2372362851660541185
+    second: Level_1_Grass_4
+  - first:
+      213: -734523845602459665
+    second: Level_1_Grass_5
+  - first:
+      213: -6624651669522023659
+    second: Level_1_Grass_6
+  - first:
+      213: -4111635191094102481
+    second: Level_1_Grass_7
+  - first:
+      213: -2779721290332609604
+    second: Level_1_Grass_8
+  - first:
+      213: -4703031357050122358
+    second: Level_1_Grass_9
+  - first:
+      213: -8566206936027826400
+    second: Level_1_Grass_10
+  - first:
+      213: 2869313965187216005
+    second: Level_1_Grass_11
+  - first:
+      213: 7082066478437511177
+    second: Level_1_Grass_12
+  - first:
+      213: 7807797790340415901
+    second: Level_1_Grass_13
+  - first:
+      213: 9019845735966254026
+    second: Level_1_Grass_14
+  - first:
+      213: 175521736980869794
+    second: Level_1_Grass_15
+  - first:
+      213: -8018379502887486787
+    second: Level_1_Grass_16
+  - first:
+      213: -8666148351544518489
+    second: Level_1_Grass_17
+  - first:
+      213: -814194464763634055
+    second: Level_1_Grass_18
+  - first:
+      213: -6039557630714928465
+    second: Level_1_Grass_19
+  - first:
+      213: 4049414656068203041
+    second: Level_1_Grass_20
+  - first:
+      213: -609947592335063208
+    second: Level_1_Grass_21
+  - first:
+      213: 613257874951771908
+    second: Level_1_Grass_22
+  - first:
+      213: -3416253889860111528
+    second: Level_1_Grass_23
+  - first:
+      213: -4066151026522601520
+    second: Level_1_Grass_24
+  - first:
+      213: 3368153191805315566
+    second: Level_1_Grass_25
+  - first:
+      213: -3667793697606358112
+    second: Level_1_Grass_26
+  - first:
+      213: 876517805164074810
+    second: Level_1_Grass_27
+  - first:
+      213: 2993431347444825578
+    second: Level_1_Grass_28
+  - first:
+      213: -7529297998403647723
+    second: Level_1_Grass_29
+  - first:
+      213: 7176523786422950985
+    second: Level_1_Grass_30
+  - first:
+      213: -3102718280911419578
+    second: Level_1_Grass_31
+  - first:
+      213: 322367165116772886
+    second: Level_1_Grass_32
+  - first:
+      213: -668282701986973331
+    second: Level_1_Grass_33
+  - first:
+      213: 2737216302447346032
+    second: Level_1_Grass_34
+  - first:
+      213: 4687514958163019363
+    second: Level_1_Grass_35
+  - first:
+      213: -589224663454677307
+    second: Level_1_Grass_36
+  - first:
+      213: 2226260259362228701
+    second: Level_1_Grass_37
+  - first:
+      213: -7440027153048230843
+    second: Level_1_Grass_38
+  - first:
+      213: 1655449307498888020
+    second: Level_1_Grass_39
+  - first:
+      213: 7608475463829531656
+    second: Level_1_Grass_40
+  - first:
+      213: -7287492865520220125
+    second: Level_1_Grass_41
+  - first:
+      213: 2701523230316412923
+    second: Level_1_Grass_42
+  - first:
+      213: -2039173570201029232
+    second: Level_1_Grass_43
+  - first:
+      213: -2727491489341680774
+    second: Level_1_Grass_44
+  - first:
+      213: -2226625094822042332
+    second: Level_1_Grass_45
+  - first:
+      213: -2258751752557076201
+    second: Level_1_Grass_46
+  - first:
+      213: 971493925167545231
+    second: Level_1_Grass_47
+  - first:
+      213: 7319369573935660868
+    second: Level_1_Grass_48
+  - first:
+      213: -6486792545074654654
+    second: Level_1_Grass_49
+  - first:
+      213: 575054450170245052
+    second: Level_1_Grass_50
+  - first:
+      213: 2710875162263406572
+    second: Level_1_Grass_51
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Level_1_Grass_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 9
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47950075b678d5ba0800000000000000
+      internalID: -6098569425298892428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_1
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 9
+        width: 20
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e4e03088eba476c0800000000000000
+      internalID: -4146500341829933854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_2
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 9
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: febe1648b425ceaf0800000000000000
+      internalID: -365826985426818065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_3
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 9
+        width: 22
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c453d59d460524e0800000000000000
+      internalID: -2007191128627784504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_4
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 9
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10d2f8bb1735ce020800000000000000
+      internalID: 2372362851660541185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_5
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 9
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fefbfcf34727ec5f0800000000000000
+      internalID: -734523845602459665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_6
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 9
+        width: 30
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51bf07dc7628014a0800000000000000
+      internalID: -6624651669522023659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_7
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 9
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2637dcf39980f6c0800000000000000
+      internalID: -4111635191094102481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_8
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 9
+        width: 20
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb3622bc6327c69d0800000000000000
+      internalID: -2779721290332609604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_9
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 9
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8f018306e97bbeb0800000000000000
+      internalID: -4703031357050122358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_10
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 9
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 027f2996d28be1980800000000000000
+      internalID: -8566206936027826400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_11
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 9
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5823d0c59d9d1d720800000000000000
+      internalID: 2869313965187216005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_12
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 9
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90038f290fd884260800000000000000
+      internalID: 7082066478437511177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_13
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 9
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d91025b09beda5c60800000000000000
+      internalID: 7807797790340415901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_14
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 9
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac3271d58edec2d70800000000000000
+      internalID: 9019845735966254026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_15
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 4
+        width: 28
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a2ba1ff6149f6200800000000000000
+      internalID: 175521736980869794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_16
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 4
+        width: 10
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dba3e18435ef8b090800000000000000
+      internalID: -8018379502887486787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_17
+      rect:
+        serializedVersion: 2
+        x: 835
+        y: 4
+        width: 56
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a81a5f4df7abb780800000000000000
+      internalID: -8666148351544518489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_18
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 9
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97e9ca5b27663b4f0800000000000000
+      internalID: -814194464763634055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_19
+      rect:
+        serializedVersion: 2
+        x: 904
+        y: 14
+        width: 17
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa2acb4755e2f2ca0800000000000000
+      internalID: -6039557630714928465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_20
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 14
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 122b43bcc29623830800000000000000
+      internalID: 4049414656068203041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_21
+      rect:
+        serializedVersion: 2
+        x: 928
+        y: 14
+        width: 29
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 857834b75e70987f0800000000000000
+      internalID: -609947592335063208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_22
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 4
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4071630c9cab28800800000000000000
+      internalID: 613257874951771908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_23
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 4
+        width: 16
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8537750ff270790d0800000000000000
+      internalID: -3416253889860111528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_24
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 4
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d7c70d4f212297c0800000000000000
+      internalID: -4066151026522601520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_25
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 4
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee967a29b751ebe20800000000000000
+      internalID: 3368153191805315566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_26
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 4
+        width: 40
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0aba1c89011691dc0800000000000000
+      internalID: -3667793697606358112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_27
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 4
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a371c10cc440a2c00800000000000000
+      internalID: 876517805164074810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_28
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 4
+        width: 25
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aedb7fb53fdca8920800000000000000
+      internalID: 2993431347444825578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_29
+      rect:
+        serializedVersion: 2
+        x: 364
+        y: 4
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5174715cc5f828790800000000000000
+      internalID: -7529297998403647723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_30
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 4
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94c91e36c52289360800000000000000
+      internalID: 7176523786422950985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_31
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 4
+        width: 28
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6470a24992ee0f4d0800000000000000
+      internalID: -3102718280911419578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_32
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 4
+        width: 21
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 612f80c8a37497400800000000000000
+      internalID: 322367165116772886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_33
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 4
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d69378a5c68c9b6f0800000000000000
+      internalID: -668282701986973331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_34
+      rect:
+        serializedVersion: 2
+        x: 471
+        y: 4
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07148c489bb8cf520800000000000000
+      internalID: 2737216302447346032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_35
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 4
+        width: 42
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36603a8d4066d0140800000000000000
+      internalID: 4687514958163019363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_36
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 4
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c682e95a47a2d7f0800000000000000
+      internalID: -589224663454677307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_37
+      rect:
+        serializedVersion: 2
+        x: 538
+        y: 4
+        width: 21
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd9cad029e345ee10800000000000000
+      internalID: 2226260259362228701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_38
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 4
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 544ac4729b6bfb890800000000000000
+      internalID: -7440027153048230843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_39
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 4
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45b332dcf5659f610800000000000000
+      internalID: 1655449307498888020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_40
+      rect:
+        serializedVersion: 2
+        x: 572
+        y: 4
+        width: 21
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80ca5d77f1cb69960800000000000000
+      internalID: 7608475463829531656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_41
+      rect:
+        serializedVersion: 2
+        x: 592
+        y: 4
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 328497f79df9dda90800000000000000
+      internalID: -7287492865520220125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_42
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 4
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bffb97f801dbd7520800000000000000
+      internalID: 2701523230316412923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_43
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 4
+        width: 20
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0957dc0217663b3e0800000000000000
+      internalID: -2039173570201029232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_44
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 4
+        width: 22
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7353e9f0f0062ad0800000000000000
+      internalID: -2727491489341680774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_45
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 4
+        width: 34
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 425692ff5407911e0800000000000000
+      internalID: -2226625094822042332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_46
+      rect:
+        serializedVersion: 2
+        x: 709
+        y: 4
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7116b099f3d47a0e0800000000000000
+      internalID: -2258751752557076201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_47
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 4
+        width: 29
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8bbf07e3907b7d00800000000000000
+      internalID: 971493925167545231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_48
+      rect:
+        serializedVersion: 2
+        x: 782
+        y: 4
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44fbc3a09df939560800000000000000
+      internalID: 7319369573935660868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_49
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 4
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2425c2b7c884af5a0800000000000000
+      internalID: -6486792545074654654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_50
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 4
+        width: 28
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbfa7e4c9f00bf700800000000000000
+      internalID: 575054450170245052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level_1_Grass_51
+      rect:
+        serializedVersion: 2
+        x: 826
+        y: 4
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce7c325e896fe9520800000000000000
+      internalID: 2710875162263406572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Level_1_Grass_0: -6098569425298892428
+      Level_1_Grass_1: -4146500341829933854
+      Level_1_Grass_10: -8566206936027826400
+      Level_1_Grass_11: 2869313965187216005
+      Level_1_Grass_12: 7082066478437511177
+      Level_1_Grass_13: 7807797790340415901
+      Level_1_Grass_14: 9019845735966254026
+      Level_1_Grass_15: 175521736980869794
+      Level_1_Grass_16: -8018379502887486787
+      Level_1_Grass_17: -8666148351544518489
+      Level_1_Grass_18: -814194464763634055
+      Level_1_Grass_19: -6039557630714928465
+      Level_1_Grass_2: -365826985426818065
+      Level_1_Grass_20: 4049414656068203041
+      Level_1_Grass_21: -609947592335063208
+      Level_1_Grass_22: 613257874951771908
+      Level_1_Grass_23: -3416253889860111528
+      Level_1_Grass_24: -4066151026522601520
+      Level_1_Grass_25: 3368153191805315566
+      Level_1_Grass_26: -3667793697606358112
+      Level_1_Grass_27: 876517805164074810
+      Level_1_Grass_28: 2993431347444825578
+      Level_1_Grass_29: -7529297998403647723
+      Level_1_Grass_3: -2007191128627784504
+      Level_1_Grass_30: 7176523786422950985
+      Level_1_Grass_31: -3102718280911419578
+      Level_1_Grass_32: 322367165116772886
+      Level_1_Grass_33: -668282701986973331
+      Level_1_Grass_34: 2737216302447346032
+      Level_1_Grass_35: 4687514958163019363
+      Level_1_Grass_36: -589224663454677307
+      Level_1_Grass_37: 2226260259362228701
+      Level_1_Grass_38: -7440027153048230843
+      Level_1_Grass_39: 1655449307498888020
+      Level_1_Grass_4: 2372362851660541185
+      Level_1_Grass_40: 7608475463829531656
+      Level_1_Grass_41: -7287492865520220125
+      Level_1_Grass_42: 2701523230316412923
+      Level_1_Grass_43: -2039173570201029232
+      Level_1_Grass_44: -2727491489341680774
+      Level_1_Grass_45: -2226625094822042332
+      Level_1_Grass_46: -2258751752557076201
+      Level_1_Grass_47: 971493925167545231
+      Level_1_Grass_48: 7319369573935660868
+      Level_1_Grass_49: -6486792545074654654
+      Level_1_Grass_5: -734523845602459665
+      Level_1_Grass_50: 575054450170245052
+      Level_1_Grass_51: 2710875162263406572
+      Level_1_Grass_6: -6624651669522023659
+      Level_1_Grass_7: -4111635191094102481
+      Level_1_Grass_8: -2779721290332609604
+      Level_1_Grass_9: -4703031357050122358
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

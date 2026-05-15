@@ -17,3 +17,4 @@ MonoBehaviour:
   itemType: 0
   damage: 15
   attackCooldown: 0.5
+  maxUses: 20

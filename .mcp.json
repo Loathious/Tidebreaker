@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "mcp-unity": {
+      "command": "node",
+      "args": [
+        "C:\\Journey Of Adventures 1.2.0\\Library\\PackageCache\\com.gamelovers.mcp-unity@4c24251eb7c0\\Server~\\build\\index.js"
+      ]
+    }
+  }
+}
