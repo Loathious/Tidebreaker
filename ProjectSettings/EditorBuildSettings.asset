@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SplashScene.unity
+    guid: f4342b17b8a3e5a4cad426ed66e27dd3
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 4821ecba1066ef744a7cb36b7f443be7
   - enabled: 1
@@ -14,6 +17,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Cave.unity
     guid: 0d6d74584d4383049825dd29e391f401
+  - enabled: 1
+    path: Assets/Scenes/Jungle.unity
+    guid: 828d43b3dc642214b995fdab9379cf0e
+  - enabled: 1
+    path: Assets/Scenes/Desert.unity
+    guid: c0649b98ab455e74daf49402a231d78f
+  - enabled: 1
+    path: Assets/Scenes/Ocean.unity
+    guid: 796f2b5baf5e9c54497deda964160891
+  - enabled: 1
+    path: Assets/Scenes/EndCredits.unity
+    guid: c04fa493ebf763d42a4317551ee31222
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

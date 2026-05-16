@@ -7276,7 +7276,6 @@ MonoBehaviour:
   attackRange: 1.5
   attackDamage: 15
   attackCooldown: 1.1
-  dropJumpForce: 5
   startsOnCeiling: 1
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}
@@ -9168,7 +9167,6 @@ MonoBehaviour:
   attackRange: 1.5
   attackDamage: 15
   attackCooldown: 1.1
-  dropJumpForce: 5
   startsOnCeiling: 1
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}
@@ -9560,7 +9558,6 @@ MonoBehaviour:
   attackRange: 1.5
   attackDamage: 15
   attackCooldown: 1.1
-  dropJumpForce: 5
   startsOnCeiling: 1
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}
@@ -17360,7 +17357,6 @@ MonoBehaviour:
   attackRange: 1.5
   attackDamage: 15
   attackCooldown: 1.1
-  dropJumpForce: 5
   startsOnCeiling: 1
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}
@@ -20442,7 +20438,6 @@ MonoBehaviour:
   attackRange: 1.5
   attackDamage: 15
   attackCooldown: 1.1
-  dropJumpForce: 5
   startsOnCeiling: 1
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}

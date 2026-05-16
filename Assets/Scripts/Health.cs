@@ -42,6 +42,18 @@ public class Health : MonoBehaviour
     {
         if (IsDead || IsInvincible) return;
 
+        // Magical Armor (acquired in the Desert pyramid) can absorb one hit on
+        // a cooldown. If it absorbs this hit, no damage is applied.
+        if (damage > 0f)
+        {
+            MagicalArmor armor = GetComponent<MagicalArmor>();
+            if (armor != null && armor.TryAbsorb())
+            {
+                invincibilityTimer = invincibilityDuration;
+                return;
+            }
+        }
+
         invincibilityTimer = invincibilityDuration;
         currentHealth -= damage;
         currentHealth = Mathf.Max(0f, currentHealth);

@@ -17,7 +17,10 @@ public class MusicManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null) { Destroy(gameObject); return; }
+        // A duplicate from a newly-loaded scene removes only its own component,
+        // never the whole GameObject — the level manager / HitStop share this
+        // object and must survive scene-to-scene transitions.
+        if (Instance != null && Instance != this) { Destroy(this); return; }
         Instance  = this;
         DontDestroyOnLoad(gameObject);
         _source   = GetComponent<AudioSource>();
@@ -29,10 +32,28 @@ public class MusicManager : MonoBehaviour
         _source.spatialBlend = 0f;
     }
 
-    void Start() => _source.Play();
+    void Start()
+    {
+        if (_source != null && _source.clip != null) _source.Play();
+    }
+
+    /// <summary>
+    /// Reconfigures the (possibly persistent) music manager for a new level and
+    /// starts the ambient track. Level managers call this in Start() so the right
+    /// music plays even though the MusicManager singleton survives scene loads.
+    /// </summary>
+    public void ConfigureAndPlay(AudioClip ambient, AudioClip combat)
+    {
+        musicClip       = ambient;
+        combatMusicClip = combat;
+        _source.clip    = ambient;
+        _source.loop    = true;
+        _source.volume  = volume;
+        if (ambient != null) { _source.Stop(); _source.Play(); }
+    }
 
     /// <summary>Smoothly sets the music volume at runtime.</summary>
-    public void SetVolume(float v) => _source.volume = Mathf.Clamp01(v);
+    public void SetVolume(float v) { volume = Mathf.Clamp01(v); _source.volume = volume; }
 
     /// <summary>Stops the music immediately.</summary>
     public void Stop() => _source.Stop();

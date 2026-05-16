@@ -11,13 +11,15 @@ public class HitStop : MonoBehaviour
     
     void Awake()
     {
-        if (Instance == null)
+        // A duplicate removes only its own component — the GameObject is shared
+        // with the level manager and must survive scene transitions.
+        if (Instance == null || Instance == this)
         {
             Instance = this;
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
     }
     
