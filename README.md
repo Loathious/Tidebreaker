@@ -142,7 +142,7 @@ Made with dedication (and questionable sleep schedules) for **Spelproduktion TE2
 | 📜 **Axel** | Story, script & NPC dialogue |
 | 🎵 **Jack** | Music & sound effects |
 | 🎨 **Albin** | Character design & sprites |
-| 🖼️ **Ferhad** | Assets & moodboard |
+| 🖼️ **Ferhad** | Moodboard |
 
 ---
 
