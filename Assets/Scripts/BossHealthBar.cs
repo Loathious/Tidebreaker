@@ -30,8 +30,8 @@ public class BossHealthBar : MonoBehaviour
         rt.anchorMin = new Vector2(0.5f, 1f);
         rt.anchorMax = new Vector2(0.5f, 1f);
         rt.pivot     = new Vector2(0.5f, 1f);
-        rt.anchoredPosition = new Vector2(0f, -24f);
-        rt.sizeDelta = new Vector2(560f, 54f);
+        rt.anchoredPosition = new Vector2(0f, -6f);
+        rt.sizeDelta = new Vector2(260f, 22f);   // sized for 320x180 pixel-art canvas
 
         var bar = root.AddComponent<BossHealthBar>();
         bar._group = root.AddComponent<CanvasGroup>();
@@ -52,11 +52,11 @@ public class BossHealthBar : MonoBehaviour
         nRt.anchorMin = new Vector2(0f, 1f); nRt.anchorMax = new Vector2(1f, 1f);
         nRt.pivot = new Vector2(0.5f, 1f);
         nRt.anchoredPosition = new Vector2(0f, 0f);
-        nRt.sizeDelta = new Vector2(0f, 20f);
+        nRt.sizeDelta = new Vector2(0f, 10f);
         _nameText = nameGO.AddComponent<TextMeshProUGUI>();
         _nameText.text = bossName;
         _nameText.alignment = TextAlignmentOptions.Center;
-        _nameText.fontSize = 13f;
+        _nameText.fontSize = 6f;
         _nameText.color = new Color(1f, 0.85f, 0.5f);
         _nameText.outlineWidth = 0.25f;
         _nameText.outlineColor = new Color32(0, 0, 0, 255);
@@ -68,8 +68,8 @@ public class BossHealthBar : MonoBehaviour
         var fRt = frame.AddComponent<RectTransform>();
         fRt.anchorMin = new Vector2(0f, 0f); fRt.anchorMax = new Vector2(1f, 0f);
         fRt.pivot = new Vector2(0.5f, 0f);
-        fRt.anchoredPosition = new Vector2(0f, 4f);
-        fRt.sizeDelta = new Vector2(-12f, 18f);
+        fRt.anchoredPosition = new Vector2(0f, 2f);
+        fRt.sizeDelta = new Vector2(-6f, 10f);
         var frameImg = frame.AddComponent<Image>();
         frameImg.color = new Color(0.05f, 0.05f, 0.05f, 0.9f);
 
@@ -84,12 +84,12 @@ public class BossHealthBar : MonoBehaviour
         var pRt = phGO.AddComponent<RectTransform>();
         pRt.anchorMin = new Vector2(0f, 0f); pRt.anchorMax = new Vector2(1f, 0f);
         pRt.pivot = new Vector2(0.5f, 1f);
-        pRt.anchoredPosition = new Vector2(0f, 2f);
-        pRt.sizeDelta = new Vector2(0f, 14f);
+        pRt.anchoredPosition = new Vector2(0f, 1f);
+        pRt.sizeDelta = new Vector2(0f, 8f);
         _phaseText = phGO.AddComponent<TextMeshProUGUI>();
         _phaseText.text = "";
         _phaseText.alignment = TextAlignmentOptions.Center;
-        _phaseText.fontSize = 7f;
+        _phaseText.fontSize = 4f;
         _phaseText.color = new Color(1f, 1f, 1f, 0.85f);
         _phaseText.outlineWidth = 0.2f;
         _phaseText.outlineColor = new Color32(0, 0, 0, 255);

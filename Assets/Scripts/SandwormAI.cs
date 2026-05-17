@@ -159,7 +159,7 @@ public class SandwormAI : MonoBehaviour
         if (_isDead) return;
         _isDead = true;
         _rb.linearVelocity = Vector2.zero;
-        _rb.gravityScale   = 0f;
+        _rb.bodyType       = RigidbodyType2D.Kinematic;   // ignore knockback impulses after death
         foreach (Collider2D c in GetComponents<Collider2D>()) c.enabled = false;
 
         if (countsAsWaveEnemy) LevelManagerBase.Current?.OnEnemyDefeated();

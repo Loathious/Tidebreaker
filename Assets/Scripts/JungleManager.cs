@@ -14,18 +14,30 @@ public class JungleManager : LevelManagerBase
     [Header("Audio")]
     public AudioClip templeOpenClip;
 
-    private int           _enemiesDefeated;
-    private bool          _guardianDefeated;
+    private int            _enemiesDefeated;
+    private bool           _guardianDefeated;
     private JungleGuardian _guardian;
-    private StoryPortal   _templePortal;
+    private StoryPortal    _templePortal;
+    private GameObject     _templeGate;
+
+    // World-space X of the temple gate — guardian always stays left of this.
+    private const float GateX = 54.05f;
+    private const float GateY = -1.09f;
 
     protected override void OnLevelStart()
     {
         _guardian     = FindFirstObjectByType<JungleGuardian>(FindObjectsInactive.Include);
         _templePortal = FindFirstObjectByType<StoryPortal>(FindObjectsInactive.Include);
 
-        // The temple stays sealed until the Guardian falls
         if (_templePortal != null) _templePortal.unlocked = false;
+        SpawnTempleGate();
+
+        if (_guardian != null)
+        {
+            // Move guardian to outside (left of) the temple before setting patrol bounds.
+            EnsureGuardianOutsideTemple(_guardian);
+            SetGuardianPatrolBounds(_guardian);
+        }
 
         ObjectiveManager.Instance?.ShowObjective(
             $"Fight through the jungle ({_enemiesDefeated}/{enemiesToReachTemple})");
@@ -54,6 +66,8 @@ public class JungleManager : LevelManagerBase
         _guardianDefeated = true;
         NotifyCombatEnded();
 
+        if (_templeGate != null) Destroy(_templeGate);
+
         ObjectiveManager.Instance?.UpdateObjective("Enter the temple");
 
         if (templeOpenClip != null && Camera.main != null)
@@ -63,6 +77,60 @@ public class JungleManager : LevelManagerBase
             _templePortal.UnlockPortal();
 
         StartCoroutine(GuardianDownBanner());
+    }
+
+    // ── Temple gate & guardian bounds ─────────────────────────────────────────
+
+    private void SpawnTempleGate()
+    {
+        _templeGate = new GameObject("TempleGate");
+        _templeGate.layer = LayerMask.NameToLayer("Ground") >= 0
+            ? LayerMask.NameToLayer("Ground") : 3;
+
+        // Absolute position as specified — invisible solid wall blocking the entrance.
+        _templeGate.transform.position = new Vector3(GateX, GateY, 0f);
+
+        BoxCollider2D col = _templeGate.AddComponent<BoxCollider2D>();
+        col.size   = new Vector2(1f, 6f);
+        col.offset = Vector2.zero;
+
+        // Add SpriteRenderer but keep it disabled — gate is invisible.
+        var sr = _templeGate.AddComponent<SpriteRenderer>();
+        sr.sprite = ProceduralSprite.Box(8, 64, new Color(0.25f, 0.18f, 0.1f));
+        sr.sortingOrder = 3;
+        sr.enabled = false;
+    }
+
+    /// <summary>
+    /// Moves the guardian so its visual center (collider bounds) is safely to the
+    /// left of the temple gate, outside in the jungle arena.
+    /// </summary>
+    private void EnsureGuardianOutsideTemple(JungleGuardian guardian)
+    {
+        Collider2D col = guardian.GetComponent<Collider2D>();
+        if (col == null) return;
+
+        float visualX = col.bounds.center.x;
+        const float targetVisualX = 46f;   // 8 units left of the gate
+
+        // Only move if guardian is on the wrong side (inside/right of gate).
+        if (visualX <= GateX - 2f) return;
+
+        float delta = targetVisualX - visualX;
+        Vector3 pos = guardian.transform.position;
+        pos.x += delta;
+        guardian.transform.position = pos;
+
+        // Sync Rigidbody2D so physics doesn't snap it back on the first frame.
+        Rigidbody2D rb = guardian.GetComponent<Rigidbody2D>();
+        if (rb != null) rb.position = new Vector2(pos.x, pos.y);
+    }
+
+    private void SetGuardianPatrolBounds(JungleGuardian guardian)
+    {
+        // Guardian visual center must stay in [GateX-16, GateX-2] (outside the temple).
+        // Handled inline in JungleGuardian.FixedUpdate — no separate component needed.
+        guardian.SetPatrolBounds(GateX - 16f, GateX - 2f);
     }
 
     private IEnumerator GuardianDownBanner()

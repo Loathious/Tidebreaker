@@ -481,7 +481,12 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Full restart from the beginning — clear per-run persistent state
+        PlayerPrefs.DeleteKey("PlayerHasArmor");
+        PlayerPrefs.DeleteKey("PlayerHasBow");
+        PlayerPrefs.Save();
+        SaveManager.Instance?.DeleteSave();
+        SceneManager.LoadScene("MainMenu");
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

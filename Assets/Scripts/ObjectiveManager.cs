@@ -27,7 +27,11 @@ public class ObjectiveManager : MonoBehaviour
     private Vector2     _shownAnchoredPos;
     private Vector2     _hiddenAnchoredPos;
     private Coroutine   _animCoroutine;
+    private Coroutine   _autoHideCoroutine;
     private bool        _visible;
+
+    [Header("Auto-Hide")]
+    [SerializeField] private float autoHideDelay = 4f;   // seconds before sliding out
 
     // Rich-text colours
     private const string LabelHex   = "FFD933"; // gold
@@ -69,16 +73,17 @@ public class ObjectiveManager : MonoBehaviour
 
     // ── Public API ────────────────────────────────────────────────────────────
 
-    /// <summary>Shows the panel with the given objective content.</summary>
+    /// <summary>Shows the panel with the given objective content, then auto-hides.</summary>
     public void ShowObjective(string content)
     {
         _currentContent = content;
         SetText(content);
         if (_animCoroutine != null) StopCoroutine(_animCoroutine);
         _animCoroutine = StartCoroutine(AnimateIn());
+        RestartAutoHide();
     }
 
-    /// <summary>Updates objective text; shows the panel if it was hidden.</summary>
+    /// <summary>Updates objective text; shows the panel if hidden, then auto-hides.</summary>
     public void UpdateObjective(string content)
     {
         _currentContent = content;
@@ -90,17 +95,32 @@ public class ObjectiveManager : MonoBehaviour
         }
         else if (objectiveText != null)
         {
-            // Already visible — punch the text to highlight the change (every kill, etc.)
+            // Already visible — punch the text to highlight the change
             StartCoroutine(PunchScale(objectiveText.rectTransform, 1.18f, 0.28f));
         }
+        RestartAutoHide();
     }
 
-    /// <summary>Slides the panel out and hides it.</summary>
+    /// <summary>Slides the panel out and hides it immediately.</summary>
     public void HideObjective()
     {
+        if (_autoHideCoroutine != null) StopCoroutine(_autoHideCoroutine);
         if (!_visible) return;
         if (_animCoroutine != null) StopCoroutine(_animCoroutine);
         _animCoroutine = StartCoroutine(AnimateOut());
+    }
+
+    private void RestartAutoHide()
+    {
+        if (_autoHideCoroutine != null) StopCoroutine(_autoHideCoroutine);
+        _autoHideCoroutine = StartCoroutine(AutoHideAfterDelay());
+    }
+
+    private IEnumerator AutoHideAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(autoHideDelay);
+        HideObjective();
+        _autoHideCoroutine = null;
     }
 
     // ── Internals ─────────────────────────────────────────────────────────────

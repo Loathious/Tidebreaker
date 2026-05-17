@@ -33,6 +33,8 @@ public abstract class LevelManagerBase : MonoBehaviour
     private Button     _restartButton;
     private bool       _isGameOver;
     private bool       _combatStarted;
+    private bool       _isPaused;
+    private GameObject _pauseUI;
 
     public bool IsGameOver => _isGameOver;
 
@@ -72,6 +74,12 @@ public abstract class LevelManagerBase : MonoBehaviour
                 PlayerHealth.OnDeath.AddListener(OnPlayerDeath);
                 PlayerHealth.OnDamageTaken.AddListener(_ => TriggerDamagePulse());
             }
+
+            // Player renders in front of all enemies (enemies use sortingOrder 5)
+            SpriteRenderer playerSr = Player.GetComponent<SpriteRenderer>()
+                                   ?? Player.GetComponentInChildren<SpriteRenderer>();
+            if (playerSr != null && playerSr.sortingOrder < 10)
+                playerSr.sortingOrder = 10;
         }
 
         // Game-over UI
@@ -83,15 +91,20 @@ public abstract class LevelManagerBase : MonoBehaviour
         DialogUI dialog = FindFirstObjectByType<DialogUI>(FindObjectsInactive.Include);
         if (dialog != null) dialog.Hide();
 
-        // Weapon
-        StartCoroutine(EquipWeaponNextFrame());
+        // Weapon — if loading from a save, skip equipping and restore saved state instead
+        bool loadingFromSave = SaveManager.Instance != null && SaveManager.Instance.IsLoadingFromSave;
+        if (loadingFromSave)
+            StartCoroutine(RestoreFromSave());
+        else
+        {
+            StartCoroutine(EquipWeaponNextFrame());
+            // Checkpoint save so "Continue" from the main menu resumes this level
+            SaveManager.Instance?.SaveGame();
+        }
 
         // Music — reconfigure the (persistent) MusicManager for this level
         if (MusicManager.Instance != null && ambientMusic != null)
             MusicManager.Instance.ConfigureAndPlay(ambientMusic, combatMusic);
-
-        // Checkpoint save so "Continue" from the main menu resumes this level
-        SaveManager.Instance?.SaveGame();
 
         Time.timeScale = 1f;
 
@@ -100,7 +113,8 @@ public abstract class LevelManagerBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (_isGameOver) return;
+        if (Input.GetKeyDown(KeyCode.Escape) && !_isGameOver) TogglePause();
+        if (_isGameOver || _isPaused) return;
         if (PlayerHealth != null && PlayerHealth.IsDead) OnPlayerDeath();
     }
 
@@ -134,6 +148,20 @@ public abstract class LevelManagerBase : MonoBehaviour
         ItemData weapon = defaultWeapon;
         if (weapon == null) weapon = Resources.Load<ItemData>("DiamondSword");
 
+        // Broadest fallback: any weapon-type ItemData in memory named "Diamond Sword" or "DiamondSword"
+        if (weapon == null)
+        {
+            foreach (ItemData id in Resources.FindObjectsOfTypeAll<ItemData>())
+            {
+                if (id != null && id.itemType == ItemType.Weapon
+                    && (id.name.Contains("Diamond") || id.name.Contains("diamond")))
+                {
+                    weapon = id;
+                    break;
+                }
+            }
+        }
+
         if (weapon != null)
         {
             Inventory.Instance.ClearAll();
@@ -143,7 +171,7 @@ public abstract class LevelManagerBase : MonoBehaviour
             yield break;
         }
 
-        // No default assigned — just equip whatever weapon the player carries.
+        // No default — equip whatever weapon the player already carries (don't clear).
         ItemData[] hotbar = Inventory.Instance.GetHotbarItems();
         for (int i = 0; i < hotbar.Length; i++)
         {
@@ -154,6 +182,94 @@ public abstract class LevelManagerBase : MonoBehaviour
                 yield break;
             }
         }
+    }
+
+    private IEnumerator RestoreFromSave()
+    {
+        yield return null;
+        yield return new WaitForEndOfFrame();
+        if (SaveManager.Instance == null) yield break;
+        SaveManager.Instance.ApplySavedState();
+        if (Player != null)
+        {
+            Vector3 savedPos = SaveManager.Instance.GetSavedPosition();
+            if (savedPos != Vector3.zero) Player.transform.position = savedPos;
+        }
+        SaveManager.Instance.ConfirmLoadApplied();
+    }
+
+    // ── Pause ─────────────────────────────────────────────────────────────────
+    private void TogglePause()
+    {
+        if (_isPaused) ResumePause();
+        else           OpenPause();
+    }
+
+    private void OpenPause()
+    {
+        _isPaused = true;
+        Time.timeScale = 0f;
+        _pauseUI = CreatePauseUI();
+    }
+
+    private void ResumePause()
+    {
+        _isPaused = false;
+        Time.timeScale = 1f;
+        if (_pauseUI != null) { Destroy(_pauseUI); _pauseUI = null; }
+    }
+
+    private void SaveAndQuit()
+    {
+        SaveManager.Instance?.SaveGame();
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    private GameObject CreatePauseUI()
+    {
+        Canvas canvas = FindOverlayCanvas();
+        if (canvas == null) return null;
+
+        TMP_FontAsset font = FontEnforcer.Font;
+
+        GameObject root = new GameObject("PauseMenu");
+        root.transform.SetParent(canvas.transform, false);
+        root.transform.SetAsLastSibling();
+        var rt = root.AddComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
+
+        var bg = new GameObject("BG").AddComponent<Image>();
+        bg.transform.SetParent(root.transform, false);
+        bg.color = new Color(0f, 0f, 0f, 0.82f);
+        var bgRt = bg.GetComponent<RectTransform>();
+        bgRt.anchorMin = Vector2.zero; bgRt.anchorMax = Vector2.one;
+        bgRt.offsetMin = Vector2.zero; bgRt.offsetMax = Vector2.zero;
+
+        var titleGO = new GameObject("Title");
+        titleGO.transform.SetParent(root.transform, false);
+        var tRt = titleGO.AddComponent<RectTransform>();
+        tRt.anchorMin = new Vector2(0.2f, 0.62f); tRt.anchorMax = new Vector2(0.8f, 0.78f);
+        tRt.offsetMin = Vector2.zero; tRt.offsetMax = Vector2.zero;
+        var tmp = titleGO.AddComponent<TextMeshProUGUI>();
+        tmp.text = "PAUSED";
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.fontSize = 22f;
+        tmp.color = Color.white;
+        if (font != null) tmp.font = font;
+
+        GameObject resumeBtn = BuildButton(root.transform, "ResumeBtn",
+            new Vector2(0.5f, 0.47f), new Vector2(0.5f, 0.47f),
+            "Resume", new Color(0.1f, 0.45f, 0.1f), font);
+        resumeBtn.GetComponent<Button>().onClick.AddListener(ResumePause);
+
+        GameObject menuBtn = BuildButton(root.transform, "MenuBtn",
+            new Vector2(0.5f, 0.31f), new Vector2(0.5f, 0.31f),
+            "Save & Return to Menu", new Color(0.15f, 0.15f, 0.4f), font);
+        menuBtn.GetComponent<Button>().onClick.AddListener(SaveAndQuit);
+
+        return root;
     }
 
     // ── Cleanup ───────────────────────────────────────────────────────────────
@@ -177,8 +293,17 @@ public abstract class LevelManagerBase : MonoBehaviour
     {
         if (_isGameOver) return;
         _isGameOver = true;
+
+        // Close pause menu if open
+        if (_isPaused) { _isPaused = false; if (_pauseUI != null) { Destroy(_pauseUI); _pauseUI = null; } }
+
         Time.timeScale = 0f;
         MusicManager.Instance?.Stop();
+
+        // Permanent strong red vignette overlay
+        if (_damagePulseCo != null) { StopCoroutine(_damagePulseCo); _damagePulseCo = null; }
+        if (_damageOverlay == null) _damageOverlay = BuildDamageOverlay();
+        if (_damageOverlay != null) _damageOverlay.color = new Color(1f, 0.05f, 0.05f, 0.45f);
 
         if (_gameOverUI != null)
         {
@@ -194,12 +319,19 @@ public abstract class LevelManagerBase : MonoBehaviour
     private void RestartLevel()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Full restart: clear per-run PlayerPrefs so the next run starts clean
+        PlayerPrefs.DeleteKey("PlayerHasArmor");
+        PlayerPrefs.DeleteKey("PlayerHasBow");
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void GoToMainMenu()
     {
         Time.timeScale = 1f;
+        PlayerPrefs.DeleteKey("PlayerHasArmor");
+        PlayerPrefs.DeleteKey("PlayerHasBow");
+        PlayerPrefs.Save();
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -271,7 +403,7 @@ public abstract class LevelManagerBase : MonoBehaviour
 
         var bg = new GameObject("BG").AddComponent<Image>();
         bg.transform.SetParent(root.transform, false);
-        bg.color = new Color(0, 0, 0, 0.85f);
+        bg.color = new Color(0.45f, 0f, 0f, 0.88f);
         var bgRt = bg.GetComponent<RectTransform>();
         bgRt.anchorMin = Vector2.zero; bgRt.anchorMax = Vector2.one;
         bgRt.offsetMin = Vector2.zero; bgRt.offsetMax = Vector2.zero;

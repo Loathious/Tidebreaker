@@ -35,8 +35,7 @@ public class OceanManager : LevelManagerBase
         _kraken     = FindFirstObjectByType<KrakenBoss>(FindObjectsInactive.Include);
         _playerCtrl = Player != null ? Player.GetComponent<PlayerController>() : null;
 
-        // By the final level the player has been through the pyramid — guarantee
-        // the bow + armor are granted and active even if the scene is entered directly.
+        // Grant bow + armor (carried through from the Desert pyramid, or entering scene directly)
         PlayerRanged.Grant();
         MagicalArmor.Grant();
         StoryPortal.EnsurePlayerGear();
@@ -71,7 +70,7 @@ public class OceanManager : LevelManagerBase
 
         yield return new WaitForSeconds(0.4f);
 
-        // Intro dialogue
+        // Intro dialogue (guard prevents infinite wait if dialog callback never fires)
         DialogUI dialog = FindFirstObjectByType<DialogUI>(FindObjectsInactive.Include);
         bool done = false;
         if (dialog != null)
@@ -79,7 +78,8 @@ public class OceanManager : LevelManagerBase
                               _kraken != null ? _kraken.transform : null);
         else done = true;
 
-        while (!done) yield return null;
+        float dialogGuard = 0f;
+        while (!done && dialogGuard < 20f) { dialogGuard += Time.deltaTime; yield return null; }
 
         _playerCtrl?.UnlockInput();
         ObjectiveManager.Instance?.UpdateObjective("Destroy the Kraken's tentacles");

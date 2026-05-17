@@ -39,6 +39,7 @@ public class PlayerCombat : MonoBehaviour
     private CameraShake    _cameraShake;
     private AudioSource    _audio;
     private PlayerController _playerController;
+    private Health         _selfHealth;
 
     void Start()
     {
@@ -46,6 +47,7 @@ public class PlayerCombat : MonoBehaviour
         _sr               = GetComponent<SpriteRenderer>();
         _cameraShake      = Camera.main?.GetComponent<CameraShake>();
         _playerController = GetComponent<PlayerController>();
+        _selfHealth       = GetComponent<Health>();
 
         _audio             = gameObject.AddComponent<AudioSource>();
         _audio.playOnAwake = false;
@@ -66,6 +68,7 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
+        if (_selfHealth != null && _selfHealth.IsDead) return;
         if (_cooldown > 0f) _cooldown -= Time.deltaTime;
 
         // Allow attacking even without a weapon when clicking on diamond rocks
@@ -130,14 +133,14 @@ public class PlayerCombat : MonoBehaviour
             if (col.gameObject == gameObject) continue;
             if (col.GetComponent<Health>() == null) continue;
 
-            // Prefer enemies on the side the player clicked, but allow hitting anything
-            // within range if nothing is on that side (avoids being completely locked out)
-            float enemyDirX = col.transform.position.x - playerPos.x;
+            // Use bounds.center for position — handles enemies whose sprite pivot is not centered.
+            Vector2 enemyCenter = col.bounds.center;
+            float enemyDirX = enemyCenter.x - playerPos.x;
             bool wrongSide  = Mathf.Abs(clickDirX) > 0.3f && Mathf.Abs(enemyDirX) > 0.5f
                               && Mathf.Sign(enemyDirX) != Mathf.Sign(clickDirX);
             if (wrongSide) continue;
 
-            float dist = Vector2.Distance(playerPos, col.transform.position);
+            float dist = Vector2.Distance(playerPos, enemyCenter);
             if (dist < bestDist)
             {
                 bestDist = dist;
@@ -153,7 +156,7 @@ public class PlayerCombat : MonoBehaviour
             {
                 if (col.gameObject == gameObject) continue;
                 if (col.GetComponent<Health>() == null) continue;
-                float dist = Vector2.Distance(playerPos, col.transform.position);
+                float dist = Vector2.Distance(playerPos, (Vector2)col.bounds.center);
                 if (dist < bestDist) { bestDist = dist; best = col; hitPoint = col.bounds.center; }
             }
         }
@@ -186,15 +189,19 @@ public class PlayerCombat : MonoBehaviour
 
                 hp.TakeDamage(_equippedItem.damage);
 
-                Vector2 flat     = (best.transform.position - transform.position).normalized;
-                Vector2 knockDir = new Vector2(flat.x, knockbackUp).normalized * knockbackForce;
+                // Only knock back enemies that survived the hit — dead ones handle their own physics
+                if (!hp.IsDead)
+                {
+                    Vector2 flat     = ((Vector3)best.bounds.center - transform.position).normalized;
+                    Vector2 knockDir = new Vector2(flat.x, knockbackUp).normalized * knockbackForce;
 
-                ZombieAI zombie = best.GetComponent<ZombieAI>();
-                SpiderAI spider = best.GetComponent<SpiderAI>();
-                if (zombie != null)
-                    zombie.Knockback(knockDir);
-                else if (spider == null)
-                    best.GetComponent<Rigidbody2D>()?.AddForce(knockDir, ForceMode2D.Impulse);
+                    ZombieAI zombie = best.GetComponent<ZombieAI>();
+                    SpiderAI spider = best.GetComponent<SpiderAI>();
+                    if (zombie != null)
+                        zombie.Knockback(knockDir);
+                    else if (spider == null)
+                        best.GetComponent<Rigidbody2D>()?.AddForce(knockDir, ForceMode2D.Impulse);
+                }
 
                 if (hitClip != null) _audio.PlayOneShot(hitClip, hitVolume);
 

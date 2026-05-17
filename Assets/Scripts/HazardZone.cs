@@ -18,16 +18,27 @@ public class HazardZone : MonoBehaviour
     public Transform respawnPoint;
 
     private float _tickTimer;
+    private float _respawnTimer;
 
     void Awake()
     {
         foreach (Collider2D c in GetComponents<Collider2D>()) c.isTrigger = true;
     }
 
+    void Update()
+    {
+        if (_respawnTimer > 0f) _respawnTimer -= Time.deltaTime;
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
-        if (mode == Mode.Respawn) RespawnPlayer(other);
+        if (mode == Mode.Respawn)
+        {
+            if (_respawnTimer > 0f) return;
+            _respawnTimer = 1.5f;
+            RespawnPlayer(other);
+        }
     }
 
     void OnTriggerStay2D(Collider2D other)
@@ -52,9 +63,11 @@ public class HazardZone : MonoBehaviour
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         if (rb != null) rb.linearVelocity = Vector2.zero;
 
-        if (respawnPoint != null)
-            player.transform.position = respawnPoint.position;
-        else
-            player.transform.position += Vector3.up * 6f;
+        // Place the player above the respawn marker (or above current position) to avoid
+        // landing back inside the trigger and causing an infinite respawn loop.
+        Vector3 safePos = respawnPoint != null
+            ? respawnPoint.position + Vector3.up * 5f
+            : player.transform.position + Vector3.up * 8f;
+        player.transform.position = safePos;
     }
 }

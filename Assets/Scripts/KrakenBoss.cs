@@ -46,6 +46,7 @@ public class KrakenBoss : MonoBehaviour
     private Color _origColor = Color.white;
     private Sprite _energySprite;
     private Vector3 _baseScale;
+    private int   _heartStrikes;        // Phase 3: counts player hits on the exposed heart
 
     public bool IsDefeated => _isDead;
 
@@ -71,8 +72,13 @@ public class KrakenBoss : MonoBehaviour
         _energySprite = ProceduralSprite.Circle(10, new Color(0.7f, 0.3f, 1f));
         _anim?.Play("idle");
 
-        // Body can't be hit until Phase 2
-        if (bodyCollider != null) bodyCollider.enabled = false;
+        // Body collider must be non-trigger: Projectile.OnTriggerEnter2D skips
+        // trigger colliders, so player arrows would never register hits otherwise.
+        if (bodyCollider != null)
+        {
+            bodyCollider.isTrigger = false;
+            bodyCollider.enabled   = false;   // still hidden until Phase 2
+        }
 
         // Hide / disable tentacles until Phase 1 begins
         foreach (var t in tentacles)
@@ -164,7 +170,8 @@ public class KrakenBoss : MonoBehaviour
     private IEnumerator EnterPhase3()
     {
         _phase = 3;
-        _bar?.SetPhase("PHASE 3 — STRIKE THE HEART");
+        _heartStrikes = 0;
+        _bar?.SetPhase("PHASE 3 — STRIKE THE HEART (0/10)");
         transform.localScale = _baseScale * 1.06f;
 
         for (int i = 0; i < 5; i++)
@@ -175,6 +182,18 @@ public class KrakenBoss : MonoBehaviour
             yield return new WaitForSeconds(0.07f);
         }
         Camera.main?.GetComponent<CameraShake>()?.Shake(0.3f, 0.4f);
+
+        // Descend so the exposed heart is within reach of the player on platforms
+        Vector3 target = new Vector3(transform.position.x, 2f, transform.position.z);
+        float elapsed = 0f;
+        Vector3 start = transform.position;
+        while (elapsed < 1.5f)
+        {
+            elapsed += Time.deltaTime;
+            transform.position = Vector3.Lerp(start, target, elapsed / 1.5f);
+            yield return null;
+        }
+        transform.position = target;
     }
 
     // ── Attacks (Phase 2 & 3) ─────────────────────────────────────────────────
@@ -245,7 +264,22 @@ public class KrakenBoss : MonoBehaviour
         StartCoroutine(HitFlash());
 
         if (_phase == 2 && _health.CurrentHealth <= maxHealth * 0.3f)
+        {
             StartCoroutine(EnterPhase3());
+            return;
+        }
+
+        // Phase 3 — track the 10 heart strikes required to finish the Kraken
+        if (_phase == 3)
+        {
+            _heartStrikes++;
+            _bar?.SetPhase($"PHASE 3 — STRIKE THE HEART ({_heartStrikes}/10)");
+            if (_heartStrikes >= 10 && !_isDead)
+            {
+                _health.SetCurrentHealth(0f);
+                _health.OnDeath.Invoke();   // force the death event chain
+            }
+        }
     }
 
     private IEnumerator HitFlash()

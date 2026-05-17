@@ -43,6 +43,12 @@ public class KrakenTentacle : MonoBehaviour
         _health = GetComponent<Health>();
         _anim   = GetComponent<SpriteAnimator>();
         _sr     = GetComponent<SpriteRenderer>();
+
+        // Projectile.OnTriggerEnter2D skips isTrigger=true colliders,
+        // so player arrows would pass through without dealing damage.
+        // Force non-trigger so the tentacle is hittable by arrows.
+        foreach (BoxCollider2D c in GetComponents<BoxCollider2D>())
+            c.isTrigger = false;
     }
 
     void Start()

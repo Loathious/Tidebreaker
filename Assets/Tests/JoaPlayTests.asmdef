@@ -2,8 +2,7 @@
     "name": "JoaPlayTests",
     "rootNamespace": "",
     "references": [
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEngine.TestRunner"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

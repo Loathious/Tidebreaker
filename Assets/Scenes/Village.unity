@@ -178,7 +178,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u2759\u2759"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 815cb26d3d66a724fa69e38b0e93a4c9, type: 2}
   m_sharedMaterial: {fileID: 391605319}
   m_fontSharedMaterials:
   - {fileID: 391605319}
@@ -10756,7 +10756,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 28684132378477856, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+        m_Texture: {fileID: 28684132378477856, guid: 815cb26d3d66a724fa69e38b0e93a4c9, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

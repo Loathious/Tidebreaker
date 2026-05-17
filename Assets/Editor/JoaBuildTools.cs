@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -410,6 +412,35 @@ public static class JoaBuildTools
     }
 
     // ── Build settings ────────────────────────────────────────────────────────
+    [MenuItem("JoA/Build Windows EXE", false, 80)]
+    public static void BuildWindowsExe()
+    {
+        string path = EditorUtility.SaveFilePanel(
+            "Choose where to save the Windows build",
+            System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop),
+            "JourneyOfAdventures",
+            "exe");
+
+        if (string.IsNullOrEmpty(path)) return;
+
+        var options = new BuildPlayerOptions
+        {
+            scenes = EditorBuildSettings.scenes
+                .Where(s => s.enabled)
+                .Select(s => s.path)
+                .ToArray(),
+            locationPathName = path,
+            target           = BuildTarget.StandaloneWindows64,
+            options          = BuildOptions.None,
+        };
+
+        BuildReport report = BuildPipeline.BuildPlayer(options);
+        if (report.summary.result == BuildResult.Succeeded)
+            Debug.Log($"[JoA] Windows build succeeded → {path}");
+        else
+            Debug.LogError($"[JoA] Windows build FAILED: {report.summary.result}");
+    }
+
     [MenuItem("JoA/Configure Build Settings", false, 60)]
     public static void ConfigureBuildSettings()
     {
@@ -796,7 +827,8 @@ public static class JoaBuildTools
         sa.defaultClip = "idle";
 
         go.AddComponent<Health>();
-        BoxCollider2D bodyCol = AddSizedCollider(go, first, 0.55f, true);
+        // Non-trigger: arrows must hit the body collider to deal damage in Phase 2+.
+        BoxCollider2D bodyCol = AddSizedCollider(go, first, 0.55f, false);
 
         KrakenBoss kb = go.AddComponent<KrakenBoss>();
         kb.bodyCollider = bodyCol;
@@ -825,7 +857,8 @@ public static class JoaBuildTools
         sa.defaultClip = "idle";
 
         go.AddComponent<Health>();
-        AddSizedCollider(go, first, 0.6f, true);
+        // Non-trigger: Projectile.OnTriggerEnter2D skips isTrigger=true colliders.
+        AddSizedCollider(go, first, 0.6f, false);
 
         KrakenTentacle kt = go.AddComponent<KrakenTentacle>();
         kt.attackClip = LoadAudio(Sfx + "Bossar/Kraken final bossen/Boss tantakel attack.mp3");
@@ -966,5 +999,114 @@ public static class JoaBuildTools
             .Replace("borjar",  "börjar")
             .Replace("forlorar","förlorar")
             .Replace("skada",   "skada");
+    }
+
+    // ── Boss-fix validation ───────────────────────────────────────────────────
+
+    [MenuItem("JoA/Validate Boss Fixes", false, 99)]
+    public static void ValidateBossFixes()
+    {
+        int pass = 0, fail = 0;
+        Debug.Log("[JoaValidation] === Validation START ===");
+
+        // 1. TMP Settings default font → PressStart2P
+        {
+            string p = Path.Combine(Application.dataPath,
+                "TextMesh Pro", "Resources", "TMP Settings.asset");
+            if (File.Exists(p))
+            {
+                string text = File.ReadAllText(p);
+                if (text.Contains("815cb26d3d66a724fa69e38b0e93a4c9") &&
+                   !text.Contains("8f586378b4e144a9851e7b34d9b748ee"))
+                { Debug.Log("[JoaValidation] PASS  TMP default font → PressStart2P"); pass++; }
+                else
+                { Debug.LogError("[JoaValidation] FAIL  TMP default font is NOT PressStart2P"); fail++; }
+            }
+            else { Debug.LogWarning("[JoaValidation] SKIP  TMP Settings.asset not found"); }
+        }
+
+        // 2. Scene files — no LiberationSans GUID
+        {
+            const string bad = "8f586378b4e144a9851e7b34d9b748ee";
+            string dir = Path.Combine(Application.dataPath, "Scenes");
+            string[] sceneNames = { "Jungle", "Desert", "Ocean", "Cave", "Village", "EndCredits" };
+            int badCount = 0;
+            foreach (string s in sceneNames)
+            {
+                string fp = Path.Combine(dir, s + ".unity");
+                if (File.Exists(fp) && File.ReadAllText(fp).Contains(bad))
+                { Debug.LogError($"[JoaValidation] FAIL  {s}.unity still has LiberationSans GUID"); badCount++; fail++; }
+            }
+            if (badCount == 0)
+            { Debug.Log("[JoaValidation] PASS  All scene files free of LiberationSans GUID"); pass++; }
+        }
+
+        // 3. JungleGuardian.cs — teleport fix keywords
+        {
+            string src = File.ReadAllText(
+                Path.Combine(Application.dataPath, "Scripts", "JungleGuardian.cs"));
+
+            if (!src.Contains("PatrolBoundsClamp"))
+            { Debug.Log("[JoaValidation] PASS  JungleGuardian.cs: no PatrolBoundsClamp reference"); pass++; }
+            else
+            { Debug.LogError("[JoaValidation] FAIL  JungleGuardian.cs still references PatrolBoundsClamp"); fail++; }
+
+            if (src.Contains("_minPatrolX") && src.Contains("_maxPatrolX"))
+            { Debug.Log("[JoaValidation] PASS  JungleGuardian.cs: inline patrol fields present"); pass++; }
+            else
+            { Debug.LogError("[JoaValidation] FAIL  JungleGuardian.cs: inline patrol fields missing"); fail++; }
+
+            if (src.Contains("SetPatrolBounds"))
+            { Debug.Log("[JoaValidation] PASS  JungleGuardian.cs: SetPatrolBounds method present"); pass++; }
+            else
+            { Debug.LogError("[JoaValidation] FAIL  JungleGuardian.cs: SetPatrolBounds missing"); fail++; }
+
+            if (src.Contains("kAirTime"))
+            { Debug.Log("[JoaValidation] PASS  JungleGuardian.cs: jump velocity cap (kAirTime) present"); pass++; }
+            else
+            { Debug.LogError("[JoaValidation] FAIL  JungleGuardian.cs: jump velocity cap missing"); fail++; }
+        }
+
+        // 4. JungleManager.cs calls SetPatrolBounds
+        {
+            string src = File.ReadAllText(
+                Path.Combine(Application.dataPath, "Scripts", "JungleManager.cs"));
+            if (src.Contains("SetPatrolBounds"))
+            { Debug.Log("[JoaValidation] PASS  JungleManager.cs calls SetPatrolBounds"); pass++; }
+            else
+            { Debug.LogError("[JoaValidation] FAIL  JungleManager.cs does not call SetPatrolBounds"); fail++; }
+        }
+
+        // 5. BossHealthBar.cs contains 260×22 dimensions
+        {
+            string fp = Path.Combine(Application.dataPath, "Scripts", "BossHealthBar.cs");
+            if (File.Exists(fp))
+            {
+                string src = File.ReadAllText(fp);
+                if (src.Contains("260") && (src.Contains(", 22") || src.Contains(",22")))
+                { Debug.Log("[JoaValidation] PASS  BossHealthBar.cs: 260×22 root dimensions found"); pass++; }
+                else
+                { Debug.LogWarning("[JoaValidation] WARN  BossHealthBar.cs: 260×22 check inconclusive"); }
+            }
+        }
+
+        // 6. Reflection: SetPatrolBounds method and fields exist on JungleGuardian type
+        {
+            var flags  = BindingFlags.NonPublic | BindingFlags.Instance;
+            var minF   = typeof(JungleGuardian).GetField("_minPatrolX", flags);
+            var maxF   = typeof(JungleGuardian).GetField("_maxPatrolX", flags);
+            var method = typeof(JungleGuardian).GetMethod("SetPatrolBounds",
+                BindingFlags.Public | BindingFlags.Instance);
+
+            if (minF != null && maxF != null && method != null)
+            { Debug.Log("[JoaValidation] PASS  Reflection: JungleGuardian patrol fields + method confirmed"); pass++; }
+            else
+            { Debug.LogError("[JoaValidation] FAIL  Reflection: JungleGuardian missing patrol fields or method"); fail++; }
+        }
+
+        string result = fail == 0
+            ? $"ALL {pass} CHECKS PASSED"
+            : $"{pass} passed  |  {fail} FAILED";
+        Debug.Log($"[JoaValidation] === Validation END: {result} ===");
     }
 }

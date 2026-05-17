@@ -84,6 +84,7 @@ public class StoryPortal : MonoBehaviour
             PlayerRanged.Grant();
             MagicalArmor.Grant();
             EnsurePlayerGear();
+            ShowPickupBanner();
         }
 
         DialogUI dialog = FindFirstObjectByType<DialogUI>(FindObjectsInactive.Include);
@@ -185,6 +186,47 @@ public class StoryPortal : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         _playerNearby = false;
         if (_prompt != null) _prompt.gameObject.SetActive(false);
+    }
+
+    // ── Pickup notification ───────────────────────────────────────────────────
+    private void ShowPickupBanner()
+    {
+        StartCoroutine(PickupBannerRoutine());
+    }
+
+    private IEnumerator PickupBannerRoutine()
+    {
+        Canvas canvas = FindOverlayCanvas();
+        if (canvas == null) yield break;
+
+        TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/PressStart2P-Regular SDF")
+                          ?? Resources.Load<TMP_FontAsset>("PressStart2P-Regular SDF");
+
+        GameObject go = new GameObject("PickupBanner");
+        go.transform.SetParent(canvas.transform, false);
+        go.transform.SetAsLastSibling();
+        var rt = go.AddComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0.1f, 0.62f);
+        rt.anchorMax = new Vector2(0.9f, 0.78f);
+        rt.offsetMin = rt.offsetMax = Vector2.zero;
+
+        var tmp = go.AddComponent<TextMeshProUGUI>();
+        tmp.text         = "You received:\nMagical Armor  &  Bow!";
+        tmp.alignment    = TextAlignmentOptions.Center;
+        tmp.fontSize     = 14f;
+        tmp.color        = new Color(1f, 0.9f, 0.3f, 0f);
+        tmp.outlineWidth = 0.28f;
+        tmp.outlineColor = new Color32(0, 0, 0, 255);
+        if (font != null) tmp.font = font;
+
+        // Fade in
+        float t = 0f;
+        while (t < 0.5f) { t += Time.unscaledDeltaTime; tmp.color = new Color(1f, 0.9f, 0.3f, t / 0.5f); yield return null; }
+        yield return new WaitForSecondsRealtime(2.5f);
+        // Fade out
+        t = 0f;
+        while (t < 0.5f) { t += Time.unscaledDeltaTime; tmp.color = new Color(1f, 0.9f, 0.3f, 1f - t / 0.5f); yield return null; }
+        Destroy(go);
     }
 
     private static Canvas FindOverlayCanvas()

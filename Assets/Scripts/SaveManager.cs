@@ -19,6 +19,9 @@ public class SaveManager : MonoBehaviour
 
     public bool HasSave => PlayerPrefs.GetInt(KEY_HAS_SAVE, 0) == 1;
     public string SavedScene => PlayerPrefs.GetString(KEY_SCENE, "Village");
+    public bool IsLoadingFromSave { get; private set; }
+
+    public void ConfirmLoadApplied() { IsLoadingFromSave = false; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoSpawn()
@@ -75,6 +78,7 @@ public class SaveManager : MonoBehaviour
     {
         if (!HasSave) return;
         Time.timeScale = 1f;
+        IsLoadingFromSave = true;
         // Clear inventory so the saved item can be properly restored
         Inventory.Instance?.ClearAll();
         SceneManager.LoadScene(SavedScene);
@@ -123,6 +127,10 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.DeleteKey(KEY_POS_Y);
         PlayerPrefs.DeleteKey(KEY_ITEM_NAME);
         PlayerPrefs.DeleteKey(KEY_ITEM_USES);
+        // Clear per-run unlocks so new runs start without prior-session gear
+        PlayerPrefs.DeleteKey("PlayerHasArmor");
+        PlayerPrefs.DeleteKey("PlayerHasBow");
+        PlayerPrefs.DeleteKey("WeaponCurrentUses");
         PlayerPrefs.Save();
     }
 
