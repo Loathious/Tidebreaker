@@ -223,11 +223,11 @@ public abstract class LevelManagerBase : MonoBehaviour
     private static string GetLevelDisplayNameFromScene()
     {
         string lower = SceneManager.GetActiveScene().name.ToLower();
-        if (lower.Contains("jungle"))  return "Level 3 — Jungle Temple";
-        if (lower.Contains("desert"))  return "Level 4 — Desert Pyramid";
-        if (lower.Contains("ocean"))   return "Level 5 — The Ocean";
-        if (lower.Contains("cave"))    return "Level 2 — Dark Cave";
-        if (lower.Contains("village")) return "Level 1 — The Village";
+        if (lower.Contains("jungle"))  return "Level 3\nJungle Temple";
+        if (lower.Contains("desert"))  return "Level 4\nDesert Pyramid";
+        if (lower.Contains("ocean"))   return "Level 5\nThe Ocean";
+        if (lower.Contains("cave"))    return "Level 2\nDark Cave";
+        if (lower.Contains("village")) return "Level 1\nThe Village";
         return "";
     }
 
