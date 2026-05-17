@@ -98,12 +98,13 @@ public class ZombieAI : MonoBehaviour
         }
 
         _health?.OnDeath.AddListener(OnDeath);
+        _health?.OnDamageTaken.AddListener(_ => SpawnBloodOnHit());
         PickNewWanderDir();
     }
 
     void Update()
     {
-        if (_isDead || _playerTransform == null) return;
+        if (_isDead || _playerTransform == null || LevelManagerBase.MonstersFrozen) return;
 
         _attackTimer        -= Time.deltaTime;
         _knockbackTimer     -= Time.deltaTime;
@@ -302,6 +303,18 @@ public class ZombieAI : MonoBehaviour
 
         _isClimbing = false;
         if (_hasIsClimbing) _anim?.SetBool("isClimbing", false);
+    }
+
+    private void SpawnBloodOnHit()
+    {
+        if (_isDead) return;
+        Vector3 pos = transform.position + Vector3.up * 0.3f;
+        var go = new GameObject("BloodFX");
+        go.transform.position = pos;
+        var ps = go.AddComponent<ParticleSystem>();
+        go.AddComponent<BloodParticleSetup>();
+        ps.Emit(6);
+        Destroy(go, 2f);
     }
 
     void OnDeath()

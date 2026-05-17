@@ -4,20 +4,24 @@ using UnityEngine;
 /// <summary>
 /// Handles player sword attacks. Left-click to attack.
 /// Enemies only take damage if the player is FACING them.
-/// Sword slash (HitMarker) always spawns regardless of facing — visual feedback preserved.
+/// Hit feedback: red flash + blood particles + knockback (no hitmarker).
 /// </summary>
 public class PlayerCombat : MonoBehaviour
 {
     [Header("Attack")]
-    [SerializeField] private float attackRange       = 4f;     // max distance from player (sword reach)
+    [SerializeField] private float attackRange       = 4f;
     [SerializeField] private LayerMask enemyLayers;
     [SerializeField] private float knockbackForce = 9f;
     [SerializeField] private float knockbackUp    = 0.6f;
-    [SerializeField] private float attackCooldown = 0.45f;
-    [SerializeField] private float damageDelay    = 0.12f;
+
+    [Header("Attack Timing (tweak for feel)")]
+    [Tooltip("Seconds between attacks. Lower = faster spam.")]
+    [SerializeField] private float attackCooldown = 0.32f;
+    [Tooltip("Delay from click to damage window. Should be less than attackCooldown.")]
+    [SerializeField] private float damageDelay    = 0.10f;
 
     [Header("Hit Feel")]
-    [SerializeField] private float hitStopDuration     = 0.08f;
+    [SerializeField] private float hitStopDuration     = 0.06f;
     [SerializeField] private float cameraShakeStrength = 0.12f;
     [SerializeField] private float cameraShakeDuration = 0.1f;
 
@@ -183,13 +187,12 @@ public class PlayerCombat : MonoBehaviour
             Health hp = best.GetComponent<Health>();
             if (hp != null && !hp.IsDead)
             {
-                // Spawn visual feedback EXACTLY at the click point on the enemy
-                HitMarker.Spawn(hitPoint, best.transform);
-                HitSpark.Spawn(hitPoint);
+                // Blood burst at enemy center (no hitmarker — blood + knockback is the feedback)
+                SpawnBloodAtPoint(hitPoint);
 
                 hp.TakeDamage(_equippedItem.damage);
 
-                // Only knock back enemies that survived the hit — dead ones handle their own physics
+                // Knockback surviving enemies
                 if (!hp.IsDead)
                 {
                     Vector2 flat     = ((Vector3)best.bounds.center - transform.position).normalized;
@@ -199,7 +202,9 @@ public class PlayerCombat : MonoBehaviour
                     SpiderAI spider = best.GetComponent<SpiderAI>();
                     if (zombie != null)
                         zombie.Knockback(knockDir);
-                    else if (spider == null)
+                    else if (spider != null)
+                        spider.Knockback(knockDir);
+                    else
                         best.GetComponent<Rigidbody2D>()?.AddForce(knockDir, ForceMode2D.Impulse);
                 }
 
@@ -295,6 +300,16 @@ public class PlayerCombat : MonoBehaviour
     public void PlaySwingSound()
     {
         if (swingClip != null) _audio.PlayOneShot(swingClip, swingVolume);
+    }
+
+    private void SpawnBloodAtPoint(Vector3 pos)
+    {
+        var go = new GameObject("BloodFX");
+        go.transform.position = pos;
+        var ps = go.AddComponent<ParticleSystem>();
+        go.AddComponent<BloodParticleSetup>();
+        ps.Emit(8);
+        Destroy(go, 2f);
     }
 
     void OnItemEquipped(ItemData item)

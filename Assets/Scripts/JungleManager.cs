@@ -34,9 +34,20 @@ public class JungleManager : LevelManagerBase
 
         if (_guardian != null)
         {
-            // Move guardian to outside (left of) the temple before setting patrol bounds.
-            EnsureGuardianOutsideTemple(_guardian);
-            SetGuardianPatrolBounds(_guardian);
+            // Use a BossArenaBounds object placed in the scene if available;
+            // otherwise fall back to the hardcoded limits around the gate.
+            BossArenaBounds arena = FindFirstObjectByType<BossArenaBounds>(FindObjectsInactive.Include);
+            if (arena != null)
+            {
+                arena.GetBoundsX(out float arenaMin, out float arenaMax);
+                EnsureGuardianInsideBounds(_guardian, arenaMin, arenaMax);
+                _guardian.SetPatrolBounds(arenaMin, arenaMax);
+            }
+            else
+            {
+                EnsureGuardianOutsideTemple(_guardian);
+                SetGuardianPatrolBounds(_guardian);
+            }
         }
 
         ObjectiveManager.Instance?.ShowObjective(
@@ -102,6 +113,26 @@ public class JungleManager : LevelManagerBase
     }
 
     /// <summary>
+    /// Moves the guardian into the arena bounds if it is currently outside them.
+    /// Used when a BossArenaBounds object is placed in the scene.
+    /// </summary>
+    private void EnsureGuardianInsideBounds(JungleGuardian guardian, float minX, float maxX)
+    {
+        Collider2D col = guardian.GetComponent<Collider2D>();
+        float visualX  = col != null ? col.bounds.center.x : guardian.transform.position.x;
+        float targetX  = (minX + maxX) * 0.5f;   // center of the arena
+
+        if (visualX >= minX && visualX <= maxX) return;   // already inside
+
+        float delta    = targetX - visualX;
+        Vector3 pos    = guardian.transform.position;
+        pos.x         += delta;
+        guardian.transform.position = pos;
+        Rigidbody2D rb = guardian.GetComponent<Rigidbody2D>();
+        if (rb != null) rb.position = new Vector2(pos.x, pos.y);
+    }
+
+    /// <summary>
     /// Moves the guardian so its visual center (collider bounds) is safely to the
     /// left of the temple gate, outside in the jungle arena.
     /// </summary>
@@ -128,9 +159,11 @@ public class JungleManager : LevelManagerBase
 
     private void SetGuardianPatrolBounds(JungleGuardian guardian)
     {
-        // Guardian visual center must stay in [GateX-16, GateX-2] (outside the temple).
-        // Handled inline in JungleGuardian.FixedUpdate — no separate component needed.
-        guardian.SetPatrolBounds(GateX - 16f, GateX - 2f);
+        // Derive arena from the guardian's actual scene-placed position so the bounds
+        // are always centred on the boss regardless of where it was placed in the editor.
+        Collider2D col = guardian.GetComponent<Collider2D>();
+        float cx = col != null ? col.bounds.center.x : guardian.transform.position.x;
+        guardian.SetPatrolBounds(cx - 4f, cx + 4f);
     }
 
     private IEnumerator GuardianDownBanner()

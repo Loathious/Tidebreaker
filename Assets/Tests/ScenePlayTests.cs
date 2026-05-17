@@ -497,11 +497,12 @@ public class ScenePlayTests
                 if (mb.GetType().Name == "JungleGuardian") { ai = mb; break; }
             Assert.IsNotNull(ai, "JungleGuardian component missing from JungleGuardian GameObject");
 
-            // Damage stats must be non-zero for any attack to matter
-            float slamDmg = GetSerializedFloat(ai, "slamDamage");
-            float jumpDmg = GetSerializedFloat(ai, "jumpDamage");
-            Assert.Greater(slamDmg, 0f, $"JungleGuardian.slamDamage={slamDmg} — slam attack is harmless");
-            Assert.Greater(jumpDmg, 0f, $"JungleGuardian.jumpDamage={jumpDmg} — jump attack is harmless");
+            // Damage stats must be non-zero for any attack to matter.
+            // Note: JumpAttack was removed (caused teleport). Check slam + throw instead.
+            float slamDmg  = GetSerializedFloat(ai, "slamDamage");
+            float throwDmg = GetSerializedFloat(ai, "throwDamage");
+            Assert.Greater(slamDmg,  0f, $"JungleGuardian.slamDamage={slamDmg} — slam attack is harmless");
+            Assert.Greater(throwDmg, 0f, $"JungleGuardian.throwDamage={throwDmg} — throw attack is harmless");
 
             // actionCooldown must be positive (otherwise DoAction fires infinitely fast)
             float cooldown = GetSerializedFloat(ai, "actionCooldown");
@@ -515,7 +516,7 @@ public class ScenePlayTests
             Assert.Less   (maxBound,  999f, "_maxPatrolX still default — patrol bounds not initialised");
             Assert.Less(minBound, maxBound, $"Patrol bounds inverted min={minBound} >= max={maxBound}");
 
-            Append($"Jungle_GuardianHasFunctionalAttackLoop: PASSED (slam={slamDmg}, jump={jumpDmg}, cooldown={cooldown}s)");
+            Append($"Jungle_GuardianHasFunctionalAttackLoop: PASSED (slam={slamDmg}, throw={throwDmg}, cooldown={cooldown}s)");
         }
         catch (Exception e) { Append($"Jungle_GuardianHasFunctionalAttackLoop: FAILED — {e.Message}"); throw; }
     }

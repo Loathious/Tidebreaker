@@ -52,6 +52,9 @@ public class MusicManager : MonoBehaviour
         if (ambient != null) { _source.Stop(); _source.Play(); }
     }
 
+    /// <summary>Returns the current music volume.</summary>
+    public float GetVolume() => volume;
+
     /// <summary>Smoothly sets the music volume at runtime.</summary>
     public void SetVolume(float v) { volume = Mathf.Clamp01(v); _source.volume = volume; }
 

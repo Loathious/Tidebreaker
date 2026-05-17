@@ -128,11 +128,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_isDead)
-        {
-            _rb.linearVelocity = Vector2.zero;
-            return;
-        }
+        // When dead, colliders are disabled and we gave a downward kick in OnDeath.
+        // Let gravity handle the fall — no velocity overrides needed.
+        if (_isDead) return;
 
         CheckGround();
         ApplyMovement();
@@ -499,9 +497,15 @@ public class PlayerController : MonoBehaviour
     // ── Death ─────────────────────────────────────────────────────────────────
     void OnDeath()
     {
-        _isDead            = true;
-        _rb.linearVelocity = Vector2.zero;
-        _rb.gravityScale   = _defaultGravityScale;
+        _isDead = true;
+        _rb.gravityScale = _defaultGravityScale;
+        // Kick downward so the player falls even if they were standing on the ground.
+        _rb.linearVelocity = new Vector2(0f, -4f);
+        // Disable all colliders so physics doesn't hold the player up on platforms.
+        foreach (Collider2D col in GetComponents<Collider2D>())
+            col.enabled = false;
+        foreach (Collider2D col in GetComponentsInChildren<Collider2D>())
+            col.enabled = false;
         _anim?.SetBool("isDead", true);
     }
 

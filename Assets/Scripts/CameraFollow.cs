@@ -27,6 +27,7 @@ public class CameraFollow : MonoBehaviour
     // ── Private ───────────────────────────────────────────────────────────────
     private Transform  _lockedSpeaker;
     private bool       _speakerLocked;
+    private bool       _frozen;
     private Camera     _cam;
 
     void Start()
@@ -41,8 +42,14 @@ public class CameraFollow : MonoBehaviour
             transform.position = TargetPosition(target);
     }
 
+    /// <summary>Stops the camera from following any target (called on player death).</summary>
+    public void Freeze() => _frozen = true;
+    public void Unfreeze() => _frozen = false;
+
     void LateUpdate()
     {
+        if (_frozen) return;
+
         // If the serialized target was destroyed (e.g., DontDestroyOnLoad player swap on
         // scene restart), find the living player automatically.
         if (target == null)

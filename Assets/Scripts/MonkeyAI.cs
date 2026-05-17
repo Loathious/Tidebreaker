@@ -77,14 +77,14 @@ public class MonkeyAI : MonoBehaviour
 
     void Update()
     {
-        if (_isDead) return;
+        if (_isDead || LevelManagerBase.MonstersFrozen) return;
         if (_throwTimer   > 0f) _throwTimer   -= Time.deltaTime;
         if (_contactTimer > 0f) _contactTimer  -= Time.deltaTime;
     }
 
     void FixedUpdate()
     {
-        if (_isDead || _player == null) return;
+        if (_isDead || _player == null || LevelManagerBase.MonstersFrozen) return;
 
         float cx          = transform.position.x;
         float distToSpawn = Mathf.Abs(cx - _spawnPos.x);

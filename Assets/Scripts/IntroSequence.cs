@@ -75,6 +75,10 @@ public class IntroSequence : MonoBehaviour
         _cam       = Camera.main;
         _camFollow = _cam != null ? _cam.GetComponent<CameraFollow>() : null;
         _player    = FindFirstObjectByType<PlayerController>();
+
+        // Stop music early in Awake so it can't race with MusicManager.Start()
+        // (IntroSequence.Run() also calls Stop(), but Awake runs before any Start())
+        MusicManager.Instance?.Stop();
     }
 
     void Start()
@@ -91,6 +95,10 @@ public class IntroSequence : MonoBehaviour
     {
         // Lock player from moving / attacking during the intro
         _player?.LockInput();
+
+        // Silence music during the cinematic pan — it will resume when the player
+        // gets control at the end of the sequence.
+        MusicManager.Instance?.Stop();
 
         // Build the overlay UI (text + dimmer) procedurally so the scene needs no wiring
         BuildOverlayUI();
@@ -131,6 +139,9 @@ public class IntroSequence : MonoBehaviour
         if (_cam != null) _cam.orthographicSize = gameplayOrthoSize;
 
         _player?.UnlockInput();
+
+        // Start music now that the player has control
+        MusicManager.Instance?.Resume();
 
         // Clean up the overlay (it served its purpose)
         if (_text != null && _text.transform.parent != null)

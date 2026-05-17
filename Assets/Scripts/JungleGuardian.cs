@@ -23,7 +23,6 @@ public class JungleGuardian : MonoBehaviour
     [SerializeField] private float detectionRange = 20f;
     [SerializeField] private float meleeRange     = 2.8f;
     [SerializeField] private int   slamDamage     = 22;
-    [SerializeField] private int   jumpDamage     = 18;
     [SerializeField] private int   throwDamage    = 14;
 
     [Header("Timing")]
@@ -96,7 +95,17 @@ public class JungleGuardian : MonoBehaviour
         GameObject p = GameObject.FindGameObjectWithTag("Player");
         if (p != null) { _player = p.transform; _playerHealth = p.GetComponent<Health>(); }
 
-        if (_sr != null) _origColor = _sr.color;
+        // Ensure the sprite renderer is always visible.
+        // If the editor didn't assign a sprite, create a green placeholder so the
+        // boss is never invisible regardless of SpriteAnimator clip setup.
+        if (_sr != null)
+        {
+            if (_sr.sprite == null)
+                _sr.sprite = ProceduralSprite.Box(32, 40, new Color(0.25f, 0.55f, 0.2f));
+            _sr.color = Color.white;
+        }
+        _origColor = Color.white;
+
         _health.OnDeath.AddListener(OnDeath);
         _health.OnDamageTaken.AddListener(OnHurt);
 
@@ -107,7 +116,7 @@ public class JungleGuardian : MonoBehaviour
 
     void Update()
     {
-        if (_isDead || _player == null) return;
+        if (_isDead || _player == null || LevelManagerBase.MonstersFrozen) return;
 
         if (!_active)
         {
@@ -124,36 +133,38 @@ public class JungleGuardian : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_isDead || !_active || _busy || _player == null) return;
+        if (_isDead || LevelManagerBase.MonstersFrozen) return;
 
-        float cx  = WorldCenter.x;
-        float spd = _inPhase2 ? phase2Speed : moveSpeed;
+        // ALWAYS hard-clamp X to patrol bounds — even during attacks.
+        // This prevents any velocity-based overshoot from carrying the boss outside.
+        if (_active && _col != null)
+        {
+            float cx = WorldCenter.x;
+            if (cx < _minPatrolX || cx > _maxPatrolX)
+            {
+                float clamped = Mathf.Clamp(cx, _minPatrolX, _maxPatrolX);
+                Vector3 pos = transform.position;
+                pos.x += clamped - cx;
+                transform.position = pos;
+                _rb.position = new Vector2(pos.x, pos.y);
+                // Kill horizontal velocity so the boss doesn't immediately drift back out.
+                _rb.linearVelocity = new Vector2(0f, _rb.linearVelocity.y);
+            }
+        }
+
+        if (!_active || _busy || _player == null) return;
+
+        float wcx = WorldCenter.x;
+        float spd  = _inPhase2 ? phase2Speed : moveSpeed;
         float vx;
 
-        if (cx < _minPatrolX)
-        {
-            // Outside left bound — walk right to re-enter arena (no snap).
-            vx = spd;
-            if (_sr != null) _sr.flipX = false;
-        }
-        else if (cx > _maxPatrolX)
-        {
-            // Outside right bound — walk left to re-enter arena (no snap).
-            vx = -spd;
-            if (_sr != null) _sr.flipX = true;
-        }
-        else
-        {
-            // Within bounds: walk toward player, soft-stop at the edge so the
-            // boss never pushes past the boundary under its own movement.
-            float dir  = Mathf.Sign(_player.position.x - cx);
-            float dist = Vector2.Distance(WorldCenter, _player.position);
-            bool  atEdge = (cx <= _minPatrolX + 0.5f && dir < 0f) ||
-                           (cx >= _maxPatrolX - 0.5f && dir > 0f);
+        float dir2 = Mathf.Sign(_player.position.x - wcx);
+        float dist2 = Vector2.Distance(WorldCenter, _player.position);
+        bool atEdge = (wcx <= _minPatrolX + 0.5f && dir2 < 0f) ||
+                      (wcx >= _maxPatrolX - 0.5f && dir2 > 0f);
 
-            vx = (dist > meleeRange * 0.8f && !atEdge) ? dir * spd : 0f;
-            if (dir != 0f && _sr != null) _sr.flipX = dir < 0f;
-        }
+        vx = (dist2 > meleeRange * 0.8f && !atEdge) ? dir2 * spd : 0f;
+        if (dir2 != 0f && _sr != null) _sr.flipX = dir2 < 0f;
 
         _rb.linearVelocity = new Vector2(vx, _rb.linearVelocity.y);
         _anim?.Play(Mathf.Abs(vx) > 0.1f ? "move" : "idle");
@@ -196,28 +207,13 @@ public class JungleGuardian : MonoBehaviour
         float dist = _player != null
             ? Vector2.Distance(WorldCenter, _player.position) : 99f;
 
-        int choice;
-        if (_inPhase2)
-        {
-            // Phase 2: distance-weighted so the boss picks useful attacks.
-            // Close → slam or jump; far → jump or throw (not slam from across the arena).
-            choice = dist < meleeRange * 1.5f
-                ? Random.Range(0, 2)   // 0 = slam, 1 = jump
-                : Random.Range(1, 3);  // 1 = jump, 2 = throw
-        }
-        else
-        {
-            choice = dist < meleeRange        ? 0
-                   : dist < meleeRange * 2.5f ? 1
-                   : 2;
-        }
+        // Close range → ground punch; far range → throw projectiles.
+        bool useSlam = dist < meleeRange * 1.8f;
 
-        switch (choice)
-        {
-            case 0:  yield return GroundSlam();  break;
-            case 1:  yield return JumpAttack();  break;
-            default: yield return ThrowAttack(); break;
-        }
+        if (useSlam)
+            yield return GroundSlam();
+        else
+            yield return ThrowAttack();
 
         _actionTimer = _inPhase2 ? phase2Cooldown : actionCooldown;
         _busy = false;
@@ -225,64 +221,24 @@ public class JungleGuardian : MonoBehaviour
 
     // ── Attacks ───────────────────────────────────────────────────────────────
 
+    // GroundSlam: pure animation-based — zero velocity changes so there is no
+    // physics stutter or apparent teleportation. Boss stays on the ground.
     private IEnumerator GroundSlam()
     {
         _anim?.Play("attack", true);
-        _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, 6f);
-        yield return new WaitForSeconds(0.18f);
+        // Wind-up
+        yield return new WaitForSeconds(0.25f);
 
-        _rb.linearVelocity = new Vector2(0f, -20f);
         if (attackClip != null) AudioSource.PlayClipAtPoint(attackClip, WorldCenter, 0.9f);
+        CameraShakeNudge(0.28f);
 
-        float guard = 0f;
-        while (guard < 2f && _rb.linearVelocity.y < -0.5f)
-        { guard += Time.deltaTime; yield return null; }
-
-        CameraShakeNudge(0.24f);
         if (_playerHealth != null && _player != null &&
             Vector2.Distance(WorldCenter, _player.position) < 4.5f)
             _playerHealth.TakeDamage(slamDamage);
 
-        yield return new WaitForSeconds(0.3f);
-    }
-
-    private IEnumerator JumpAttack()
-    {
-        _anim?.Play("attack", true);
-        yield return new WaitForSeconds(0.22f);
-
-        if (_player == null) yield break;
-
-        float dir    = Mathf.Sign(_player.position.x - WorldCenter.x);
-        float jumpVX = _inPhase2 ? 9f : 7f;
-
-        // Clamp jump so the boss overshoots its patrol boundary by at most 2 units.
-        // The soft overshoot avoids hard snaps — FixedUpdate walks the boss back smoothly.
-        const float kAirTime = 0.72f; // approx at gravityScale=4, initial Y=14
-        float roomRight = (_maxPatrolX + 2f) - WorldCenter.x;
-        float roomLeft  = WorldCenter.x - (_minPatrolX - 2f);
-        if (dir > 0f) jumpVX = Mathf.Clamp(jumpVX, 0.5f, roomRight / kAirTime);
-        else          jumpVX = Mathf.Clamp(jumpVX, 0.5f, roomLeft  / kAirTime);
-
-        _rb.linearVelocity = new Vector2(dir * jumpVX, 14f);
-        Debug.Log($"[JungleGuardian] JumpAttack: centerX={WorldCenter.x:F2} dir={dir} vX={dir*jumpVX:F2} bounds=[{_minPatrolX:F2},{_maxPatrolX:F2}]");
-        if (attackClip != null) AudioSource.PlayClipAtPoint(attackClip, WorldCenter, 0.85f);
-
-        // Wait for apex (going up), then wait for landing (going down → zero).
-        yield return new WaitForSeconds(0.2f);
-        float t1 = 0f;
-        while (t1 < 1.5f && _rb.linearVelocity.y > 0.1f)
-        { t1 += Time.deltaTime; yield return null; }
-        float t2 = 0f;
-        while (t2 < 1.5f && _rb.linearVelocity.y < -0.3f)
-        { t2 += Time.deltaTime; yield return null; }
-
-        CameraShakeNudge(0.18f);
-        if (_playerHealth != null && _player != null &&
-            Vector2.Distance(WorldCenter, _player.position) < 3.5f)
-            _playerHealth.TakeDamage(jumpDamage);
-
-        yield return new WaitForSeconds(0.28f);
+        // Recovery
+        yield return new WaitForSeconds(0.45f);
+        _anim?.Play("idle");
     }
 
     private IEnumerator ThrowAttack()

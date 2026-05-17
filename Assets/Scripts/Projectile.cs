@@ -128,7 +128,7 @@ public class Projectile : MonoBehaviour
     {
         _spent = true;
         if (hitEffectPrefab != null) Instantiate(hitEffectPrefab, at, Quaternion.identity);
-        HitSpark.Spawn(at);
+        SpawnBlood(at);
         if (hitClip != null)
             AudioSource.PlayClipAtPoint(hitClip, at, 0.8f);
         Destroy(gameObject);
@@ -140,5 +140,15 @@ public class Projectile : MonoBehaviour
         if (missClip != null)
             AudioSource.PlayClipAtPoint(missClip, transform.position, 0.6f);
         Destroy(gameObject, 0.02f);
+    }
+
+    private static void SpawnBlood(Vector3 pos)
+    {
+        var go = new GameObject("BloodFX");
+        go.transform.position = pos;
+        var ps = go.AddComponent<ParticleSystem>();
+        go.AddComponent<BloodParticleSetup>();
+        ps.Emit(6);
+        Object.Destroy(go, 2f);
     }
 }

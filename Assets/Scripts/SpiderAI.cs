@@ -29,6 +29,7 @@ public class SpiderAI : MonoBehaviour
     [SerializeField] private float walkFrameTime = 0.18f;
 
     private Rigidbody2D  _rb;
+    private Collider2D   _col;
     private Health       _health;
     private Transform    _player;
     private float        _attackTimer;
@@ -36,11 +37,14 @@ public class SpiderAI : MonoBehaviour
     private bool         _useWalk1;
     private bool         _dropped;
     private bool         _isDead;
+    private bool         _knockedBack;
+    private float        _knockbackTimer;
     private Color        _origColor = Color.white;
 
     void Awake()
     {
         _rb     = GetComponent<Rigidbody2D>();
+        _col    = GetComponent<Collider2D>();
         _health = GetComponent<Health>();
         _health.SetMaxHealth(startHealth);
 
@@ -58,7 +62,7 @@ public class SpiderAI : MonoBehaviour
         if (playerGO != null) _player = playerGO.transform;
 
         _health.OnDeath.AddListener(OnDeath);
-        _health.OnDamageTaken.AddListener(_ => StartCoroutine(HitFlash()));
+        _health.OnDamageTaken.AddListener(_ => { StartCoroutine(HitFlash()); SpawnBlood(); });
 
         if (spriteRenderer != null)
         {
@@ -71,11 +75,25 @@ public class SpiderAI : MonoBehaviour
             _rb.gravityScale = 0f;
             _rb.constraints  = RigidbodyConstraints2D.FreezeAll;
         }
+        else
+        {
+            _rb.gravityScale           = 3f;
+            _rb.constraints            = RigidbodyConstraints2D.FreezeRotation;
+            _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            _dropped = true;
+        }
     }
 
     void Update()
     {
-        if (_isDead || _player == null) return;
+        if (_isDead || _player == null || LevelManagerBase.MonstersFrozen) return;
+
+        if (_knockedBack)
+        {
+            _knockbackTimer -= Time.deltaTime;
+            if (_knockbackTimer <= 0f) _knockedBack = false;
+            return;
+        }
 
         float dist = Vector2.Distance(transform.position, _player.position);
 
@@ -106,21 +124,19 @@ public class SpiderAI : MonoBehaviour
     void FixedUpdate()
     {
         if (_isDead || _player == null || !_dropped) return;
+        if (_knockedBack) return;
 
         float dist = Vector2.Distance(transform.position, _player.position);
 
         if (dist > attackRange)
         {
             float dir = _player.position.x > transform.position.x ? 1f : -1f;
-            // Clamp Y to ≤ 0 so setting velocity never fights the floor's contact normal
-            float vy = Mathf.Min(_rb.linearVelocity.y, 0f);
-            _rb.linearVelocity = new Vector2(dir * moveSpeed, vy);
+            _rb.linearVelocity = new Vector2(dir * moveSpeed, _rb.linearVelocity.y);
             if (spriteRenderer != null) spriteRenderer.flipX = dir < 0f;
         }
         else
         {
-            // Stop horizontal movement when in attack range; let gravity handle Y
-            _rb.linearVelocity = new Vector2(0f, Mathf.Min(_rb.linearVelocity.y, 0f));
+            _rb.linearVelocity = new Vector2(0f, _rb.linearVelocity.y);
         }
     }
 
@@ -138,12 +154,63 @@ public class SpiderAI : MonoBehaviour
     private void Drop()
     {
         _dropped = true;
-        _rb.gravityScale            = 1.2f;                                   // gentle fall — prevents tunnelling
-        _rb.constraints             = RigidbodyConstraints2D.FreezeRotation;
-        _rb.collisionDetectionMode  = CollisionDetectionMode2D.Continuous;    // no tunnelling through thin floors
-        _rb.linearVelocity          = Vector2.zero;
+        _rb.gravityScale           = 3f;
+        _rb.constraints            = RigidbodyConstraints2D.FreezeRotation;
+        _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        _rb.linearVelocity         = Vector2.zero;
         if (spriteRenderer != null && spriteWalk1 != null)
             spriteRenderer.sprite = spriteWalk1;
+        StartCoroutine(SnapToFloor());
+    }
+
+    private IEnumerator SnapToFloor()
+    {
+        // Wait a few frames so physics can settle, then hard-snap to floor if embedded.
+        for (int i = 0; i < 4; i++) yield return new WaitForFixedUpdate();
+
+        if (_isDead) yield break;
+
+        // Raycast downward from the collider center to find the floor
+        Vector2 origin = _col != null ? (Vector2)_col.bounds.center : (Vector2)transform.position;
+        float halfH    = _col != null ? _col.bounds.extents.y : 0.5f;
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, halfH + 1.5f, ~LayerMask.GetMask("Enemy"));
+        if (hit.collider != null && !hit.collider.isTrigger &&
+            hit.collider.gameObject != gameObject)
+        {
+            // Snap so the bottom of the collider sits exactly on the hit surface
+            float correctedY = hit.point.y + halfH + (_col != null ? _col.offset.y : 0f);
+            if (correctedY > transform.position.y - 0.05f)  // only snap UP (never sink further)
+            {
+                Vector3 pos = transform.position;
+                pos.y = correctedY;
+                transform.position = pos;
+                _rb.position = new Vector2(pos.x, pos.y);
+                _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, 0f);
+            }
+        }
+    }
+
+    /// <summary>Called by PlayerCombat to apply hit-knockback.</summary>
+    public void Knockback(Vector2 force)
+    {
+        if (_isDead) return;
+        _rb.linearVelocity = Vector2.zero;
+        _rb.AddForce(force, ForceMode2D.Impulse);
+        _knockedBack    = true;
+        _knockbackTimer = 0.35f;
+    }
+
+    private void SpawnBlood()
+    {
+        if (_isDead) return;
+        Vector3 pos = _col != null ? (Vector3)_col.bounds.center : transform.position;
+        var go = new GameObject("BloodFX");
+        go.transform.position = pos;
+        var ps = go.AddComponent<ParticleSystem>();
+        go.AddComponent<BloodParticleSetup>();
+        ps.Emit(7);
+        Destroy(go, 2f);
     }
 
     private void Attack()
@@ -161,8 +228,10 @@ public class SpiderAI : MonoBehaviour
 
         _rb.linearVelocity = Vector2.zero;
         _rb.gravityScale   = 0f;
+        if (_col != null) _col.enabled = false;
 
-        // Cave doesn't track enemy count for objective — just notify if a manager is present
+        // Notify whichever manager is active (works in Cave, Jungle, etc.)
+        LevelManagerBase.Current?.OnEnemyDefeated();
         GameManager.Instance?.OnEnemyDefeated();
 
         StartCoroutine(DeathFlash());

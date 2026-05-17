@@ -21,37 +21,77 @@ public class HealthBar : MonoBehaviour
 
     void Start()
     {
-        // Auto-find fillImage by searching every Image in children if not assigned
+        // Auto-find fillImage: try exact name "Fill", then partial name match,
+        // then any non-root Image child as a last resort.
         if (fillImage == null)
         {
             Image[] images = GetComponentsInChildren<Image>(true);
+            Image selfImg  = GetComponent<Image>();
             foreach (Image img in images)
             {
-                if (img.gameObject.name == "Fill")
-                {
-                    fillImage = img;
-                    break;
-                }
+                if (img == selfImg) continue;
+                string n = img.gameObject.name.ToLower();
+                if (n == "fill" || n.Contains("fill") || n == "healthimage" || n == "hpfill")
+                { fillImage = img; break; }
             }
+            // Fallback: first non-root Image child
+            if (fillImage == null)
+                foreach (Image img in images)
+                    if (img != selfImg) { fillImage = img; break; }
         }
 
-        // Auto-find targetHealth on parent if not assigned
+        // Auto-find targetHealth: first check parent hierarchy (works when the bar
+        // is a child of the player), then fall back to the Player-tagged object
+        // (works when the bar lives inside a Canvas unrelated to the player).
         if (targetHealth == null)
             targetHealth = GetComponentInParent<Health>();
+        if (targetHealth == null)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null)
+                targetHealth = p.GetComponent<Health>() ?? p.GetComponentInChildren<Health>();
+        }
 
         if (fillImage != null)
         {
-            // Strip the gradient sprite/material so the fill renders as a clean
-            // solid color. PRESERVE whatever color the prefab/scene set
-            // (player = green, zombie = red, etc.) — never overwrite it.
             fillImage.sprite     = null;
             fillImage.material   = null;
             fillImage.type       = Image.Type.Filled;
             fillImage.fillMethod = Image.FillMethod.Horizontal;
             fillImage.fillOrigin = 0;
             fillImage.fillAmount = 1f;
-            // Force full alpha so a partially-transparent prefab color reads cleanly.
-            Color c = fillImage.color; c.a = 1f; fillImage.color = c;
+            fillImage.color      = new Color(0.15f, 0.85f, 0.2f, 1f); // always green
+        }
+
+        // Auto-create lostHealthImage if not assigned — builds it as a sibling
+        // placed directly behind fillImage in the hierarchy.
+        if (lostHealthImage == null && fillImage != null)
+        {
+            // Check if a sibling is already named "LostHealth"
+            Transform parent = fillImage.transform.parent;
+            if (parent != null)
+            {
+                Transform existing = parent.Find("LostHealth");
+                if (existing != null)
+                    lostHealthImage = existing.GetComponent<Image>();
+            }
+
+            if (lostHealthImage == null && parent != null)
+            {
+                GameObject lhGO = new GameObject("LostHealth");
+                lhGO.transform.SetParent(parent, false);
+
+                // Match the RectTransform exactly to fillImage
+                RectTransform fillRt = fillImage.GetComponent<RectTransform>();
+                RectTransform lhRt   = lhGO.AddComponent<RectTransform>();
+                lhRt.anchorMin        = fillRt.anchorMin;
+                lhRt.anchorMax        = fillRt.anchorMax;
+                lhRt.offsetMin        = fillRt.offsetMin;
+                lhRt.offsetMax        = fillRt.offsetMax;
+                lhRt.pivot            = fillRt.pivot;
+
+                lostHealthImage = lhGO.AddComponent<Image>();
+            }
         }
 
         if (lostHealthImage != null)
@@ -62,10 +102,17 @@ public class HealthBar : MonoBehaviour
             lostHealthImage.fillMethod = Image.FillMethod.Horizontal;
             lostHealthImage.fillOrigin = 0;
             lostHealthImage.fillAmount = 1f;
-            // Preserve prefab color, just guarantee a faded alpha for the trail look.
-            Color lc = lostHealthImage.color;
-            if (lc.a > 0.7f) lc.a = 0.6f;
-            lostHealthImage.color = lc;
+            lostHealthImage.color      = new Color(0.85f, 0.1f, 0.1f, 0.9f); // always red
+        }
+
+        // Lost-health (red) must render behind the current-health fill (green).
+        // In Unity UI, lower sibling index = rendered first = appears behind.
+        if (lostHealthImage != null && fillImage != null)
+        {
+            int fillIdx = fillImage.transform.GetSiblingIndex();
+            int lostIdx = lostHealthImage.transform.GetSiblingIndex();
+            if (lostIdx > fillIdx)
+                lostHealthImage.transform.SetSiblingIndex(fillIdx);
         }
 
         if (targetHealth != null)
@@ -94,10 +141,25 @@ public class HealthBar : MonoBehaviour
 
     void UpdateHealthBar(float currentHealth, float maxHealth)
     {
-        if (fillImage != null)
-            fillImage.fillAmount = currentHealth / Mathf.Max(maxHealth, 1f);
+        float fill = currentHealth / Mathf.Max(maxHealth, 1f);
 
-        _delayTimer = _lostHealthDecayDelay;
+        if (fillImage != null)
+            fillImage.fillAmount = fill;
+
+        if (lostHealthImage != null)
+        {
+            if (fill >= lostHealthImage.fillAmount)
+            {
+                // Health increased or reset to full — snap the red bar up immediately
+                // so there's no phantom red gap at full health.
+                lostHealthImage.fillAmount = fill;
+            }
+            else
+            {
+                // Health decreased — start the visual decay delay
+                _delayTimer = _lostHealthDecayDelay;
+            }
+        }
 
         if (healthText != null && showText)
             healthText.text = Mathf.CeilToInt(currentHealth).ToString();
