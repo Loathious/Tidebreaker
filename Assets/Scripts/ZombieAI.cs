@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -34,6 +34,11 @@ public class ZombieAI : MonoBehaviour
     [SerializeField] private float climbCooldown       = 1.2f;   // shorter so they retry quickly when blocked
     [SerializeField] private float climbWallStickForce = 0.4f;   // lateral push into wall
 
+    [Header("Audio")]
+    public AudioClip attackClip;
+    public AudioClip hurtClip;
+    public AudioClip ambientClip;
+
     [Header("Knockback")]
     [SerializeField] private float knockbackDuration        = 0.45f;
     [SerializeField] private float knockbackStunAdditional  = 0.15f;
@@ -47,6 +52,7 @@ public class ZombieAI : MonoBehaviour
 
     private float   _attackTimer;
     private float   _wanderTimer;
+    private float   _ambientTimer;
     private float   _pauseTimer;
     private float   _knockbackTimer;
     private float   _stunTimer;
@@ -98,7 +104,8 @@ public class ZombieAI : MonoBehaviour
         }
 
         _health?.OnDeath.AddListener(OnDeath);
-        _health?.OnDamageTaken.AddListener(_ => SpawnBloodOnHit());
+        _health?.OnDamageTaken.AddListener(_ => { SpawnBloodOnHit(); PlayHurt(); });
+        _ambientTimer = Random.Range(4f, 10f);
         PickNewWanderDir();
     }
 
@@ -112,6 +119,12 @@ public class ZombieAI : MonoBehaviour
         _stunTimer          -= Time.deltaTime;
         _hitComboResetTimer -= Time.deltaTime;
         _climbCooldownTimer -= Time.deltaTime;
+        _ambientTimer       -= Time.deltaTime;
+        if (_ambientTimer <= 0f)
+        {
+            _ambientTimer = Random.Range(5f, 12f);
+            if (ambientClip != null) SettingsManager.PlaySfxAt(ambientClip, transform.position, 0.5f);
+        }
 
         if (_hitComboResetTimer <= 0f) _consecutiveHits = 0;
 
@@ -153,11 +166,11 @@ public class ZombieAI : MonoBehaviour
             TryClimbWall();
     }
 
-    // ── Wall Climbing ─────────────────────────────────────────────────────────
+    // â”€â”€ Wall Climbing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     void TryClimbWall()
     {
         float dir = Mathf.Sign(_targetVelocityX);
-        if (Mathf.Abs(_rb.linearVelocity.x) > 0.1f) return;   // still moving normally — no wall stuck
+        if (Mathf.Abs(_rb.linearVelocity.x) > 0.1f) return;   // still moving normally â€” no wall stuck
         if (_rb.linearVelocity.y > 0.5f)            return;   // already moving up
 
         // Cast THREE rays at different heights so we catch walls of any height
@@ -178,7 +191,7 @@ public class ZombieAI : MonoBehaviour
                 if (h.collider.GetComponent<ZombieAI>() != null) continue;  // ignore other zombies
                 if (h.collider.CompareTag("Player")) continue;              // don't climb on player
 
-                // Wall confirmed — start the slow climb
+                // Wall confirmed â€” start the slow climb
                 StartCoroutine(WallClimbJump(dir));
                 return;
             }
@@ -192,7 +205,7 @@ public class ZombieAI : MonoBehaviour
         _climbCooldownTimer = climbCooldown;
         if (_hasIsClimbing) _anim?.SetBool("isClimbing", true);
 
-        // Disable gravity during the slow scale — gives a true "scaling the wall" feel
+        // Disable gravity during the slow scale â€” gives a true "scaling the wall" feel
         _origGravityScale = _rb.gravityScale;
         _rb.gravityScale  = 0f;
 
@@ -215,7 +228,7 @@ public class ZombieAI : MonoBehaviour
         if (_hasIsClimbing) _anim?.SetBool("isClimbing", false);
     }
 
-    // ── Chase / Wander ────────────────────────────────────────────────────────
+    // â”€â”€ Chase / Wander â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     void DecideChase(float dist)
     {
         GameManager.Instance?.NotifyCombatStarted();
@@ -238,6 +251,7 @@ public class ZombieAI : MonoBehaviour
     {
         if (_attackTimer > 0f || _playerHealth == null || _playerHealth.IsDead) return;
 
+        if (attackClip != null) SettingsManager.PlaySfxAt(attackClip, transform.position, 0.8f);
         _playerHealth.TakeDamage(attackDamage);
 
         Rigidbody2D playerRb = _playerTransform.GetComponent<Rigidbody2D>();
@@ -249,7 +263,7 @@ public class ZombieAI : MonoBehaviour
 
         _attackTimer = attackCooldown;
 
-        // Safe trigger — only fires if parameter exists
+        // Safe trigger â€” only fires if parameter exists
         if (_hasIsAttacking) _anim?.SetTrigger("isAttacking");
     }
 
@@ -281,7 +295,7 @@ public class ZombieAI : MonoBehaviour
         _wanderTimer = wanderInterval;
     }
 
-    // ── Public ────────────────────────────────────────────────────────────────
+    // â”€â”€ Public â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     public void ForceChase()
     {
         _forcedChase = true;
@@ -303,6 +317,12 @@ public class ZombieAI : MonoBehaviour
 
         _isClimbing = false;
         if (_hasIsClimbing) _anim?.SetBool("isClimbing", false);
+    }
+
+    private void PlayHurt()
+    {
+        if (_isDead || hurtClip == null) return;
+        SettingsManager.PlaySfxAt(hurtClip, transform.position, 0.65f);
     }
 
     private void SpawnBloodOnHit()

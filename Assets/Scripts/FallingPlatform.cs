@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -78,7 +78,7 @@ public class FallingPlatform : MonoBehaviour
         transform.position = basePos;
 
         // Drop
-        if (fallClip != null) AudioSource.PlayClipAtPoint(fallClip, transform.position, 0.8f);
+        if (fallClip != null) SettingsManager.PlaySfxAt(fallClip, transform.position, 0.8f);
         _rb.bodyType     = RigidbodyType2D.Dynamic;
         _rb.gravityScale = fallGravity;
         _col.enabled     = false;   // player falls through once it drops

@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Jungle Guardian — Level 3 mini-boss (the monkey mini-boss).
+/// Jungle Guardian â€” Level 3 mini-boss (the monkey mini-boss).
 /// From spelmanus: 200 HP, two phases.
-///  • Phase 1 (100–50%): ground slam + jump attack + throw.
-///  • Phase 2 (below 50%): faster, more projectiles, enraged.
+///  â€¢ Phase 1 (100â€“50%): ground slam + jump attack + throw.
+///  â€¢ Phase 2 (below 50%): faster, more projectiles, enraged.
 ///
 /// NOTE: This boss has a sprite whose pivot is at the corner (0,0), so
 /// transform.position != visual center.  All gameplay calculations
@@ -57,7 +57,7 @@ public class JungleGuardian : MonoBehaviour
     private float _minPatrolX = -999f;
     private float _maxPatrolX =  999f;
 
-    // Visual center of the boss — sprite pivot is at corner so bounds.center is accurate.
+    // Visual center of the boss â€” sprite pivot is at corner so bounds.center is accurate.
     private Vector3 WorldCenter =>
         _col != null ? (Vector3)_col.bounds.center : transform.position;
 
@@ -135,7 +135,7 @@ public class JungleGuardian : MonoBehaviour
     {
         if (_isDead || LevelManagerBase.MonstersFrozen) return;
 
-        // ALWAYS hard-clamp X to patrol bounds — even during attacks.
+        // ALWAYS hard-clamp X to patrol bounds â€” even during attacks.
         // This prevents any velocity-based overshoot from carrying the boss outside.
         if (_active && _col != null)
         {
@@ -176,7 +176,7 @@ public class JungleGuardian : MonoBehaviour
         LevelManagerBase.Current?.NotifyCombatStarted();
         _bar = BossHealthBar.Create("JUNGLE GUARDIAN");
         if (_bar == null)
-            Debug.LogWarning("[JungleGuardian] BossHealthBar.Create returned null — no overlay canvas found!");
+            Debug.LogWarning("[JungleGuardian] BossHealthBar.Create returned null â€” no overlay canvas found!");
         else
             Debug.Log("[JungleGuardian] BossHealthBar created OK.");
         _bar?.SetHealth(1f);
@@ -207,11 +207,13 @@ public class JungleGuardian : MonoBehaviour
         float dist = _player != null
             ? Vector2.Distance(WorldCenter, _player.position) : 99f;
 
-        // Close range → ground punch; far range → throw projectiles.
-        bool useSlam = dist < meleeRange * 1.8f;
-
-        if (useSlam)
+        // Close range â†’ ground punch.
+        // Phase 2 mid-range â†’ jump attack.
+        // Far range â†’ throw projectiles.
+        if (dist < meleeRange * 1.8f)
             yield return GroundSlam();
+        else if (_inPhase2 && dist < meleeRange * 4f)
+            yield return JumpAttack();
         else
             yield return ThrowAttack();
 
@@ -219,9 +221,13 @@ public class JungleGuardian : MonoBehaviour
         _busy = false;
     }
 
-    // ── Attacks ───────────────────────────────────────────────────────────────
+    // â”€â”€ Attacks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-    // GroundSlam: pure animation-based — zero velocity changes so there is no
+    // Maximum air time before the jump coroutine forces the boss back to
+    // tracking ground state â€” prevents getting stuck airborne on collision edge-cases.
+    private const float kAirTime = 0.9f;
+
+    // GroundSlam: pure animation-based â€” zero velocity changes so there is no
     // physics stutter or apparent teleportation. Boss stays on the ground.
     private IEnumerator GroundSlam()
     {
@@ -229,7 +235,7 @@ public class JungleGuardian : MonoBehaviour
         // Wind-up
         yield return new WaitForSeconds(0.25f);
 
-        if (attackClip != null) AudioSource.PlayClipAtPoint(attackClip, WorldCenter, 0.9f);
+        if (attackClip != null) SettingsManager.PlaySfxAt(attackClip, WorldCenter, 0.9f);
         CameraShakeNudge(0.28f);
 
         if (_playerHealth != null && _player != null &&
@@ -241,10 +247,47 @@ public class JungleGuardian : MonoBehaviour
         _anim?.Play("idle");
     }
 
+    // JumpAttack: boss leaps toward the player then slams on landing.
+    // Used in Phase 2 when the player is at mid range.
+    private IEnumerator JumpAttack()
+    {
+        if (_player == null) yield break;
+        _anim?.Play("attack", true);
+        yield return new WaitForSeconds(0.2f);
+
+        float dir = Mathf.Sign(_player.position.x - WorldCenter.x);
+        // Velocity capped via kAirTime: vy chosen so airborne time â‰¤ kAirTime.
+        // v = g * kAirTime / 2  â†’  lands within the cap even if gravity varies.
+        float vy = _rb.gravityScale * Mathf.Abs(Physics2D.gravity.y) * kAirTime * 0.5f;
+        float vx = dir * (phase2Speed + 3f);
+        _rb.linearVelocity = new Vector2(vx, vy);
+
+        if (attackClip != null) SettingsManager.PlaySfxAt(attackClip, WorldCenter, 0.9f);
+
+        // Wait for landing (velocity turns downward) or until kAirTime expires.
+        float airElapsed = 0f;
+        yield return null; // skip one frame so velocity is applied
+        while (airElapsed < kAirTime && _rb.linearVelocity.y > -0.5f)
+        {
+            airElapsed += Time.deltaTime;
+            yield return null;
+        }
+        // Kill horizontal velocity on landing to stop skidding.
+        _rb.linearVelocity = new Vector2(0f, Mathf.Min(_rb.linearVelocity.y, 0f));
+
+        CameraShakeNudge(0.3f);
+        if (_playerHealth != null && _player != null &&
+            Vector2.Distance(WorldCenter, _player.position) < 3.5f)
+            _playerHealth.TakeDamage(slamDamage);
+
+        yield return new WaitForSeconds(0.35f);
+        _anim?.Play("idle");
+    }
+
     private IEnumerator ThrowAttack()
     {
         _anim?.Play("attack", true);
-        if (attackClip != null) AudioSource.PlayClipAtPoint(attackClip, WorldCenter, 0.8f);
+        if (attackClip != null) SettingsManager.PlaySfxAt(attackClip, WorldCenter, 0.8f);
         yield return new WaitForSeconds(0.22f);
 
         int count = _inPhase2 ? 4 : 3;
@@ -275,13 +318,13 @@ public class JungleGuardian : MonoBehaviour
         Destroy(go, 2f);
     }
 
-    // ── Health ────────────────────────────────────────────────────────────────
+    // â”€â”€ Health â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private void OnHurt(float dmg)
     {
         if (_isDead) return;
         _bar?.SetHealth(_health.CurrentHealth / _health.MaxHealth);
-        if (hurtClip != null) AudioSource.PlayClipAtPoint(hurtClip, WorldCenter, 0.6f);
+        if (hurtClip != null) SettingsManager.PlaySfxAt(hurtClip, WorldCenter, 0.6f);
         SpawnBlood();
         StartCoroutine(HitFlash());
 
@@ -292,7 +335,7 @@ public class JungleGuardian : MonoBehaviour
     private void EnterPhase2()
     {
         _inPhase2 = true;
-        _bar?.SetPhase("PHASE 2 — ENRAGED");
+        _bar?.SetPhase("PHASE 2 â€” ENRAGED");
         transform.localScale = _baseScale * 1.12f;
         StartCoroutine(RoarFlash());
     }
@@ -325,7 +368,7 @@ public class JungleGuardian : MonoBehaviour
         _rb.linearVelocity = Vector2.zero;
         _rb.gravityScale   = 0.4f;
         foreach (Collider2D c in GetComponents<Collider2D>()) c.enabled = false;
-        if (deathClip != null) AudioSource.PlayClipAtPoint(deathClip, WorldCenter, 1f);
+        if (deathClip != null) SettingsManager.PlaySfxAt(deathClip, WorldCenter, 1f);
         _bar?.Dismiss();
 
         (LevelManagerBase.Current as JungleManager)?.OnGuardianDefeated();

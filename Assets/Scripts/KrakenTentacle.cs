@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -80,7 +80,7 @@ public class KrakenTentacle : MonoBehaviour
     {
         _attacking = true;
         _anim?.Play("attack", true);
-        if (attackClip != null) AudioSource.PlayClipAtPoint(attackClip, transform.position, 0.85f);
+        if (attackClip != null) SettingsManager.PlaySfxAt(attackClip, transform.position, 0.85f);
 
         // Wind-up, then the strike
         yield return new WaitForSeconds(0.55f);
@@ -100,7 +100,7 @@ public class KrakenTentacle : MonoBehaviour
     private void OnHurt()
     {
         if (_isDead) return;
-        if (hurtClip != null) AudioSource.PlayClipAtPoint(hurtClip, transform.position, 0.5f);
+        if (hurtClip != null) SettingsManager.PlaySfxAt(hurtClip, transform.position, 0.5f);
         StartCoroutine(HitFlash());
     }
 
@@ -118,7 +118,7 @@ public class KrakenTentacle : MonoBehaviour
         _isDead = true;
         StopAllCoroutines();
         foreach (Collider2D c in GetComponents<Collider2D>()) c.enabled = false;
-        if (deathClip != null) AudioSource.PlayClipAtPoint(deathClip, transform.position, 0.9f);
+        if (deathClip != null) SettingsManager.PlaySfxAt(deathClip, transform.position, 0.9f);
         if (_boss != null) _boss.OnTentacleDestroyed();
         StartCoroutine(DeathFade());
     }

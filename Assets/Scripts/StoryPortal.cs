@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,9 +6,9 @@ using TMPro;
 
 /// <summary>
 /// A versatile story trigger used for level transitions:
-///  • Level 3 temple inscription → Desert
-///  • Level 4 pyramid reward (grants Bow + Magical Armor) → Ocean
-///  • plain "walk to the edge to continue" exits.
+///  â€¢ Level 3 temple inscription â†’ Desert
+///  â€¢ Level 4 pyramid reward (grants Bow + Magical Armor) â†’ Ocean
+///  â€¢ plain "walk to the edge to continue" exits.
 ///
 /// Shows its lines through the existing DialogUI, can grant the end-game gear,
 /// fades to black and loads the next scene. Gated by <see cref="unlocked"/>.
@@ -77,7 +77,7 @@ public class StoryPortal : MonoBehaviour
         if (_prompt != null) _prompt.gameObject.SetActive(false);
 
         if (mysticClip != null)
-            AudioSource.PlayClipAtPoint(mysticClip, Camera.main.transform.position, 0.9f);
+            SettingsManager.PlaySfxAt(mysticClip, Camera.main.transform.position, 0.9f);
 
         if (grantBowAndArmor)
         {
@@ -141,7 +141,7 @@ public class StoryPortal : MonoBehaviour
             Debug.LogWarning($"[StoryPortal] Next scene '{nextScene}' is not in Build Settings.");
     }
 
-    // ── Prompt ────────────────────────────────────────────────────────────────
+    // â”€â”€ Prompt â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private void BuildPrompt()
     {
         GameObject go = new GameObject("PortalPrompt");
@@ -188,7 +188,7 @@ public class StoryPortal : MonoBehaviour
         if (_prompt != null) _prompt.gameObject.SetActive(false);
     }
 
-    // ── Pickup notification ───────────────────────────────────────────────────
+    // â”€â”€ Pickup notification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private void ShowPickupBanner()
     {
         StartCoroutine(PickupBannerRoutine());

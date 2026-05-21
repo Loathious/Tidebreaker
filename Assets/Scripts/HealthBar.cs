@@ -1,3 +1,9 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// HEALTH BAR — VERSION 1  (superseded by HealthBarV2.cs)
+//
+// Kept for backward compatibility with existing scene setups (Village, Cave).
+// DO NOT add this component to new scenes — HealthBarV2 auto-spawns instead.
+// ═══════════════════════════════════════════════════════════════════════════════
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;

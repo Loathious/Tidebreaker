@@ -327,17 +327,15 @@ public abstract class LevelManagerBase : MonoBehaviour
     {
         if (Player == null) return;
 
-        // Priority 1: Scene object named "SpawnPoint" or "PlayerSpawn"
-        // (avoid FindGameObjectWithTag since "SpawnPoint" may not be defined in every project)
-        GameObject spawn = GameObject.Find("PlayerSpawn");
-        if (spawn == null) spawn = GameObject.Find("SpawnPoint");
+        // Look for an explicitly named spawn marker in the scene.
+        // If none exists, leave the player exactly where they were placed in the scene —
+        // do NOT fall back to the LevelManager's own position.
+        GameObject spawn = GameObject.Find("PlayerSpawn")
+                        ?? GameObject.Find("SpawnPoint");
 
-        Vector3 dest;
-        if (spawn != null)
-            dest = spawn.transform.position;
-        else
-            dest = transform.position; // fallback: place LevelManager object at spawn location
+        if (spawn == null) return; // no marker — keep scene-placed position
 
+        Vector3 dest = spawn.transform.position;
         Player.transform.position = dest;
         Rigidbody2D rb = Player.GetComponent<Rigidbody2D>();
         if (rb != null)
@@ -512,7 +510,7 @@ public abstract class LevelManagerBase : MonoBehaviour
         var stTitle = new GameObject("SettingsTitle");
         stTitle.transform.SetParent(settingsPanel.transform, false);
         var stRt = stTitle.AddComponent<RectTransform>();
-        stRt.anchorMin = new Vector2(0f, 0.78f); stRt.anchorMax = new Vector2(1f, 1f);
+        stRt.anchorMin = new Vector2(0f, 0.85f); stRt.anchorMax = new Vector2(1f, 1f);
         stRt.offsetMin = Vector2.zero; stRt.offsetMax = Vector2.zero;
         var stTmp = stTitle.AddComponent<TextMeshProUGUI>();
         stTmp.text      = "SETTINGS";
@@ -521,26 +519,43 @@ public abstract class LevelManagerBase : MonoBehaviour
         stTmp.color     = new Color(0.8f, 0.8f, 1f, 1f);
         if (font != null) stTmp.font = font;
 
-        // Volume label
-        var volLabel = new GameObject("VolumeLabel");
-        volLabel.transform.SetParent(settingsPanel.transform, false);
-        var vlRt = volLabel.AddComponent<RectTransform>();
-        vlRt.anchorMin = new Vector2(0f, 0.56f); vlRt.anchorMax = new Vector2(1f, 0.72f);
-        vlRt.offsetMin = Vector2.zero; vlRt.offsetMax = Vector2.zero;
-        var vlTmp = volLabel.AddComponent<TextMeshProUGUI>();
-        vlTmp.text      = "Music Volume";
-        vlTmp.alignment = TextAlignmentOptions.Center;
-        vlTmp.fontSize  = 7f;
-        vlTmp.color     = Color.white;
-        if (font != null) vlTmp.font = font;
+        // Music volume label
+        var musLabel = new GameObject("MusicLabel");
+        musLabel.transform.SetParent(settingsPanel.transform, false);
+        var mlRt = musLabel.AddComponent<RectTransform>();
+        mlRt.anchorMin = new Vector2(0f, 0.72f); mlRt.anchorMax = new Vector2(1f, 0.84f);
+        mlRt.offsetMin = Vector2.zero; mlRt.offsetMax = Vector2.zero;
+        var mlTmp = musLabel.AddComponent<TextMeshProUGUI>();
+        mlTmp.text      = "Music Volume";
+        mlTmp.alignment = TextAlignmentOptions.Center;
+        mlTmp.fontSize  = 6.5f;
+        mlTmp.color     = Color.white;
+        if (font != null) mlTmp.font = font;
 
-        // Volume slider
-        GameObject sliderGO = CreateVolumeSlider(settingsPanel.transform,
-            new Vector2(0.05f, 0.42f), new Vector2(0.95f, 0.57f));
+        // Music slider
+        CreateVolumeSlider(settingsPanel.transform,
+            new Vector2(0.05f, 0.61f), new Vector2(0.95f, 0.71f), isMusicSlider: true);
+
+        // SFX volume label
+        var sfxLabel = new GameObject("SFXLabel");
+        sfxLabel.transform.SetParent(settingsPanel.transform, false);
+        var slRt = sfxLabel.AddComponent<RectTransform>();
+        slRt.anchorMin = new Vector2(0f, 0.49f); slRt.anchorMax = new Vector2(1f, 0.60f);
+        slRt.offsetMin = Vector2.zero; slRt.offsetMax = Vector2.zero;
+        var slTmp = sfxLabel.AddComponent<TextMeshProUGUI>();
+        slTmp.text      = "SFX Volume";
+        slTmp.alignment = TextAlignmentOptions.Center;
+        slTmp.fontSize  = 6.5f;
+        slTmp.color     = Color.white;
+        if (font != null) slTmp.font = font;
+
+        // SFX slider
+        CreateVolumeSlider(settingsPanel.transform,
+            new Vector2(0.05f, 0.38f), new Vector2(0.95f, 0.48f), isMusicSlider: false);
 
         // Back button
         var backGO = BuildPanelButton(settingsPanel.transform, "BackBtn",
-            new Vector2(0.05f, 0.04f), new Vector2(0.95f, 0.30f),
+            new Vector2(0.05f, 0.04f), new Vector2(0.95f, 0.32f),
             "← Back", new Color(0.18f, 0.18f, 0.32f), font);
         backGO.GetComponent<Button>().onClick.AddListener(() =>
         {
@@ -558,9 +573,11 @@ public abstract class LevelManagerBase : MonoBehaviour
         return root;
     }
 
-    private GameObject CreateVolumeSlider(Transform parent, Vector2 anchorMin, Vector2 anchorMax)
+    private GameObject CreateVolumeSlider(Transform parent, Vector2 anchorMin, Vector2 anchorMax,
+                                          bool isMusicSlider = true)
     {
-        GameObject sliderGO = new GameObject("VolumeSlider");
+        string goName = isMusicSlider ? "MusicSlider" : "SFXSlider";
+        GameObject sliderGO = new GameObject(goName);
         sliderGO.transform.SetParent(parent, false);
         var sRt = sliderGO.AddComponent<RectTransform>();
         sRt.anchorMin = anchorMin; sRt.anchorMax = anchorMax;
@@ -579,9 +596,11 @@ public abstract class LevelManagerBase : MonoBehaviour
         faRt.anchorMin = new Vector2(0f, 0.25f); faRt.anchorMax = new Vector2(1f, 0.75f);
         faRt.offsetMin = new Vector2(5f, 0f); faRt.offsetMax = new Vector2(-15f, 0f);
 
+        // Music slider is blue, SFX slider is teal to distinguish them visually
+        Color fillColor = isMusicSlider ? new Color(0.3f, 0.6f, 1f) : new Color(0.2f, 0.8f, 0.6f);
         var fill = new GameObject("Fill").AddComponent<Image>();
         fill.transform.SetParent(fillArea.transform, false);
-        fill.color = new Color(0.3f, 0.6f, 1f, 1f);
+        fill.color = fillColor;
         var fillRt = fill.GetComponent<RectTransform>();
         fillRt.anchorMin = Vector2.zero; fillRt.anchorMax = Vector2.one;
         fillRt.offsetMin = Vector2.zero; fillRt.offsetMax = Vector2.zero;
@@ -605,8 +624,24 @@ public abstract class LevelManagerBase : MonoBehaviour
         slider.direction       = Slider.Direction.LeftToRight;
         slider.minValue        = 0f;
         slider.maxValue        = 1f;
-        slider.value           = MusicManager.Instance != null ? MusicManager.Instance.GetVolume() : 0.5f;
-        slider.onValueChanged.AddListener(v => MusicManager.Instance?.SetVolume(v));
+
+        if (isMusicSlider)
+        {
+            slider.value = MusicManager.Instance != null ? MusicManager.Instance.GetVolume() : 0.5f;
+            slider.onValueChanged.AddListener(v => {
+                MusicManager.Instance?.SetVolume(v);
+                if (SettingsManager.Instance != null) SettingsManager.Instance.OnMusicVolumeChanged(v);
+            });
+        }
+        else
+        {
+            slider.value = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
+            slider.onValueChanged.AddListener(v => {
+                PlayerPrefs.SetFloat("SFXVolume", v);
+                PlayerPrefs.Save();
+                if (SettingsManager.Instance != null) SettingsManager.Instance.OnSFXVolumeChanged(v);
+            });
+        }
 
         return sliderGO;
     }
@@ -690,6 +725,8 @@ public abstract class LevelManagerBase : MonoBehaviour
         if (hotbar != null) hotbar.SetVisible(false);
         foreach (HealthBar hb in FindObjectsByType<HealthBar>(FindObjectsSortMode.None))
             if (hb != null) hb.Hide();
+        foreach (HealthBarV2 hb2 in FindObjectsByType<HealthBarV2>(FindObjectsSortMode.None))
+            if (hb2 != null) hb2.Hide();
         ObjectiveManager.Instance?.HideObjective();
 
         // Run the fall → red tint → pause → death screen sequence.
@@ -724,6 +761,11 @@ public abstract class LevelManagerBase : MonoBehaviour
         if (_gameOverUI != null)
         {
             _gameOverUI.SetActive(true);
+            // Ensure the game over UI renders ABOVE the solid red overlay regardless
+            // of canvas hierarchy order or sorting order.
+            _gameOverUI.transform.SetAsLastSibling();
+            Canvas gc = _gameOverUI.GetComponentInParent<Canvas>();
+            if (gc != null) gc.sortingOrder = Mathf.Max(gc.sortingOrder, 1001);
             EnsureDeathButtons(_gameOverUI.transform);
         }
         else
@@ -736,6 +778,9 @@ public abstract class LevelManagerBase : MonoBehaviour
     {
         Canvas canvas = FindOverlayCanvas();
         if (canvas == null) return null;
+
+        // Keep overlay canvas below the dedicated game-over UI canvas (1001)
+        if (canvas.sortingOrder >= 1001) canvas.sortingOrder = 998;
 
         GameObject go = new GameObject("DeathRedOverlay");
         go.transform.SetParent(canvas.transform, false);

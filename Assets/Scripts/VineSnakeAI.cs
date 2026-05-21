@@ -75,7 +75,7 @@ public class VineSnakeAI : MonoBehaviour
         {
             _ambientTimer = Random.Range(4f, 9f);
             if (ambientClip != null)
-                AudioSource.PlayClipAtPoint(ambientClip, transform.position, 0.5f);
+                SettingsManager.PlaySfxAt(ambientClip, transform.position, 0.5f);
         }
     }
 
@@ -125,7 +125,7 @@ public class VineSnakeAI : MonoBehaviour
         _playerHealth.TakeDamage(attackDamage);
         _rb.AddForce(new Vector2(dir * lungeForce, 2f), ForceMode2D.Impulse);
 
-        if (attackClip != null) AudioSource.PlayClipAtPoint(attackClip, transform.position, 0.8f);
+        if (attackClip != null) SettingsManager.PlaySfxAt(attackClip, transform.position, 0.8f);
         _anim?.Play("attack", true);
         StartCoroutine(ResumeMoveAfter(0.3f));
     }
@@ -139,7 +139,7 @@ public class VineSnakeAI : MonoBehaviour
     private void OnHurt()
     {
         if (_isDead) return;
-        if (hurtClip != null) AudioSource.PlayClipAtPoint(hurtClip, transform.position, 0.7f);
+        if (hurtClip != null) SettingsManager.PlaySfxAt(hurtClip, transform.position, 0.7f);
         StartCoroutine(HitFlash());
     }
 

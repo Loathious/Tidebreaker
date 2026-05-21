@@ -1,7 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
-/// Plays random one-shot ambient sounds at random intervals — cave drips,
+/// Plays random one-shot ambient sounds at random intervals â€” cave drips,
 /// jungle calls, desert wind, storm thunder. Adds atmosphere to each level.
 /// Clips are assigned by the level builder.
 /// </summary>
@@ -35,7 +35,7 @@ public class AmbientSfxPlayer : MonoBehaviour
             if (clip != null)
             {
                 Vector3 at = Camera.main != null ? Camera.main.transform.position : transform.position;
-                AudioSource.PlayClipAtPoint(clip, at, volume);
+                SettingsManager.PlaySfxAt(clip, at, volume);
             }
         }
     }

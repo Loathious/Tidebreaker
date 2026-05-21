@@ -22,6 +22,8 @@ public class PlayerRanged : MonoBehaviour
     [Header("Audio")]
     public AudioClip drawClip;
     public AudioClip shootClip;
+    public AudioClip arrowHitClip;
+    public AudioClip arrowMissClip;
 
     private SpriteRenderer _bowVisual;
     private float _cooldown;
@@ -77,7 +79,7 @@ public class PlayerRanged : MonoBehaviour
             float ang = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             _bowVisual.transform.localRotation = Quaternion.Euler(0, 0, dir.x < 0f ? ang + 180f : ang);
         }
-        if (drawClip != null) _audio.PlayOneShot(drawClip, 0.7f);
+        if (drawClip != null) _audio.PlayOneShot(drawClip, 0.7f * SettingsManager.SfxVol);
 
         int drawCount = Mathf.Min(3, bowFrames != null ? bowFrames.Length : 0);
         for (int i = 0; i < drawCount; i++)
@@ -90,8 +92,13 @@ public class PlayerRanged : MonoBehaviour
         Vector3 origin = transform.position + (Vector3)(dir * 0.5f) + Vector3.up * 0.1f;
         Projectile arrow = Projectile.Spawn(origin, dir, arrowSpeed, arrowDamage,
                                             false, arrowSprite, 0f, 0.12f, 60);
-        arrow.faceVelocity = true;
-        if (shootClip != null) _audio.PlayOneShot(shootClip, 0.9f);
+        if (arrow != null)
+        {
+            arrow.faceVelocity = true;
+            arrow.hitClip      = arrowHitClip;
+            arrow.missClip     = arrowMissClip;
+        }
+        if (shootClip != null) _audio.PlayOneShot(shootClip, 0.9f * SettingsManager.SfxVol);
 
         // Release frame (bow frame 4)
         if (_bowVisual != null && bowFrames != null && bowFrames.Length >= 4)

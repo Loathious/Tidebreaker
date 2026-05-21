@@ -11561,9 +11561,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1531954341}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: hurtClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2cd666cd3719c864f8fac3b3bcbf32c5, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: attackClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 799ea4b5682c58f4a9d5c291d2096d6b, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: chaseSpeed
       value: 2.8
       objectReference: {fileID: 0}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: ambientClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d7f87c1dff9da36499987b3e1b103111, type: 3}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: attackCooldown
       value: 2.07
@@ -11911,9 +11923,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1531954341}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: hurtClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2cd666cd3719c864f8fac3b3bcbf32c5, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: attackClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 799ea4b5682c58f4a9d5c291d2096d6b, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: chaseSpeed
       value: 2.8
       objectReference: {fileID: 0}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: ambientClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d7f87c1dff9da36499987b3e1b103111, type: 3}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: attackCooldown
       value: 2.07
@@ -12543,9 +12567,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1531954341}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: hurtClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2cd666cd3719c864f8fac3b3bcbf32c5, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: attackClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 799ea4b5682c58f4a9d5c291d2096d6b, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: chaseSpeed
       value: 2.8
       objectReference: {fileID: 0}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: ambientClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d7f87c1dff9da36499987b3e1b103111, type: 3}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: attackCooldown
       value: 2.07
@@ -23321,6 +23357,7 @@ MonoBehaviour:
   lowHealthThreshold: 0.31
   lowHealthColor: {r: 0.85, g: 0.05, b: 0.05, a: 0.6509804}
   pulseSpeed: 2.6
+  pulseSpeedMax: 9
 --- !u!4 &962096379
 Transform:
   m_ObjectHideFlags: 0
@@ -23530,6 +23567,9 @@ MonoBehaviour:
   dialogBodyText: {fileID: 0}
   continuePromptText: {fileID: 0}
   typewriterSpeed: 0.03
+  talkClips:
+  - {fileID: 8300000, guid: ddc55a7dda98dbb489a565bf58e3e42d, type: 3}
+  - {fileID: 8300000, guid: 4bf5e6c20f6a97749b161e00a6694f0e, type: 3}
 --- !u!1 &1064802321
 GameObject:
   m_ObjectHideFlags: 0
@@ -23663,6 +23703,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1064802321}
   m_CullTransparentMesh: 1
+--- !u!1 &1076800360
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1076800362}
+  - component: {fileID: 1076800361}
+  m_Layer: 0
+  m_Name: AmbientSfx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1076800361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076800360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c1f5be2a0747f246b38c80a38f96f96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmbientSfxPlayer
+  clips:
+  - {fileID: 8300000, guid: b8e107213afbe054a8bfd23a3971e00c, type: 3}
+  - {fileID: 8300000, guid: 6b1a9784211bd734e853add3c69be787, type: 3}
+  - {fileID: 8300000, guid: ef191632c8aae2a4abc1496d022579b6, type: 3}
+  - {fileID: 8300000, guid: a5a7b1cb9b014c34b8a31f3ac9cadcf2, type: 3}
+  minInterval: 8
+  maxInterval: 20
+  volume: 0.5
+--- !u!4 &1076800362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076800360}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1082098157
 GameObject:
   m_ObjectHideFlags: 0
@@ -35457,6 +35549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 100
+  showDamageNumbers: 1
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -35490,8 +35583,8 @@ MonoBehaviour:
   hitStopDuration: 0.06
   cameraShakeStrength: 0.12
   cameraShakeDuration: 0.1
-  swingClip: {fileID: 8300000, guid: 2fea3900dffeaaa45963905c3c36d7a9, type: 3}
-  hitClip: {fileID: 8300000, guid: cbef644ede854ab408683c402410ee90, type: 3}
+  swingClip: {fileID: 8300000, guid: 6beec2b148c2df649b7552a16f8ddfe1, type: 3}
+  hitClip: {fileID: 8300000, guid: f171f6bbfdaba9b479b90df6f59173f5, type: 3}
   swingVolume: 0.7
   hitVolume: 1
 --- !u!114 &1531954344
@@ -35604,28 +35697,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14755a1ed7492dd45955b2865ae6676c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  moveSpeed: 5
-  jumpForce: 12
-  acceleration: 50
-  deceleration: 50
-  airAcceleration: 35
-  airDeceleration: 20
-  airControlMultiplier: 0.75
+  moveSpeed: 7
+  jumpForce: 14
+  acceleration: 90
+  deceleration: 75
+  airAcceleration: 70
+  airDeceleration: 30
+  airControlMultiplier: 0.95
   dashSpeed: 15
+  airDashSpeed: 14
   dashDuration: 0.1
-  dashCooldown: 1.5
+  dashCooldown: 0.25
+  dashMomentum: 0.45
+  dashMomentumDecay: 0.22
   groundCheck: {fileID: 1089859432}
   groundRadius: 0.15
   groundLayer:
     serializedVersion: 2
     m_Bits: 40
-  landingDuration: 0.2
-  coyoteTime: 0.15
-  jumpBufferTime: 0.2
+  landingDuration: 0.08
+  coyoteTime: 0.18
+  jumpBufferTime: 0.25
   walkParticles: {fileID: 288851951}
-  particleEmissionSpeed: 2
-  fallGravityMultiplier: 2.2
-  lowJumpGravityMultiplier: 1.8
+  fallGravityMultiplier: 3
+  lowJumpGravityMultiplier: 2.5
+  apexGravityMultiplier: 0.45
+  apexThreshold: 2.5
+  apexSpeedBonus: 2
+  jumpClip: {fileID: 8300000, guid: 3250ea4367bcb2d47bd38291804d9f40, type: 3}
+  dashClip: {fileID: 8300000, guid: 6b2c2a238d5d5b5479ad5992f21998f3, type: 3}
+  footstepClip: {fileID: 8300000, guid: 4987fdd5ffb4efb4f9cbf68535f9bd3a, type: 3}
+  damageClip: {fileID: 8300000, guid: abd8c0ec6c2aee84283b997ef4f40424, type: 3}
   flipScaleSpeed: 28
   dashTrail: {fileID: 0}
   dustEmitInterval: 0.18
@@ -36181,9 +36283,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1531954341}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: hurtClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2cd666cd3719c864f8fac3b3bcbf32c5, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: attackClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 799ea4b5682c58f4a9d5c291d2096d6b, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: chaseSpeed
       value: 2.8
       objectReference: {fileID: 0}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: ambientClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d7f87c1dff9da36499987b3e1b103111, type: 3}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: attackCooldown
       value: 2.07
@@ -42129,9 +42243,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1531954341}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: hurtClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2cd666cd3719c864f8fac3b3bcbf32c5, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: attackClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 799ea4b5682c58f4a9d5c291d2096d6b, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: chaseSpeed
       value: 2.8
       objectReference: {fileID: 0}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: ambientClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d7f87c1dff9da36499987b3e1b103111, type: 3}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: attackCooldown
       value: 2.07
@@ -43690,9 +43816,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1531954341}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: hurtClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2cd666cd3719c864f8fac3b3bcbf32c5, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: attackClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 799ea4b5682c58f4a9d5c291d2096d6b, type: 3}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: chaseSpeed
       value: 2.8
       objectReference: {fileID: 0}
+    - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
+      propertyPath: ambientClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d7f87c1dff9da36499987b3e1b103111, type: 3}
     - target: {fileID: 6871959895061810029, guid: 9fc43785b6034a240b1580141a735151, type: 3}
       propertyPath: attackCooldown
       value: 2.07
@@ -48630,6 +48768,7 @@ GameObject:
   - component: {fileID: 2052860413}
   - component: {fileID: 2052860412}
   - component: {fileID: 2052860411}
+  - component: {fileID: 2052860414}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -48823,6 +48962,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2052860414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052860407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b96335aa69cf1c49af92db83b9c4b77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlobalButtonSounds
+  clickClip: {fileID: 8300000, guid: 293ebea15848a7f4ab2814c1b969d5d8, type: 3}
+  volume: 0.65
 --- !u!1 &2089368094
 GameObject:
   m_ObjectHideFlags: 0
@@ -49126,3 +49279,4 @@ SceneRoots:
   - {fileID: 962096379}
   - {fileID: 702057364}
   - {fileID: 398710989}
+  - {fileID: 1076800362}

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -16,6 +16,10 @@ public class CraftingShrine : MonoBehaviour
 
     [Header("Next Scene")]
     [SerializeField] private string nextSceneName = "Jungle";
+
+    [Header("Audio")]
+    public AudioClip craftClip;
+    public AudioClip unlockClip;
 
     [Header("Visual")]
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -54,6 +58,7 @@ public class CraftingShrine : MonoBehaviour
         _unlocked = true;
         if (spriteRenderer != null) spriteRenderer.color = ColorUnlocked;
         if (_hint != null) _hint.text = "Press E to craft Diamond Sword";
+        if (unlockClip != null) SettingsManager.PlaySfxAt(unlockClip, transform.position, 0.9f);
 
         // Boost the attached Light2D, if any, so the shrine visibly turns on
         var l = GetComponentInChildren<UnityEngine.Rendering.Universal.Light2D>();
@@ -107,6 +112,7 @@ public class CraftingShrine : MonoBehaviour
     {
         _crafted = true;
         if (_hint != null) _hint.gameObject.SetActive(false);
+        if (craftClip != null) SettingsManager.PlaySfxAt(craftClip, transform.position, 1.0f);
 
         if (diamondSwordItem != null)
             Inventory.Instance?.AddItem(diamondSwordItem);
@@ -241,7 +247,7 @@ public class CraftingShrine : MonoBehaviour
         header.fontSize  = 32f;
         header.color     = new Color(0.4f, 0.9f, 1f, 0f);
         FontEnforcer.ApplyTo(header);    // PressStart2P
-        // No Bold — pixel fonts don't have a real bold variant; synthesized bold
+        // No Bold â€” pixel fonts don't have a real bold variant; synthesized bold
         // produces garbled glyph overlap.
 
         GameObject subGO = new GameObject("SubText");

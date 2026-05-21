@@ -46,7 +46,14 @@ public class CaveManager : MonoBehaviour
         if (p != null)
         {
             _playerHealth = p.GetComponent<Health>() ?? p.GetComponentInChildren<Health>();
-            if (p.transform.position.y < -8f) p.transform.position = new Vector3(-6.5f, -5.5f, 0f);
+            // Safety: if player fell out of bounds during scene transition, snap to spawn
+            if (p.transform.position.y < -8f)
+            {
+                GameObject spawn = GameObject.Find("PlayerSpawn") ?? GameObject.Find("SpawnPoint");
+                p.transform.position = spawn != null
+                    ? spawn.transform.position
+                    : new Vector3(-6.5f, -5.5f, 0f);
+            }
         }
         if (_playerHealth != null)
         {
@@ -64,9 +71,20 @@ public class CaveManager : MonoBehaviour
         DialogUI dialog = FindFirstObjectByType<DialogUI>(FindObjectsInactive.Include);
         if (dialog != null) dialog.Hide();
 
-        // ── Apply save-game state if loading from main menu ───────────────
-        if (SaveManager.Instance != null && SaveManager.Instance.HasSave)
+        // ── Apply save-game state only when explicitly loading from main menu.
+        // During a normal new-game progression, always start Cave with full health.
+        if (SaveManager.Instance != null && SaveManager.Instance.IsLoadingFromSave)
+        {
             SaveManager.Instance.ApplySavedState();
+            SaveManager.Instance.ConfirmLoadApplied();
+        }
+        else
+        {
+            // Fresh level start — reset health so cave doesn't inherit village damage
+            Health hp = p?.GetComponent<Health>() ?? p?.GetComponentInChildren<Health>();
+            hp?.ResetHealth();
+            SaveManager.Instance?.SaveGame();
+        }
 
         // ── Give the player a starting weapon if they have none ───────────
         StartCoroutine(EquipNextFrame());
@@ -122,10 +140,16 @@ public class CaveManager : MonoBehaviour
         foreach (SpiderAI s in FindObjectsByType<SpiderAI>(FindObjectsSortMode.None))
             s.enabled = false;
 
+        // Full-screen black tint on its own canvas (sortingOrder 998) covers all HUD
+        BuildDeathTintCanvas();
+
         if (_gameOverUI != null)
         {
             _gameOverUI.SetActive(true);
-            // Build restart/main-menu buttons inside GameOverUI if none exist
+            // Move game over UI canvas above the tint
+            Canvas gc = _gameOverUI.GetComponentInParent<Canvas>();
+            if (gc != null) gc.sortingOrder = 999;
+            _gameOverUI.transform.SetAsLastSibling();
             EnsureDeathButtons(_gameOverUI.transform);
         }
         else
@@ -321,6 +345,33 @@ public class CaveManager : MonoBehaviour
         l.intensity = 0.4f;
         l.pointLightOuterRadius = 1.5f;
         l.pointLightInnerRadius = 0.2f;
+    }
+
+    // ── Death tint canvas ─────────────────────────────────────────────────────
+    private void BuildDeathTintCanvas()
+    {
+        var cvGO = new GameObject("__DeathTintCanvas");
+        var cv = cvGO.AddComponent<Canvas>();
+        cv.renderMode  = RenderMode.ScreenSpaceOverlay;
+        cv.sortingOrder = 998;
+        cvGO.AddComponent<UnityEngine.UI.CanvasScaler>();
+
+        var tGO = new GameObject("Tint");
+        tGO.transform.SetParent(cvGO.transform, false);
+        var rt = tGO.AddComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
+        var img = tGO.AddComponent<UnityEngine.UI.Image>();
+        img.color = new Color(0f, 0f, 0f, 0f);
+        img.raycastTarget = false;
+        StartCoroutine(FadeInTint(img));
+    }
+
+    private IEnumerator FadeInTint(UnityEngine.UI.Image img)
+    {
+        float t = 0f, dur = 0.6f;
+        while (t < dur) { t += Time.unscaledDeltaTime; img.color = new Color(0f, 0f, 0f, Mathf.Lerp(0f, 0.82f, t / dur)); yield return null; }
+        img.color = new Color(0f, 0f, 0f, 0.82f);
     }
 
     // ── Fallback game-over overlay ────────────────────────────────────────────

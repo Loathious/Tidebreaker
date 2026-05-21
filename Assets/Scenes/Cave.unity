@@ -395,6 +395,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13305697}
   m_CullTransparentMesh: 1
+--- !u!1 &13509666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 13509668}
+  - component: {fileID: 13509667}
+  m_Layer: 0
+  m_Name: AmbientSfx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &13509667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13509666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c1f5be2a0747f246b38c80a38f96f96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmbientSfxPlayer
+  clips:
+  - {fileID: 8300000, guid: 823193054feb77d4b913b712cee8b5fe, type: 3}
+  - {fileID: 8300000, guid: 470e71dfe9c915d4cb43bcdbf762358e, type: 3}
+  - {fileID: 8300000, guid: ce1b3c8885a5bac428cfcf4230f97329, type: 3}
+  - {fileID: 8300000, guid: a185bce8cd459a8489f75326e9d6adfb, type: 3}
+  minInterval: 5
+  maxInterval: 12
+  volume: 0.5
+--- !u!4 &13509668
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13509666}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &22477658
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,6 +483,8 @@ MonoBehaviour:
   crackedColor: {r: 0.3, g: 0.65, b: 0.95, a: 1}
   breakingColor: {r: 0.2, g: 0.45, b: 0.8, a: 1}
   diamondItem: {fileID: 11400000, guid: 4201e122545b8684991f585d20be7db5, type: 2}
+  hitClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
+  breakClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
   hintRange: 2.5
 --- !u!61 &22477660
 BoxCollider2D:
@@ -697,6 +751,8 @@ MonoBehaviour:
   crackedColor: {r: 0.3, g: 0.65, b: 0.95, a: 1}
   breakingColor: {r: 0.2, g: 0.45, b: 0.8, a: 1}
   diamondItem: {fileID: 11400000, guid: 4201e122545b8684991f585d20be7db5, type: 2}
+  hitClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
+  breakClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
   hintRange: 2.5
 --- !u!61 &40867274
 BoxCollider2D:
@@ -1398,6 +1454,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CraftingShrine
   diamondSwordItem: {fileID: 11400000, guid: 8750093b765e4544ab0ec9bd4d696999, type: 2}
   nextSceneName: Jungle
+  craftClip: {fileID: 8300000, guid: 5e933075cc2f0b34c9eebd4944f0ba24, type: 3}
+  unlockClip: {fileID: 8300000, guid: 823193054feb77d4b913b712cee8b5fe, type: 3}
   spriteRenderer: {fileID: 213463080}
 --- !u!61 &213463079
 BoxCollider2D:
@@ -7277,6 +7335,10 @@ MonoBehaviour:
   attackDamage: 15
   attackCooldown: 1.1
   startsOnCeiling: 1
+  attackClip: {fileID: 8300000, guid: 9eef9f8497109cd4eacc79711a2fcab4, type: 3}
+  hurtClip: {fileID: 8300000, guid: 33c50d7c6eaf9194e8a4cadf227119ba, type: 3}
+  dropClip: {fileID: 8300000, guid: 217304439d88c2d41a463d78ccff7113, type: 3}
+  ambientClip: {fileID: 8300000, guid: a5e69ab11c2384a42866719b2e50b97b, type: 3}
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}
   spriteWalk2: {fileID: 21300000, guid: dea279e72800c494a8250845edbd151e, type: 3}
@@ -7295,6 +7357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 0
+  showDamageNumbers: 1
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8786,6 +8849,8 @@ MonoBehaviour:
   crackedColor: {r: 0.3, g: 0.65, b: 0.95, a: 1}
   breakingColor: {r: 0.2, g: 0.45, b: 0.8, a: 1}
   diamondItem: {fileID: 11400000, guid: 4201e122545b8684991f585d20be7db5, type: 2}
+  hitClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
+  breakClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
   hintRange: 2.5
 --- !u!61 &916071035
 BoxCollider2D:
@@ -9113,6 +9178,7 @@ MonoBehaviour:
   lowHealthThreshold: 0.31
   lowHealthColor: {r: 0.85, g: 0.05, b: 0.05, a: 0.6509804}
   pulseSpeed: 2.6
+  pulseSpeedMax: 9
 --- !u!4 &962096379
 Transform:
   m_ObjectHideFlags: 0
@@ -9168,6 +9234,10 @@ MonoBehaviour:
   attackDamage: 15
   attackCooldown: 1.1
   startsOnCeiling: 1
+  attackClip: {fileID: 8300000, guid: 9eef9f8497109cd4eacc79711a2fcab4, type: 3}
+  hurtClip: {fileID: 8300000, guid: 33c50d7c6eaf9194e8a4cadf227119ba, type: 3}
+  dropClip: {fileID: 8300000, guid: 217304439d88c2d41a463d78ccff7113, type: 3}
+  ambientClip: {fileID: 8300000, guid: a5e69ab11c2384a42866719b2e50b97b, type: 3}
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}
   spriteWalk2: {fileID: 21300000, guid: dea279e72800c494a8250845edbd151e, type: 3}
@@ -9186,6 +9256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 0
+  showDamageNumbers: 1
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9519,6 +9590,9 @@ MonoBehaviour:
   dialogBodyText: {fileID: 0}
   continuePromptText: {fileID: 0}
   typewriterSpeed: 0.03
+  talkClips:
+  - {fileID: 8300000, guid: ddc55a7dda98dbb489a565bf58e3e42d, type: 3}
+  - {fileID: 8300000, guid: 4bf5e6c20f6a97749b161e00a6694f0e, type: 3}
 --- !u!1 &1022887547
 GameObject:
   m_ObjectHideFlags: 0
@@ -9559,6 +9633,10 @@ MonoBehaviour:
   attackDamage: 15
   attackCooldown: 1.1
   startsOnCeiling: 1
+  attackClip: {fileID: 8300000, guid: 9eef9f8497109cd4eacc79711a2fcab4, type: 3}
+  hurtClip: {fileID: 8300000, guid: 33c50d7c6eaf9194e8a4cadf227119ba, type: 3}
+  dropClip: {fileID: 8300000, guid: 217304439d88c2d41a463d78ccff7113, type: 3}
+  ambientClip: {fileID: 8300000, guid: a5e69ab11c2384a42866719b2e50b97b, type: 3}
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}
   spriteWalk2: {fileID: 21300000, guid: dea279e72800c494a8250845edbd151e, type: 3}
@@ -9577,6 +9655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 0
+  showDamageNumbers: 1
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -15459,6 +15538,7 @@ MonoBehaviour:
   slideInDuration: 0.5
   slideOutDuration: 0.35
   slideOffsetY: 80
+  autoHideDelay: 4
 --- !u!1 &1264515342
 GameObject:
   m_ObjectHideFlags: 0
@@ -16443,6 +16523,8 @@ MonoBehaviour:
   crackedColor: {r: 0.3, g: 0.65, b: 0.95, a: 1}
   breakingColor: {r: 0.2, g: 0.45, b: 0.8, a: 1}
   diamondItem: {fileID: 11400000, guid: 4201e122545b8684991f585d20be7db5, type: 2}
+  hitClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
+  breakClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
   hintRange: 2.5
 --- !u!61 &1447733754
 BoxCollider2D:
@@ -17002,6 +17084,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 100
+  showDamageNumbers: 1
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -17035,8 +17118,8 @@ MonoBehaviour:
   hitStopDuration: 0.06
   cameraShakeStrength: 0.12
   cameraShakeDuration: 0.1
-  swingClip: {fileID: 8300000, guid: 2fea3900dffeaaa45963905c3c36d7a9, type: 3}
-  hitClip: {fileID: 8300000, guid: cbef644ede854ab408683c402410ee90, type: 3}
+  swingClip: {fileID: 8300000, guid: 1be74de20b4f6504b822afdadc5d2bca, type: 3}
+  hitClip: {fileID: 8300000, guid: 30700e6b0b23fa14e8aab243568bb3af, type: 3}
   swingVolume: 0.7
   hitVolume: 1
 --- !u!114 &1531954344
@@ -17149,28 +17232,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14755a1ed7492dd45955b2865ae6676c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  moveSpeed: 5
-  jumpForce: 12
-  acceleration: 50
-  deceleration: 50
-  airAcceleration: 35
-  airDeceleration: 20
-  airControlMultiplier: 0.75
+  moveSpeed: 7
+  jumpForce: 14
+  acceleration: 90
+  deceleration: 75
+  airAcceleration: 70
+  airDeceleration: 30
+  airControlMultiplier: 0.95
   dashSpeed: 15
+  airDashSpeed: 14
   dashDuration: 0.1
-  dashCooldown: 1.5
+  dashCooldown: 0.25
+  dashMomentum: 0.45
+  dashMomentumDecay: 0.22
   groundCheck: {fileID: 1089859432}
   groundRadius: 0.15
   groundLayer:
     serializedVersion: 2
     m_Bits: 40
-  landingDuration: 0.2
-  coyoteTime: 0.15
-  jumpBufferTime: 0.2
+  landingDuration: 0.08
+  coyoteTime: 0.18
+  jumpBufferTime: 0.25
   walkParticles: {fileID: 288851951}
-  particleEmissionSpeed: 2
-  fallGravityMultiplier: 2.2
-  lowJumpGravityMultiplier: 1.8
+  fallGravityMultiplier: 3
+  lowJumpGravityMultiplier: 2.5
+  apexGravityMultiplier: 0.45
+  apexThreshold: 2.5
+  apexSpeedBonus: 2
+  jumpClip: {fileID: 8300000, guid: 4679c2b7257234e42883632025edd672, type: 3}
+  dashClip: {fileID: 8300000, guid: 6b2c2a238d5d5b5479ad5992f21998f3, type: 3}
+  footstepClip: {fileID: 8300000, guid: 7dfc1ca0e36fb2746ae5f2fac443ffee, type: 3}
+  damageClip: {fileID: 8300000, guid: abd8c0ec6c2aee84283b997ef4f40424, type: 3}
   flipScaleSpeed: 28
   dashTrail: {fileID: 0}
   dustEmitInterval: 0.18
@@ -17358,6 +17450,10 @@ MonoBehaviour:
   attackDamage: 15
   attackCooldown: 1.1
   startsOnCeiling: 1
+  attackClip: {fileID: 8300000, guid: 9eef9f8497109cd4eacc79711a2fcab4, type: 3}
+  hurtClip: {fileID: 8300000, guid: 33c50d7c6eaf9194e8a4cadf227119ba, type: 3}
+  dropClip: {fileID: 8300000, guid: 217304439d88c2d41a463d78ccff7113, type: 3}
+  ambientClip: {fileID: 8300000, guid: a5e69ab11c2384a42866719b2e50b97b, type: 3}
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}
   spriteWalk2: {fileID: 21300000, guid: dea279e72800c494a8250845edbd151e, type: 3}
@@ -17376,6 +17472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 0
+  showDamageNumbers: 1
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -18160,6 +18257,8 @@ MonoBehaviour:
   crackedColor: {r: 0.3, g: 0.65, b: 0.95, a: 1}
   breakingColor: {r: 0.2, g: 0.45, b: 0.8, a: 1}
   diamondItem: {fileID: 11400000, guid: 4201e122545b8684991f585d20be7db5, type: 2}
+  hitClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
+  breakClip: {fileID: 8300000, guid: 44639ab8db410714494b6810da08e4f6, type: 3}
   hintRange: 2.5
 --- !u!61 &1610798752
 BoxCollider2D:
@@ -20439,6 +20538,10 @@ MonoBehaviour:
   attackDamage: 15
   attackCooldown: 1.1
   startsOnCeiling: 1
+  attackClip: {fileID: 8300000, guid: 9eef9f8497109cd4eacc79711a2fcab4, type: 3}
+  hurtClip: {fileID: 8300000, guid: 33c50d7c6eaf9194e8a4cadf227119ba, type: 3}
+  dropClip: {fileID: 8300000, guid: 217304439d88c2d41a463d78ccff7113, type: 3}
+  ambientClip: {fileID: 8300000, guid: a5e69ab11c2384a42866719b2e50b97b, type: 3}
   spriteRenderer: {fileID: 0}
   spriteWalk1: {fileID: 21300000, guid: fc9809853868682408dd80f50fffc31c, type: 3}
   spriteWalk2: {fileID: 21300000, guid: dea279e72800c494a8250845edbd151e, type: 3}
@@ -20457,6 +20560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   currentHealth: 0
+  showDamageNumbers: 1
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -21243,6 +21347,7 @@ GameObject:
   - component: {fileID: 2052860412}
   - component: {fileID: 2052860411}
   - component: {fileID: 2052860414}
+  - component: {fileID: 2052860415}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -21423,6 +21528,20 @@ MonoBehaviour:
   diamondsRequired: 5
   spidersToSpawn: 5
   fallbackWeapon: {fileID: 11400000, guid: 260250c1a9b4c87459b3614f2f6bb22b, type: 2}
+--- !u!114 &2052860415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052860407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b96335aa69cf1c49af92db83b9c4b77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlobalButtonSounds
+  clickClip: {fileID: 8300000, guid: 293ebea15848a7f4ab2814c1b969d5d8, type: 3}
+  volume: 0.65
 --- !u!1 &2089368094
 GameObject:
   m_ObjectHideFlags: 0
@@ -21814,3 +21933,4 @@ SceneRoots:
   - {fileID: 582988151}
   - {fileID: 1264515344}
   - {fileID: 1980582759}
+  - {fileID: 13509668}

@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
 /// Spider enemy for the Cave level.
 /// Hangs on the ceiling until the player gets close, then drops, lands, and
 /// chases. From spelmanus: 30 HP, 15 damage on contact.
-/// Stand-alone — does NOT depend on GameManager (which only exists in Village).
+/// Stand-alone â€” does NOT depend on GameManager (which only exists in Village).
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Health))]
@@ -22,6 +22,12 @@ public class SpiderAI : MonoBehaviour
     [Header("Drop")]
     [SerializeField] private bool  startsOnCeiling = true;
 
+    [Header("Audio")]
+    public AudioClip attackClip;
+    public AudioClip hurtClip;
+    public AudioClip dropClip;
+    public AudioClip ambientClip;
+
     [Header("Visual")]
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite spriteWalk1;
@@ -34,6 +40,7 @@ public class SpiderAI : MonoBehaviour
     private Transform    _player;
     private float        _attackTimer;
     private float        _walkTimer;
+    private float        _ambientTimer;
     private bool         _useWalk1;
     private bool         _dropped;
     private bool         _isDead;
@@ -62,7 +69,8 @@ public class SpiderAI : MonoBehaviour
         if (playerGO != null) _player = playerGO.transform;
 
         _health.OnDeath.AddListener(OnDeath);
-        _health.OnDamageTaken.AddListener(_ => { StartCoroutine(HitFlash()); SpawnBlood(); });
+        _health.OnDamageTaken.AddListener(_ => { StartCoroutine(HitFlash()); SpawnBlood(); PlayHurt(); });
+        _ambientTimer = Random.Range(3f, 8f);
 
         if (spriteRenderer != null)
         {
@@ -88,6 +96,13 @@ public class SpiderAI : MonoBehaviour
     {
         if (_isDead || _player == null || LevelManagerBase.MonstersFrozen) return;
 
+        _ambientTimer -= Time.deltaTime;
+        if (_ambientTimer <= 0f)
+        {
+            _ambientTimer = Random.Range(5f, 11f);
+            if (ambientClip != null) SettingsManager.PlaySfxAt(ambientClip, transform.position, 0.45f);
+        }
+
         if (_knockedBack)
         {
             _knockbackTimer -= Time.deltaTime;
@@ -107,7 +122,7 @@ public class SpiderAI : MonoBehaviour
         // Tick down the cooldown; damage fires in OnCollisionStay2D
         if (_attackTimer > 0f) _attackTimer -= Time.deltaTime;
 
-        // Walk animation (purely visual — velocity set in FixedUpdate)
+        // Walk animation (purely visual â€” velocity set in FixedUpdate)
         if (dist > attackRange)
         {
             _walkTimer += Time.deltaTime;
@@ -160,6 +175,7 @@ public class SpiderAI : MonoBehaviour
         _rb.linearVelocity         = Vector2.zero;
         if (spriteRenderer != null && spriteWalk1 != null)
             spriteRenderer.sprite = spriteWalk1;
+        if (dropClip != null) SettingsManager.PlaySfxAt(dropClip, transform.position, 0.75f);
         StartCoroutine(SnapToFloor());
     }
 
@@ -216,6 +232,7 @@ public class SpiderAI : MonoBehaviour
     private void Attack()
     {
         if (_player == null) return;
+        if (attackClip != null) SettingsManager.PlaySfxAt(attackClip, transform.position, 0.8f);
         Health ph = _player.GetComponent<Health>() ?? _player.GetComponentInChildren<Health>();
         if (ph != null && !ph.IsDead)
             ph.TakeDamage(attackDamage);
@@ -235,6 +252,12 @@ public class SpiderAI : MonoBehaviour
         GameManager.Instance?.OnEnemyDefeated();
 
         StartCoroutine(DeathFlash());
+    }
+
+    private void PlayHurt()
+    {
+        if (_isDead || hurtClip == null) return;
+        SettingsManager.PlaySfxAt(hurtClip, transform.position, 0.65f);
     }
 
     private IEnumerator HitFlash()

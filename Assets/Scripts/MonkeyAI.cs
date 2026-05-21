@@ -163,12 +163,16 @@ public class MonkeyAI : MonoBehaviour
     {
         if (_player == null) return;
         _anim?.Play("attack", true);
-        if (attackClip != null) AudioSource.PlayClipAtPoint(attackClip, transform.position, 0.8f);
+        if (attackClip != null) SettingsManager.PlaySfxAt(attackClip, transform.position, 0.8f);
 
-        Vector3 origin   = transform.position + Vector3.up * 0.3f;
+        // Spawn from the monkey's hand — chest height plus a forward offset matching the facing direction
+        float facingSign = (_sr != null && _sr.flipX) ? -1f : 1f;
+        Vector3 origin   = transform.position + Vector3.up * 0.7f + Vector3.right * (facingSign * 0.4f);
+
         Vector2 toPlayer = ((Vector2)(_player.position + Vector3.up * 0.4f) - (Vector2)origin).normalized;
-        Vector2 aim      = (toPlayer + Vector2.up * 0.35f).normalized;
-        Projectile.Spawn(origin, aim, coconutSpeed, coconutDamage, true, _coconut, 6f, 0.16f, 40);
+        Vector2 aim      = (toPlayer + Vector2.up * 0.30f).normalized;
+        Projectile proj  = Projectile.Spawn(origin, aim, coconutSpeed, coconutDamage, true, _coconut, 6f, 0.16f, 40);
+        proj?.EnableFlash();   // yellow warning flash so players can see and dodge
 
         StartCoroutine(ResumeIdle(0.35f));
     }
@@ -193,7 +197,7 @@ public class MonkeyAI : MonoBehaviour
     private void OnHurt()
     {
         if (_isDead) return;
-        if (hurtClip != null) AudioSource.PlayClipAtPoint(hurtClip, transform.position, 0.7f);
+        if (hurtClip != null) SettingsManager.PlaySfxAt(hurtClip, transform.position, 0.7f);
         SpawnBlood();
         StartCoroutine(HitFlash());
     }
@@ -224,7 +228,7 @@ public class MonkeyAI : MonoBehaviour
         _rb.gravityScale   = 3.5f;
         _rb.bodyType       = RigidbodyType2D.Kinematic;
         foreach (Collider2D c in GetComponents<Collider2D>()) c.enabled = false;
-        if (deathClip != null) AudioSource.PlayClipAtPoint(deathClip, transform.position, 0.9f);
+        if (deathClip != null) SettingsManager.PlaySfxAt(deathClip, transform.position, 0.9f);
         LevelManagerBase.Current?.OnEnemyDefeated();
         StartCoroutine(DeathFade());
     }

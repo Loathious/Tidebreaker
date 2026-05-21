@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -17,6 +17,10 @@ public class DiamondRock : MonoBehaviour
 
     [Header("Item")]
     [SerializeField] private ItemData diamondItem;   // assign in inspector
+
+    [Header("Audio")]
+    public AudioClip hitClip;
+    public AudioClip breakClip;
 
     [Header("Interact Hint")]
     [Tooltip("How close the player needs to be to see the 'Attack to mine' hint")]
@@ -59,6 +63,7 @@ public class DiamondRock : MonoBehaviour
         if (_broken) return;
 
         _hitsLeft--;
+        if (hitClip != null) SettingsManager.PlaySfxAt(hitClip, transform.position, 0.8f);
         StartCoroutine(HitShake());
 
         UpdateVisual();
@@ -79,6 +84,7 @@ public class DiamondRock : MonoBehaviour
     {
         _broken = true;
         if (_hint != null) _hint.gameObject.SetActive(false);
+        if (breakClip != null) SettingsManager.PlaySfxAt(breakClip, transform.position, 1.0f);
 
         // Give diamond to inventory
         if (diamondItem != null)

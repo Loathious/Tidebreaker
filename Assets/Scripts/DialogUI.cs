@@ -20,6 +20,9 @@ public class DialogUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI continuePromptText;
     [SerializeField] private float typewriterSpeed = 0.03f;
 
+    [Header("Audio")]
+    public AudioClip[] talkClips;
+
     // ── State ─────────────────────────────────────────────────────────────────
     private string[]  _lines;
     private int       _lineIndex;
@@ -27,12 +30,19 @@ public class DialogUI : MonoBehaviour
     private bool      _isTyping;
     private bool      _waitingForInput;
     private Coroutine _typewriterCoroutine;
+    private AudioSource _talkAudio;
+    private int         _talkCharCount;
+    private const int   TalkEveryNChars = 2;
 
     /// <summary>The speaker's Transform — used by CameraFollow to lock onto during dialogue.</summary>
     public Transform CurrentSpeakerTransform { get; private set; }
 
     void Awake()
     {
+        _talkAudio = gameObject.AddComponent<AudioSource>();
+        _talkAudio.playOnAwake  = false;
+        _talkAudio.spatialBlend = 0f;
+
         if (hotbarUI == null)      hotbarUI      = FindFirstObjectByType<HotbarUI>();
         if (dialogRoot == null)    dialogRoot    = FindInCanvas("DialogPanel");
         if (portraitImage == null) portraitImage = FindInPanel<Image>("PortraitBox")
@@ -158,11 +168,28 @@ public class DialogUI : MonoBehaviour
     {
         _isTyping        = true;
         _waitingForInput = false;
+        _talkCharCount   = 0;
         if (dialogBodyText != null) dialogBodyText.text = "";
 
         foreach (char c in message)
         {
             if (dialogBodyText != null) dialogBodyText.text += c;
+
+            if (c != ' ' && talkClips != null && talkClips.Length > 0)
+            {
+                _talkCharCount++;
+                if (_talkCharCount >= TalkEveryNChars)
+                {
+                    _talkCharCount = 0;
+                    AudioClip clip = talkClips[UnityEngine.Random.Range(0, talkClips.Length)];
+                    if (clip != null && _talkAudio != null)
+                    {
+                        _talkAudio.pitch = UnityEngine.Random.Range(0.92f, 1.08f);
+                        _talkAudio.PlayOneShot(clip, 0.45f * SettingsManager.SfxVol);
+                    }
+                }
+            }
+
             yield return new WaitForSecondsRealtime(typewriterSpeed);
         }
 

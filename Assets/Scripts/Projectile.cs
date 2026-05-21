@@ -130,15 +130,42 @@ public class Projectile : MonoBehaviour
         if (hitEffectPrefab != null) Instantiate(hitEffectPrefab, at, Quaternion.identity);
         SpawnBlood(at);
         if (hitClip != null)
-            AudioSource.PlayClipAtPoint(hitClip, at, 0.8f);
+            SettingsManager.PlaySfxAt(hitClip, at, 0.8f);
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Starts a yellow warning flash on the projectile while it's in flight.
+    /// Call immediately after Spawn() for enemy projectiles that need to be telegraphed.
+    /// </summary>
+    public void EnableFlash()
+    {
+        StartCoroutine(MidAirFlash());
+    }
+
+    private System.Collections.IEnumerator MidAirFlash()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr == null) yield break;
+        Color orig = sr.color;
+        Color warn = new Color(1f, 0.92f, 0.2f);
+        while (!_spent)
+        {
+            sr.color = warn;
+            float t = 0f;
+            while (t < 0.07f && !_spent) { t += Time.deltaTime; yield return null; }
+            if (_spent) { sr.color = orig; yield break; }
+            sr.color = orig;
+            t = 0f;
+            while (t < 0.13f && !_spent) { t += Time.deltaTime; yield return null; }
+        }
     }
 
     private void Miss()
     {
         _spent = true;
         if (missClip != null)
-            AudioSource.PlayClipAtPoint(missClip, transform.position, 0.6f);
+            SettingsManager.PlaySfxAt(missClip, transform.position, 0.6f);
         Destroy(gameObject, 0.02f);
     }
 

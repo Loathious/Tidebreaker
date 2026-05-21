@@ -6,6 +6,8 @@ public class Health : MonoBehaviour
     [Header("Health Settings")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
+    [Tooltip("Spawn floating damage number on hit. Disable on the player.")]
+    public bool showDamageNumbers = true;
     
     [Header("Events")]
     public UnityEvent<float, float> OnHealthChanged;
@@ -60,7 +62,10 @@ public class Health : MonoBehaviour
         
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
         OnDamageTaken?.Invoke(damage);
-        
+
+        if (showDamageNumbers)
+            DamageNumber.Spawn(transform.position, damage);
+
         if (currentHealth <= 0f)
         {
             Die();

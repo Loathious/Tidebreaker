@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using TMPro;
@@ -79,7 +79,7 @@ public class Obelisk : MonoBehaviour
             _light.intensity = 2f;
             _light.pointLightOuterRadius = 9f;
         }
-        if (activateClip != null) AudioSource.PlayClipAtPoint(activateClip, transform.position, 1f);
+        if (activateClip != null) SettingsManager.PlaySfxAt(activateClip, transform.position, 1f);
 
         StartCoroutine(ActivateBeam());
         (LevelManagerBase.Current as DesertManager)?.OnObeliskActivated(this);
@@ -128,7 +128,7 @@ public class Obelisk : MonoBehaviour
         }
     }
 
-    // ── Build visuals ─────────────────────────────────────────────────────────
+    // â”€â”€ Build visuals â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private void BuildVisual()
     {
         // Stone pillar
@@ -200,7 +200,7 @@ public class Obelisk : MonoBehaviour
         if (_hint == null) return;
         _hint.text = _activated ? "Obelisk activated"
                    : _challengeDone ? "Press E to activate the Obelisk"
-                   : "This obelisk is sealed — complete its trial";
+                   : "This obelisk is sealed â€” complete its trial";
         _hint.gameObject.SetActive(true);
     }
 

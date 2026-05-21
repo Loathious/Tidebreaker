@@ -92,13 +92,24 @@ public class SaveManager : MonoBehaviour
     {
         if (!HasSave) return;
 
-        // Restore health
+        // Restore health and position
         float savedHealth = PlayerPrefs.GetFloat(KEY_HEALTH, 100f);
+        float savedPosX   = PlayerPrefs.GetFloat(KEY_POS_X, float.MinValue);
+        float savedPosY   = PlayerPrefs.GetFloat(KEY_POS_Y, float.MinValue);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
             Health hp = player.GetComponent<Health>() ?? player.GetComponentInChildren<Health>();
             hp?.SetCurrentHealth(savedHealth);
+
+            // Only warp to saved position when one was actually recorded
+            if (savedPosX > float.MinValue + 1f)
+            {
+                var rb = player.GetComponent<Rigidbody2D>();
+                Vector3 dest = new Vector3(savedPosX, savedPosY, 0f);
+                player.transform.position = dest;
+                if (rb != null) { rb.position = dest; rb.linearVelocity = Vector2.zero; }
+            }
         }
 
         // Restore equipped weapon by name (scene assets are now in memory)
@@ -144,10 +155,35 @@ public class SaveManager : MonoBehaviour
     // ── Helpers ───────────────────────────────────────────────────────────────
     private static ItemData FindItemByUnityName(string unityName)
     {
-        // Resources.FindObjectsOfTypeAll finds assets already loaded into memory
-        // (scene assets are loaded at this point since the scene just loaded)
+        // Search all assets currently loaded in memory (scene references, etc.)
         foreach (ItemData id in Resources.FindObjectsOfTypeAll<ItemData>())
             if (id != null && id.name == unityName) return id;
+
+        // Also try Resources folder (assets placed in Assets/Resources/)
+        ItemData loaded = Resources.Load<ItemData>(unityName);
+        if (loaded != null) return loaded;
+
+        // Fuzzy fallback: match by itemName field or partial name match
+        foreach (ItemData id in Resources.FindObjectsOfTypeAll<ItemData>())
+        {
+            if (id == null) continue;
+            if (string.Equals(id.itemName, unityName, System.StringComparison.OrdinalIgnoreCase)) return id;
+            if (id.name.IndexOf(unityName, System.StringComparison.OrdinalIgnoreCase) >= 0) return id;
+        }
+
+        // Runtime fallback for Diamond Sword so the player never loads weaponless
+        if (unityName.IndexOf("Diamond", System.StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            var ds = ScriptableObject.CreateInstance<ItemData>();
+            ds.name          = "DiamondSword";
+            ds.itemName      = "Diamond Sword";
+            ds.damage        = 35;
+            ds.maxUses       = 0;
+            ds.itemType      = ItemType.Weapon;
+            ds.attackCooldown = 0.32f;
+            return ds;
+        }
+
         return null;
     }
 
@@ -165,27 +201,28 @@ public class SaveManager : MonoBehaviour
 
         var go = new GameObject("SaveNotification");
         go.transform.SetParent(canvas.transform, false);
+        go.transform.SetAsLastSibling();
         var rt = go.AddComponent<RectTransform>();
-        rt.anchorMin = new Vector2(0.5f, 0f);
-        rt.anchorMax = new Vector2(0.5f, 0f);
-        rt.pivot     = new Vector2(0.5f, 0f);
-        rt.anchoredPosition = new Vector2(0f, 30f);
-        rt.sizeDelta = new Vector2(250f, 30f);
+        rt.anchorMin = new Vector2(1f, 0f);
+        rt.anchorMax = new Vector2(1f, 0f);
+        rt.pivot     = new Vector2(1f, 0f);
+        rt.anchoredPosition = new Vector2(-10f, 10f);
+        rt.sizeDelta = new Vector2(130f, 20f);
 
         var tmp = go.AddComponent<TMPro.TextMeshProUGUI>();
         tmp.text      = "Game Saved";
-        tmp.alignment = TMPro.TextAlignmentOptions.Center;
-        tmp.fontSize  = 9f;
-        tmp.color     = new Color(0.4f, 1f, 0.4f, 0f);
-        tmp.outlineWidth = 0.2f;
-        tmp.outlineColor = new Color32(0, 0, 0, 200);
+        tmp.alignment = TMPro.TextAlignmentOptions.Right;
+        tmp.fontSize  = 6.5f;
+        tmp.color     = new Color(0.55f, 1f, 0.55f, 0f);
+        tmp.outlineWidth = 0.15f;
+        tmp.outlineColor = new Color32(0, 0, 0, 160);
         FontEnforcer.ApplyTo(tmp);
 
         float t = 0f;
-        while (t < 0.4f) { t += Time.unscaledDeltaTime; tmp.color = new Color(0.4f, 1f, 0.4f, t / 0.4f); yield return null; }
-        yield return new WaitForSecondsRealtime(1.4f);
+        while (t < 0.35f) { t += Time.unscaledDeltaTime; tmp.color = new Color(0.55f, 1f, 0.55f, t / 0.35f); yield return null; }
+        yield return new WaitForSecondsRealtime(1.2f);
         t = 0f;
-        while (t < 0.5f) { t += Time.unscaledDeltaTime; tmp.color = new Color(0.4f, 1f, 0.4f, 1f - t / 0.5f); yield return null; }
+        while (t < 0.6f) { t += Time.unscaledDeltaTime; tmp.color = new Color(0.55f, 1f, 0.55f, 1f - t / 0.6f); yield return null; }
         Destroy(go);
     }
 }

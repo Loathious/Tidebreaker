@@ -14,16 +14,16 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed    = 6f;
-    public float jumpForce    = 13f;
-    public float acceleration = 70f;
-    public float deceleration = 55f;
+    public float moveSpeed    = 7f;
+    public float jumpForce    = 14f;
+    public float acceleration = 90f;
+    public float deceleration = 75f;
 
     [Header("Air Control")]
-    public float airAcceleration      = 55f;
-    public float airDeceleration      = 25f;
+    public float airAcceleration      = 70f;
+    public float airDeceleration      = 30f;
     [Range(0f, 1f)]
-    public float airControlMultiplier = 0.9f;
+    public float airControlMultiplier = 0.95f;
 
     [Header("Dash")]
     [Tooltip("Horizontal speed during a ground dash")]
@@ -32,8 +32,8 @@ public class PlayerController : MonoBehaviour
     public float airDashSpeed      = 14f;
     [Tooltip("How long the dash impulse lasts")]
     public float dashDuration      = 0.18f;
-    [Tooltip("Cooldown before next dash")]
-    public float dashCooldown      = 0.7f;
+    [Tooltip("Cooldown before next dash (after a ground dash). Landing after an air dash resets this immediately.")]
+    public float dashCooldown      = 0.25f;
     [Tooltip("Fraction of dash speed carried as momentum after dash ends")]
     [Range(0f, 1f)]
     public float dashMomentum      = 0.45f;
@@ -46,24 +46,30 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
 
     [Header("Timings")]
-    public float landingDuration = 0.12f;
-    public float coyoteTime      = 0.15f;
-    public float jumpBufferTime  = 0.2f;
+    public float landingDuration = 0.08f;
+    public float coyoteTime      = 0.18f;
+    public float jumpBufferTime  = 0.25f;
 
     [Header("Particles")]
     public ParticleSystem walkParticles;
 
     [Header("Jump Feel")]
     [Tooltip("Extra gravity when falling")]
-    public float fallGravityMultiplier    = 2.5f;
+    public float fallGravityMultiplier    = 3.0f;
     [Tooltip("Extra gravity when releasing jump early")]
-    public float lowJumpGravityMultiplier = 2.0f;
+    public float lowJumpGravityMultiplier = 2.5f;
     [Tooltip("Gravity reduction at jump apex for a brief floaty peak")]
-    public float apexGravityMultiplier    = 0.55f;
+    public float apexGravityMultiplier    = 0.45f;
     [Tooltip("|velocityY| below this value = apex zone")]
-    public float apexThreshold            = 2.0f;
+    public float apexThreshold            = 2.5f;
     [Tooltip("Horizontal speed bonus at the apex")]
-    public float apexSpeedBonus           = 1.5f;
+    public float apexSpeedBonus           = 2.0f;
+
+    [Header("Audio")]
+    public AudioClip jumpClip;
+    public AudioClip dashClip;
+    public AudioClip footstepClip;
+    public AudioClip damageClip;
 
     [Header("Visual")]
     [SerializeField] private float         flipScaleSpeed = 32f;
@@ -116,6 +122,31 @@ public class PlayerController : MonoBehaviour
     float _ghostTimer;
     const float GhostInterval = 0.04f;
 
+    // Cached shared sprites — created once, reused for all dust/wind particles
+    static Sprite _sharedDustSprite;
+    static Sprite _sharedWindSprite;
+
+    static Sprite GetDustSprite()
+    {
+        if (_sharedDustSprite != null) return _sharedDustSprite;
+        Texture2D tex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+        tex.SetPixel(0, 0, Color.white); tex.Apply(); tex.filterMode = FilterMode.Point;
+        _sharedDustSprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), Vector2.one * 0.5f, 100f);
+        return _sharedDustSprite;
+    }
+
+    static Sprite GetWindSprite()
+    {
+        if (_sharedWindSprite != null) return _sharedWindSprite;
+        Texture2D tex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+        tex.SetPixel(0, 0, Color.white); tex.Apply(); tex.filterMode = FilterMode.Point;
+        _sharedWindSprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), Vector2.one * 0.5f, 100f);
+        return _sharedWindSprite;
+    }
+
+    // Squash-and-stretch
+    float _squashStretch = 1f;
+
     const float FallThreshold         = -0.1f;
     const float MoveThreshold         = 0.01f;
     const float MinAirborneForLanding = 0.10f;
@@ -136,6 +167,8 @@ public class PlayerController : MonoBehaviour
         }
 
         if (_health != null) _health.OnDeath.AddListener(OnDeath);
+        if (_health != null) _health.OnDamageTaken.AddListener(_ => { PlayDamageSound(); PulseVignette(); });
+        if (_health != null) _health.showDamageNumbers = false; // player doesn't show floating numbers
         if (dashTrail != null) dashTrail.emitting = false;
         _canAirDash = true;
     }
@@ -276,6 +309,8 @@ public class PlayerController : MonoBehaviour
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce * 0.9f);
             _justJumped        = true;
             _jumpBufferCounter = 0f;
+            _squashStretch     = 1.20f;   // stretch on jump
+            if (jumpClip != null) SettingsManager.PlaySfxAt(jumpClip, transform.position, 0.7f);
             return;
         }
 
@@ -286,6 +321,8 @@ public class PlayerController : MonoBehaviour
             _coyoteTimeCounter = 0f;
             _isLanding         = false;
             _justJumped        = true;
+            _squashStretch     = 1.20f;   // stretch on jump
+            if (jumpClip != null) SettingsManager.PlaySfxAt(jumpClip, transform.position, 0.7f);
         }
     }
 
@@ -303,6 +340,8 @@ public class PlayerController : MonoBehaviour
         // Ground: zero Y for a crisp horizontal burst; air: keep Y for fluid feel
         if (!_isAirDashing)
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, 0f);
+
+        if (dashClip != null) SettingsManager.PlaySfxAt(dashClip, transform.position, 0.65f);
 
         // Particle burst + small camera shake
         if (_particleController != null && _isGrounded)
@@ -418,12 +457,8 @@ public class PlayerController : MonoBehaviour
         go.transform.position = transform.position
             + new Vector3(-direction * 0.3f, Random.Range(-0.4f, 0.4f), 0f);
 
-        Texture2D tex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-        tex.SetPixel(0, 0, Color.white); tex.Apply(); tex.filterMode = FilterMode.Point;
-        Sprite spr = Sprite.Create(tex, new Rect(0, 0, 1, 1), Vector2.one * 0.5f, 100f);
-
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite       = spr;
+        sr.sprite       = GetWindSprite();
         sr.color        = new Color(0.6f, 0.85f, 1f, 0.7f);
         sr.sortingOrder = 100;
         go.transform.localScale = new Vector3(Random.Range(55f, 90f), Random.Range(2f, 5f), 1f);
@@ -462,13 +497,24 @@ public class PlayerController : MonoBehaviour
 
             _particleController?.EmitParticles(_moveInput, false);
             SpawnLandingDust();
+
+            // Squash on landing, scales with fall height
+            _squashStretch = _airborneTime > 0.35f ? 0.65f : 0.78f;
+
+            // Hard-landing camera shake — scales with fall duration, silent for short hops
+            if (_airborneTime > 0.3f)
+            {
+                float shakeStrength = Mathf.Clamp01((_airborneTime - 0.3f) / 0.7f) * 0.15f;
+                Camera.main?.GetComponent<CameraShake>()?.Shake(shakeStrength, 0.12f);
+            }
         }
 
         if (_isGrounded)
         {
-            _airborneTime = 0f;
-            _justJumped   = false;
-            _canAirDash   = true;       // restore air-dash token on ground contact
+            _airborneTime      = 0f;
+            _justJumped        = false;
+            _canAirDash        = true;   // restore air-dash token on ground contact
+            _dashCooldownTimer = 0f;     // landing clears dash lockout so ground dash is always ready
         }
     }
 
@@ -512,9 +558,13 @@ public class PlayerController : MonoBehaviour
         if (_moveInput > MoveThreshold)       FacingRight = true;
         else if (_moveInput < -MoveThreshold) FacingRight = false;
 
+        // Spring squash/stretch back to neutral each frame
+        _squashStretch = Mathf.MoveTowards(_squashStretch, 1f, Time.deltaTime * 9f);
+
         float targetX = FacingRight ? 1f : -1f;
         Vector3 s = transform.localScale;
         s.x = Mathf.MoveTowards(s.x, targetX, flipScaleSpeed * Time.deltaTime);
+        s.y = Mathf.Lerp(s.y, _squashStretch, Time.deltaTime * 22f);
         transform.rotation   = Quaternion.identity;
         transform.localScale = s;
         if (_sr != null) _sr.flipX = false;
@@ -544,6 +594,8 @@ public class PlayerController : MonoBehaviour
 
     void SpawnDustPuff(float moveDir)
     {
+        if (footstepClip != null) SettingsManager.PlaySfxAt(footstepClip, transform.position, 0.35f);
+
         Vector3 foot = groundCheck != null
             ? groundCheck.position
             : transform.position + Vector3.down * 0.4f;
@@ -560,15 +612,11 @@ public class PlayerController : MonoBehaviour
 
     GameObject SpawnDustGO(Vector3 pos, Color col)
     {
-        Texture2D tex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-        tex.SetPixel(0, 0, Color.white); tex.Apply(); tex.filterMode = FilterMode.Point;
-        Sprite spr = Sprite.Create(tex, new Rect(0, 0, 1, 1), Vector2.one * 0.5f, 100f);
-
         GameObject go = new GameObject("DustPuff");
         go.transform.position   = pos;
         go.transform.localScale = Vector3.one * 8f;
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = spr; sr.color = col; sr.sortingOrder = 5;
+        sr.sprite = GetDustSprite(); sr.color = col; sr.sortingOrder = 5;
         return go;
     }
 
@@ -592,6 +640,57 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         if (go != null) Destroy(go);
+    }
+
+    private void PlayDamageSound()
+    {
+        if (_isDead || damageClip == null) return;
+        SettingsManager.PlaySfxAt(damageClip, transform.position, 0.8f);
+    }
+
+    // ── Damage vignette ───────────────────────────────────────────────────────
+    private UnityEngine.UI.Image _vignetteImage;
+    private Coroutine            _vignetteCoroutine;
+
+    private void PulseVignette()
+    {
+        if (_isDead) return;
+        if (_vignetteImage == null) BuildVignette();
+        if (_vignetteCoroutine != null) StopCoroutine(_vignetteCoroutine);
+        _vignetteCoroutine = StartCoroutine(VignettePulse());
+    }
+
+    private void BuildVignette()
+    {
+        Canvas canvas = null;
+        foreach (Canvas c in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
+            if (c.renderMode == RenderMode.ScreenSpaceOverlay) { canvas = c; break; }
+        if (canvas == null) return;
+
+        var go = new GameObject("DamageVignette");
+        go.transform.SetParent(canvas.transform, false);
+        go.transform.SetAsLastSibling();
+
+        var rt = go.AddComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+
+        _vignetteImage = go.AddComponent<UnityEngine.UI.Image>();
+        _vignetteImage.color          = new Color(0.55f, 0f, 0f, 0f);
+        _vignetteImage.raycastTarget  = false;
+    }
+
+    private IEnumerator VignettePulse()
+    {
+        if (_vignetteImage == null) yield break;
+        // Flash in fast, fade out slow
+        float t = 0f;
+        while (t < 0.08f) { t += Time.unscaledDeltaTime; _vignetteImage.color = new Color(0.55f, 0f, 0f, Mathf.Lerp(0f, 0.55f, t / 0.08f)); yield return null; }
+        t = 0f;
+        while (t < 0.55f) { t += Time.unscaledDeltaTime; _vignetteImage.color = new Color(0.55f, 0f, 0f, Mathf.Lerp(0.55f, 0f, t / 0.55f)); yield return null; }
+        _vignetteImage.color = new Color(0.55f, 0f, 0f, 0f);
     }
 
     // ── Death ─────────────────────────────────────────────────────────────────

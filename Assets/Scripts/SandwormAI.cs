@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Sandworm — desert enemy (Level 4).
+/// Sandworm â€” desert enemy (Level 4).
 /// From spelmanus: the large Sandworm guarding Obelisk 1 has 150 HP; smaller
 /// ones are used for the enemy wave at Obelisk 3. Crawls across the sand toward
 /// the player and lunges in to attack. Animated with the 12 Sandmask frames.
@@ -125,7 +125,7 @@ public class SandwormAI : MonoBehaviour
     {
         if (moveClip == null || _moveSoundTimer > 0f) return;
         _moveSoundTimer = 1.4f;
-        AudioSource.PlayClipAtPoint(moveClip, transform.position, 0.4f);
+        SettingsManager.PlaySfxAt(moveClip, transform.position, 0.4f);
     }
 
     private void TryAttack(float dir)
@@ -135,14 +135,14 @@ public class SandwormAI : MonoBehaviour
 
         _playerHealth.TakeDamage(attackDamage);
         _rb.AddForce(new Vector2(dir * lungeForce, 3f), ForceMode2D.Impulse);
-        if (attackClip != null) AudioSource.PlayClipAtPoint(attackClip, transform.position, 0.85f);
+        if (attackClip != null) SettingsManager.PlaySfxAt(attackClip, transform.position, 0.85f);
         if (_anim != null && _anim.HasClip("attack")) _anim.Play("attack", true);
     }
 
     private void OnHurt()
     {
         if (_isDead) return;
-        if (hurtClip != null) AudioSource.PlayClipAtPoint(hurtClip, transform.position, 0.6f);
+        if (hurtClip != null) SettingsManager.PlaySfxAt(hurtClip, transform.position, 0.6f);
         StartCoroutine(HitFlash());
     }
 

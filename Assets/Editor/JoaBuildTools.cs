@@ -57,12 +57,15 @@ public static class JoaBuildTools
             EditorUtility.DisplayProgressBar("JoA Build", "Building End Credits...", 0.85f);
             BuildEndCredits();
 
-            EditorUtility.DisplayProgressBar("JoA Build", "Configuring build settings...", 0.95f);
+            EditorUtility.DisplayProgressBar("JoA Build", "Wiring audio in all scenes...", 0.90f);
+            WireAudioInVillageAndCave();
+
+            EditorUtility.DisplayProgressBar("JoA Build", "Configuring build settings...", 0.97f);
             ConfigureBuildSettings();
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log("[JoA] BUILD EVERYTHING complete — Levels 3, 4, 5 and End Credits are ready.");
+            Debug.Log("[JoA] BUILD EVERYTHING complete — Levels 3, 4, 5, End Credits and all audio wired.");
         }
         finally
         {
@@ -120,6 +123,209 @@ public static class JoaBuildTools
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
         Debug.Log("[JoA] Cave crafting shrine now leads to the Jungle.");
+    }
+
+    // ── Wire audio in Village + Cave ──────────────────────────────────────────
+    [MenuItem("JoA/Wire Audio in Village + Cave", false, 22)]
+    public static void WireAudioInVillageAndCave()
+    {
+        string[] scenePaths =
+        {
+            ScenesDir + "Village.unity",
+            CaveScene,
+            ScenesDir + "Jungle.unity",
+            ScenesDir + "Desert.unity",
+            ScenesDir + "Ocean.unity",
+        };
+
+        // Standard sounds
+        AudioClip jumpClip    = LoadAudio(Sfx + "Karaktär/Movement/Jump/Jump.mp3");
+        AudioClip dashClip    = LoadAudio(Sfx + "Karaktär/Movement/Dash/Dash.mp3");
+        AudioClip stepClip    = LoadAudio(Sfx + "Karaktär/Movement/Springer/Springer.mp3");
+        AudioClip swordSwing  = LoadAudio(Sfx + "Karaktär/Vapen/Svärd/svärd missar monster.mp3");
+        AudioClip swordHit    = LoadAudio(Sfx + "Karaktär/Vapen/Svärd/svärd prickar monster.mp3");
+
+        // Cave-specific sound variants (echo versions)
+        AudioClip jumpCaveClip  = LoadAudio(Sfx + "Karaktär/Movement/Jump/Jump cave map.mp3");
+        AudioClip stepCaveClip  = LoadAudio(Sfx + "Karaktär/Movement/Springer/Springer cave map.mp3");
+        AudioClip swingCaveClip = LoadAudio(Sfx + "Karaktär/Vapen/Svärd/Svärd missar monster cave map.mp3");
+        AudioClip hitCaveClip   = LoadAudio(Sfx + "Karaktär/Vapen/Svärd/Svärd prickar monster cave map.mp3");
+
+        // Player damage + bow arrow sounds
+        AudioClip damageClip    = LoadAudio(Sfx + "Karaktär/Movement/Springer/Karaktär tar damage.mp3 (kanske använder).mp3");
+        AudioClip arrowHitClip  = LoadAudio(Sfx + "Karaktär/Vapen/Pilbåge/Pilbåge prickar monster.mp3");
+        AudioClip arrowMissClip = LoadAudio(Sfx + "Karaktär/Vapen/Pilbåge/Pil missar.mp3");
+
+        // Dialog talking sounds
+        AudioClip talkClip1  = LoadAudio(Sfx + "Banor/Village/Villagers/Villager pratar 1.mp3");
+        AudioClip talkClip2  = LoadAudio(Sfx + "Banor/Village/Villagers/Villager pratar 2.mp3");
+
+        // Button click
+        AudioClip buttonClip = LoadAudio(Sfx + "Generella sfx/Trycker på knappar.mp3");
+
+        AudioClip spiderAtk   = LoadAudio(Sfx + "Monster/Spindel/Spindel attackerar.mp3");
+        AudioClip spiderHurt  = LoadAudio(Sfx + "Monster/Spindel/Spindel ljud 2.mp3");
+        AudioClip spiderDrop  = LoadAudio(Sfx + "Monster/Spindel/Spindel ljud 1.mp3");
+        AudioClip spiderAmb   = LoadAudio(Sfx + "Monster/Spindel/Spindel ljud 3.mp3");
+        AudioClip zombieAtk   = LoadAudio(Sfx + "Monster/Zombie/Zombie attack.mp3");
+        AudioClip zombieHurt  = LoadAudio(Sfx + "Monster/Zombie/Zombie tar damage.mp3");
+        AudioClip zombieAmb   = LoadAudio(Sfx + "Monster/Zombie/Zombie ljud 1.mp3");
+        AudioClip diamondHit  = LoadAudio(Sfx + "Banor/Grott ljud/Hugger diamant.mp3");
+        AudioClip craftClip   = LoadAudio(Sfx + "Banor/Grott ljud/Skapar diamant svärdet.mp3");
+        AudioClip unlockClip  = LoadAudio(Sfx + "Banor/Grott ljud/Cave sounds 1.mp3");
+
+        AudioClip villageAmbient = LoadAudio(Sfx + "Banor/Village/Village ambiance.mp3 (stäng av när fight börjar).mp3");
+        AudioClip villageWind    = LoadAudio(Sfx + "Banor/Village/Village vind.mp3");
+        AudioClip zombieAmb2     = LoadAudio(Sfx + "Monster/Zombie/Zombie ljud 2.mp3");
+        AudioClip zombieAmb5     = LoadAudio(Sfx + "Monster/Zombie/Zombie ljud 5.mp3");
+        AudioClip[] caveAmbients =
+        {
+            LoadAudio(Sfx + "Banor/Grott ljud/Cave sounds 1.mp3"),
+            LoadAudio(Sfx + "Banor/Grott ljud/Cave sound 2.mp3"),
+            LoadAudio(Sfx + "Banor/Grott ljud/Cave sound 3.mp3"),
+            LoadAudio(Sfx + "Banor/Grott ljud/Cave sound 4.mp3"),
+        };
+
+        int totalWired = 0;
+        foreach (string scenePath in scenePaths)
+        {
+            if (!System.IO.File.Exists(scenePath)) continue;
+            Scene scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+            bool isCave    = scenePath.Contains("Cave");
+            bool isVillage = scenePath.Contains("Village");
+
+            // Player movement — cave scenes use echo variants
+            foreach (PlayerController pc in Object.FindObjectsByType<PlayerController>(FindObjectsSortMode.None))
+            {
+                var so = new SerializedObject(pc);
+                WireClip(so, "jumpClip",     isCave ? jumpCaveClip  : jumpClip);
+                WireClip(so, "dashClip",     dashClip);
+                WireClip(so, "footstepClip", isCave ? stepCaveClip  : stepClip);
+                WireClip(so, "damageClip",   damageClip);
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(pc);
+                totalWired++;
+            }
+
+            // Player combat (sword audio — cave scenes use echo variants)
+            foreach (PlayerCombat pc in Object.FindObjectsByType<PlayerCombat>(FindObjectsSortMode.None))
+            {
+                var so = new SerializedObject(pc);
+                WireClip(so, "swingClip", isCave ? swingCaveClip : swordSwing);
+                WireClip(so, "hitClip",   isCave ? hitCaveClip   : swordHit);
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(pc);
+                totalWired++;
+            }
+
+            // Player ranged (bow — arrow hit/miss sounds)
+            foreach (PlayerRanged pr in Object.FindObjectsByType<PlayerRanged>(FindObjectsSortMode.None))
+            {
+                var so = new SerializedObject(pr);
+                WireClip(so, "arrowHitClip",  arrowHitClip);
+                WireClip(so, "arrowMissClip", arrowMissClip);
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(pr);
+                totalWired++;
+            }
+
+            // Dialog UI — villager talking sounds
+            foreach (DialogUI dialog in Object.FindObjectsByType<DialogUI>(FindObjectsSortMode.None))
+            {
+                var so   = new SerializedObject(dialog);
+                var prop = so.FindProperty("talkClips");
+                if (prop != null)
+                {
+                    prop.arraySize = 2;
+                    if (talkClip1 != null) prop.GetArrayElementAtIndex(0).objectReferenceValue = talkClip1;
+                    if (talkClip2 != null) prop.GetArrayElementAtIndex(1).objectReferenceValue = talkClip2;
+                }
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(dialog);
+                totalWired++;
+            }
+
+            // Global button sounds — one per scene (added to GameManager)
+            if (buttonClip != null && Object.FindFirstObjectByType<GlobalButtonSounds>() == null)
+            {
+                GameObject gm = FindRoot(scene, "GameManager") ?? new GameObject("UIManager");
+                GlobalButtonSounds gbs = gm.AddComponent<GlobalButtonSounds>();
+                var so = new SerializedObject(gbs);
+                WireClip(so, "clickClip", buttonClip);
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(gbs);
+            }
+
+            // Spiders
+            foreach (SpiderAI spider in Object.FindObjectsByType<SpiderAI>(FindObjectsSortMode.None))
+            {
+                var so = new SerializedObject(spider);
+                WireClip(so, "attackClip",  spiderAtk);
+                WireClip(so, "hurtClip",    spiderHurt);
+                WireClip(so, "dropClip",    spiderDrop);
+                WireClip(so, "ambientClip", spiderAmb);
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(spider);
+                totalWired++;
+            }
+
+            // Zombies
+            foreach (ZombieAI zombie in Object.FindObjectsByType<ZombieAI>(FindObjectsSortMode.None))
+            {
+                var so = new SerializedObject(zombie);
+                WireClip(so, "attackClip",  zombieAtk);
+                WireClip(so, "hurtClip",    zombieHurt);
+                WireClip(so, "ambientClip", zombieAmb);
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(zombie);
+                totalWired++;
+            }
+
+            // Diamond rocks
+            foreach (DiamondRock rock in Object.FindObjectsByType<DiamondRock>(FindObjectsSortMode.None))
+            {
+                var so = new SerializedObject(rock);
+                WireClip(so, "hitClip",   diamondHit);
+                WireClip(so, "breakClip", diamondHit);
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(rock);
+                totalWired++;
+            }
+
+            // Crafting shrine
+            foreach (CraftingShrine shrine in Object.FindObjectsByType<CraftingShrine>(FindObjectsSortMode.None))
+            {
+                var so = new SerializedObject(shrine);
+                WireClip(so, "craftClip",  craftClip);
+                WireClip(so, "unlockClip", unlockClip);
+                so.ApplyModifiedProperties();
+                EditorUtility.SetDirty(shrine);
+                totalWired++;
+            }
+
+            // Ambient SFX — only add if not already present
+            bool hasAmbient = Object.FindFirstObjectByType<AmbientSfxPlayer>() != null;
+            if (!hasAmbient)
+            {
+                AudioClip[] ambClips = isVillage
+                    ? new[] { villageAmbient, villageWind, zombieAmb2, zombieAmb5 }.Where(c => c != null).ToArray()
+                    : caveAmbients.Where(c => c != null).ToArray();
+                if (ambClips.Length > 0)
+                    AddAmbientSfx(scene, ambClips, isVillage ? 8f : 5f, isVillage ? 20f : 12f);
+            }
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+        }
+        AssetDatabase.SaveAssets();
+        Debug.Log($"[JoA] Wire Audio: wired {totalWired} component(s) across all scenes.");
+    }
+
+    static void WireClip(SerializedObject so, string fieldName, AudioClip clip)
+    {
+        if (clip == null) return;
+        var prop = so.FindProperty(fieldName);
+        if (prop != null) prop.objectReferenceValue = clip;
     }
 
     // ═════════════════════════════════════════════════════════════════════════
@@ -186,6 +392,7 @@ public static class JoaBuildTools
         AddAmbientSfx(scene, new[]
         {
             LoadAudio(Sfx + "Monster/Vine snake/Vine snake ljud 1.mp3"),
+            LoadAudio(Sfx + "Monster/Vine snake/Vine snake ljud 2.mp3"),
             LoadAudio(Sfx + "Monster/Apa (inte mini bossen)/Monkey attack.mp3"),
         }, 7f, 16f);
 
@@ -557,8 +764,10 @@ public static class JoaBuildTools
             LoadSprite(L4 + "bow sprite 1.png"), LoadSprite(L4 + "bow sprite 2.png"),
             LoadSprite(L4 + "bow sprite 3.png"), LoadSprite(L4 + "bow sprite 4.png"),
         }.Where(x => x != null).ToArray();
-        pr.drawClip  = LoadAudio(Sfx + "Karaktär/Vapen/Pilbåge/" + Diacritic("Pilbage load.mp3"));
-        pr.shootClip = LoadAudio(Sfx + "Karaktär/Vapen/Pilbåge/" + Diacritic("Pilbage skjuter.mp3"));
+        pr.drawClip      = LoadAudio(Sfx + "Karaktär/Vapen/Pilbåge/" + Diacritic("Pilbage load.mp3"));
+        pr.shootClip     = LoadAudio(Sfx + "Karaktär/Vapen/Pilbåge/" + Diacritic("Pilbage skjuter.mp3"));
+        pr.arrowHitClip  = LoadAudio(Sfx + "Karaktär/Vapen/Pilbåge/Pilbåge prickar monster.mp3");
+        pr.arrowMissClip = LoadAudio(Sfx + "Karaktär/Vapen/Pilbåge/Pil missar.mp3");
 
         if (player.GetComponent<MagicalArmor>() == null) player.AddComponent<MagicalArmor>();
     }
@@ -1108,5 +1317,188 @@ public static class JoaBuildTools
             ? $"ALL {pass} CHECKS PASSED"
             : $"{pass} passed  |  {fail} FAILED";
         Debug.Log($"[JoaValidation] === Validation END: {result} ===");
+    }
+
+    // ── HealthBarV2 runtime test helpers ─────────────────────────────────────
+    [MenuItem("JoA/HealthBarV2/1 - Enter Play Mode", false, 200)]
+    public static void HBV2_EnterPlay()
+    {
+        if (!EditorApplication.isPlaying)
+        {
+            Debug.Log($"[HBV2] Entering play mode in scene: {EditorSceneManager.GetActiveScene().name}");
+            EditorApplication.isPlaying = true;
+        }
+        else
+            Debug.Log("[HBV2] Already in play mode.");
+    }
+
+    [MenuItem("JoA/HealthBarV2/2 - Stop Play Mode", false, 201)]
+    public static void HBV2_StopPlay() => EditorApplication.isPlaying = false;
+
+    [MenuItem("JoA/HealthBarV2/3 - Check V2 Exists", false, 202)]
+    public static void HBV2_Check()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[HBV2] Enter play mode first."); return; }
+        var v2 = Object.FindFirstObjectByType<HealthBarV2>();
+        Debug.Log(v2 != null
+            ? $"[HBV2] ✓ HealthBarV2 found on '{v2.gameObject.name}'"
+            : "[HBV2] ✗ HealthBarV2 NOT found — bootstrapper may not have fired.");
+        var ui = GameObject.Find("HealthBarV2_UI");
+        Debug.Log(ui != null ? "[HBV2] ✓ HealthBarV2_UI is present in scene."
+                              : "[HBV2] ✗ HealthBarV2_UI not found — BuildUI failed.");
+    }
+
+    [MenuItem("JoA/HealthBarV2/4 - Deal 50 Damage", false, 203)]
+    public static void HBV2_Damage()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[HBV2] Enter play mode first."); return; }
+        var p = GameObject.FindGameObjectWithTag("Player");
+        var h = p?.GetComponent<Health>() ?? p?.GetComponentInChildren<Health>();
+        if (h == null) { Debug.LogError("[HBV2] No Health found on player."); return; }
+        float before = h.CurrentHealth;
+        h.TakeDamage(50f);
+        Debug.Log($"[HBV2] ✓ Damage: {before} → {h.CurrentHealth} HP. Red bar should appear and decay.");
+    }
+
+    [MenuItem("JoA/HealthBarV2/5 - Heal 25 HP", false, 204)]
+    public static void HBV2_Heal()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[HBV2] Enter play mode first."); return; }
+        var p = GameObject.FindGameObjectWithTag("Player");
+        var h = p?.GetComponent<Health>() ?? p?.GetComponentInChildren<Health>();
+        if (h == null) { Debug.LogError("[HBV2] No Health found on player."); return; }
+        float before = h.CurrentHealth;
+        h.Heal(25f);
+        Debug.Log($"[HBV2] ✓ Healed: {before} → {h.CurrentHealth} HP. Green bar snaps up, red follows.");
+    }
+
+    [MenuItem("JoA/HealthBarV2/6 - Set HP to 15 (test vignette)", false, 205)]
+    public static void HBV2_LowHP()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[HBV2] Enter play mode first."); return; }
+        var p = GameObject.FindGameObjectWithTag("Player");
+        var h = p?.GetComponent<Health>() ?? p?.GetComponentInChildren<Health>();
+        if (h == null) { Debug.LogError("[HBV2] No Health found on player."); return; }
+        h.SetCurrentHealth(15f);
+        Debug.Log($"[HBV2] ✓ HP → 15/{h.MaxHealth}. Vignette should pulse fast (danger~0.85, speed~8.5 Hz).");
+    }
+
+    [MenuItem("JoA/HealthBarV2/7 - Reset to Full HP", false, 206)]
+    public static void HBV2_ResetHP()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[HBV2] Enter play mode first."); return; }
+        var p = GameObject.FindGameObjectWithTag("Player");
+        var h = p?.GetComponent<Health>() ?? p?.GetComponentInChildren<Health>();
+        if (h == null) { Debug.LogError("[HBV2] No Health found on player."); return; }
+        h.ResetHealth();
+        Debug.Log($"[HBV2] ✓ HP reset to {h.MaxHealth}. Green bar full, red gone, vignette off.");
+    }
+
+    // ── Fix-verification test suite ───────────────────────────────────────────
+    static Health GetPlayerHealth()
+    {
+        var p = GameObject.FindGameObjectWithTag("Player");
+        return p?.GetComponent<Health>() ?? p?.GetComponentInChildren<Health>();
+    }
+
+    static T GetPrivateField<T>(object obj, string fieldName)
+    {
+        var f = obj.GetType().GetField(fieldName,
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        return f != null ? (T)f.GetValue(obj) : default;
+    }
+
+    [MenuItem("JoA/FixTests/1 - Log Player HP", false, 300)]
+    static void FT_LogHP()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[FixTest] Enter play mode first."); return; }
+        var h = GetPlayerHealth();
+        if (h == null) { Debug.LogError("[FixTest] No Health on player."); return; }
+        Debug.Log($"[FixTest] HP: {h.CurrentHealth:F1} / {h.MaxHealth:F1}  ({h.CurrentHealth/h.MaxHealth*100:F0}%)");
+    }
+
+    [MenuItem("JoA/FixTests/2 - Save Checkpoint (50 HP)", false, 301)]
+    static void FT_SaveAt50HP()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[FixTest] Enter play mode first."); return; }
+        var h = GetPlayerHealth();
+        if (h == null) { Debug.LogError("[FixTest] No Health on player."); return; }
+        h.SetCurrentHealth(50f);
+        SaveManager.Instance?.SaveGame();
+        Debug.Log($"[FixTest] Saved checkpoint with HP={h.CurrentHealth}. Now load Cave to verify health resets to full.");
+    }
+
+    [MenuItem("JoA/FixTests/3 - Load Cave (verify health reset)", false, 302)]
+    static void FT_LoadCave()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[FixTest] Enter play mode first."); return; }
+        Debug.Log("[FixTest] Loading Cave... Expected: player spawns with FULL HP (100), not 50.");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Cave");
+    }
+
+    [MenuItem("JoA/FixTests/4 - Check Dash State", false, 303)]
+    static void FT_CheckDash()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[FixTest] Enter play mode first."); return; }
+        var p = GameObject.FindGameObjectWithTag("Player");
+        var pc = p?.GetComponent<PlayerController>();
+        if (pc == null) { Debug.LogError("[FixTest] No PlayerController."); return; }
+        float cdTimer   = GetPrivateField<float>(pc, "_dashCooldownTimer");
+        bool  canAir    = GetPrivateField<bool>(pc, "_canAirDash");
+        bool  grounded  = GetPrivateField<bool>(pc, "_isGrounded");
+        bool  isDashing = GetPrivateField<bool>(pc, "_isDashing");
+        bool  canDash   = cdTimer <= 0f && !isDashing && (grounded || canAir);
+        Debug.Log($"[FixTest] Dash — cooldown timer: {cdTimer:F3}s | canAirDash: {canAir} | grounded: {grounded} | CAN DASH NOW: {canDash}");
+        Debug.Log($"[FixTest] Dash config — cooldown: {pc.dashCooldown}s | dashSpeed: {pc.dashSpeed} | airDashSpeed: {pc.airDashSpeed}");
+    }
+
+    [MenuItem("JoA/FixTests/5 - Check Menu Buttons (MainMenu only)", false, 304)]
+    static void FT_CheckMenuButtons()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[FixTest] Enter play mode first."); return; }
+        var mgr = Object.FindFirstObjectByType<MainMenuManager>();
+        if (mgr == null) { Debug.LogWarning("[FixTest] MainMenuManager not found — load MainMenu scene."); return; }
+        var playBtn = GetPrivateField<UnityEngine.UI.Button>(mgr, "_playButton");
+        var loadBtn = GetPrivateField<UnityEngine.UI.Button>(mgr, "_loadGameButton");
+        Debug.Log($"[FixTest] PlayButton: {(playBtn != null ? (playBtn.gameObject.activeSelf ? "VISIBLE" : "hidden") : "null")}");
+        Debug.Log($"[FixTest] LoadGameButton: {(loadBtn != null ? (loadBtn.gameObject.activeSelf ? "VISIBLE" : "hidden") : "null")}");
+    }
+
+    [MenuItem("JoA/FixTests/6 - Verify Player Scene Position", false, 305)]
+    static void FT_CheckPlayerPos()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[FixTest] Enter play mode first."); return; }
+        var p = GameObject.FindGameObjectWithTag("Player");
+        if (p == null) { Debug.LogError("[FixTest] No Player."); return; }
+        GameObject spawn = GameObject.Find("PlayerSpawn") ?? GameObject.Find("SpawnPoint");
+        Debug.Log($"[FixTest] Player position: {p.transform.position}");
+        Debug.Log(spawn != null
+            ? $"[FixTest] SpawnPoint found at: {spawn.transform.position} — player should be here"
+            : $"[FixTest] No SpawnPoint/PlayerSpawn in scene — player stays at scene-placed position (no teleport expected)");
+    }
+
+    [MenuItem("JoA/FixTests/7 - Full Health-Reset Sequence", false, 306)]
+    static void FT_FullHealthSequence()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[FixTest] Enter play mode first."); return; }
+        var h = GetPlayerHealth();
+        if (h == null) { Debug.LogError("[FixTest] No Health."); return; }
+        h.SetCurrentHealth(40f);
+        SaveManager.Instance?.SaveGame();
+        string scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        Debug.Log($"[FixTest] Scene='{scene}' | Set HP to 40, saved checkpoint. Load Cave and run Test 1 to verify HP = 100.");
+    }
+
+    [MenuItem("JoA/FixTests/8 - Trigger New Game (hides buttons)", false, 307)]
+    static void FT_TriggerNewGame()
+    {
+        if (!EditorApplication.isPlaying) { Debug.LogWarning("[FixTest] Enter play mode first."); return; }
+        var mgr = Object.FindFirstObjectByType<MainMenuManager>();
+        if (mgr == null) { Debug.LogWarning("[FixTest] MainMenuManager not found — run this in MainMenu."); return; }
+        // Call NewGame via reflection so we don't need a direct reference
+        typeof(MainMenuManager).GetMethod("NewGame",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
+            ?.Invoke(mgr, null);
+        Debug.Log("[FixTest] NewGame() called. Checking buttons in 0.5s via Test 5...");
     }
 }

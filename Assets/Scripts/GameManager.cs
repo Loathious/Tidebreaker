@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,8 +27,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Death Settings")]
     [SerializeField] private float restartButtonDelay = 1f;
-    [SerializeField] private Color deathTintColor = new Color(1f, 0f, 0f, 0.3f);
-    [SerializeField] private float tintDuration   = 0.5f;
+    [SerializeField] private Color deathTintColor = new Color(0f, 0f, 0f, 0.82f);
+    [SerializeField] private float tintDuration   = 0.6f;
 
     [Header("Enemy Count")]
     public int enemiesToDefeat = 6;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 
     public bool LevelComplete => _enemiesDefeated >= enemiesToDefeat;
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    // â”€â”€ Lifecycle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -128,8 +128,8 @@ public class GameManager : MonoBehaviour
         if (living > 0) return; // at least one zombie still alive
 
         // All visible zombies are dead (or all are Destroyed). Require either:
-        //   • at least one kill was tracked via OnEnemyDefeated, OR
-        //   • enough scene time has passed that any Destroyed zombies would have been tracked
+        //   â€¢ at least one kill was tracked via OnEnemyDefeated, OR
+        //   â€¢ enough scene time has passed that any Destroyed zombies would have been tracked
         bool someProgress = _enemiesDefeated > 0
                          || (alive.Length == 0 && _sceneTimer > 8f);
         if (!someProgress) return;
@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ── 16:9 enforcement ─────────────────────────────────────────────────────
+    // â”€â”€ 16:9 enforcement â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     static void Enforce16by9()
     {
         float target = 16f / 9f;
@@ -179,7 +179,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ── Combat ────────────────────────────────────────────────────────────────
+    // â”€â”€ Combat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     public void NotifyCombatStarted()
     {
         if (_combatStarted) return;
@@ -205,10 +205,10 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// Played once when the player kills the final zombie.
-    /// — Brief slow-motion + camera shake hit-stop on the killing blow
-    /// — Big "VICTORY" banner fades in / holds / fades out
-    /// — Sun-glow flash overlay
-    /// — Then the second villager appears with the next dialogue
+    /// â€” Brief slow-motion + camera shake hit-stop on the killing blow
+    /// â€” Big "VICTORY" banner fades in / holds / fades out
+    /// â€” Sun-glow flash overlay
+    /// â€” Then the second villager appears with the next dialogue
     /// </summary>
     IEnumerator VictorySequence()
     {
@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour
             banner.outlineColor  = new Color32(0, 0, 0, 255);
         }
 
-        // ── Slow-motion hit-stop on the killing blow ──────────────────────
+        // â”€â”€ Slow-motion hit-stop on the killing blow â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         Time.timeScale = 0.25f;
         yield return new WaitForSecondsRealtime(0.55f);
         // Ease back to normal speed
@@ -279,7 +279,7 @@ public class GameManager : MonoBehaviour
         }
         Time.timeScale = 1f;
 
-        // ── Flash + banner fade-in ────────────────────────────────────────
+        // â”€â”€ Flash + banner fade-in â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if (flash != null)
         {
             float ft = 0f;
@@ -350,7 +350,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // No villager2 in scene — save progress and load Cave directly
+            // No villager2 in scene â€” save progress and load Cave directly
             SaveManager.Instance?.SaveGame();
             yield return new WaitForSecondsRealtime(1.5f);
             int caveIndex = UnityEngine.SceneManagement.SceneUtility
@@ -362,14 +362,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ── Death / Game Over ─────────────────────────────────────────────────────
+    // â”€â”€ Death / Game Over â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     void OnPlayerDeath()
     {
         if (_isGameOver) return;
         _isGameOver = true;
 
         if (deathSoundClip != null)
-            AudioSource.PlayClipAtPoint(deathSoundClip,
+            SettingsManager.PlaySfxAt(deathSoundClip,
                 Camera.main != null ? Camera.main.transform.position : Vector3.zero,
                 deathSoundVolume);
 
@@ -382,7 +382,13 @@ public class GameManager : MonoBehaviour
         foreach (HealthBar hb in healthBarsToHide)
             if (hb != null) hb.Hide();
 
-        if (screenTint != null) StartCoroutine(FadeTint());
+        // Build a full-screen tint on a dedicated canvas (sortingOrder 998) so it
+        // covers all HUD elements (health bars, objectives, etc.) without relying on
+        // sibling ordering within a shared canvas.
+        BuildAndFadeDeathTint();
+
+        // Hide serialized screen tint if it exists (now superseded by the dynamic canvas)
+        if (screenTint != null) screenTint.color = new Color(0f, 0f, 0f, 0f);
 
         // Auto-find gameOverUI if not wired
         if (gameOverUI == null)
@@ -399,6 +405,10 @@ public class GameManager : MonoBehaviour
         if (gameOverUI != null)
         {
             gameOverUI.SetActive(true);
+            // Boost the game over UI canvas above the tint canvas (sortingOrder 999)
+            Canvas gc = gameOverUI.GetComponentInParent<Canvas>();
+            if (gc != null) gc.sortingOrder = 999;
+            gameOverUI.transform.SetAsLastSibling();
             CanvasGroup cg = gameOverUI.GetComponent<CanvasGroup>()
                           ?? gameOverUI.AddComponent<CanvasGroup>();
             cg.alpha = 0f;
@@ -418,7 +428,41 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ── Coroutines ────────────────────────────────────────────────────────────
+    // â”€â”€ Coroutines â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    // Creates a full-screen black overlay on a dedicated canvas (sortingOrder 998)
+    // so it covers all normal HUD canvases regardless of scene hierarchy.
+    private void BuildAndFadeDeathTint()
+    {
+        var cvGO = new GameObject("__DeathTintCanvas");
+        var cv = cvGO.AddComponent<Canvas>();
+        cv.renderMode = RenderMode.ScreenSpaceOverlay;
+        cv.sortingOrder = 998;
+        cvGO.AddComponent<CanvasScaler>();
+
+        var tGO = new GameObject("Tint");
+        tGO.transform.SetParent(cvGO.transform, false);
+        var rt = tGO.AddComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
+        var img = tGO.AddComponent<Image>();
+        img.color = new Color(0f, 0f, 0f, 0f);
+        img.raycastTarget = false;
+        StartCoroutine(FadeTintDynamic(img));
+    }
+
+    IEnumerator FadeTintDynamic(Image img)
+    {
+        float elapsed = 0f;
+        while (elapsed < tintDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            img.color = new Color(0f, 0f, 0f, Mathf.Lerp(0f, deathTintColor.a, elapsed / tintDuration));
+            yield return null;
+        }
+        img.color = new Color(0f, 0f, 0f, deathTintColor.a);
+    }
+
     IEnumerator FadeTint()
     {
         float elapsed = 0f;
@@ -481,7 +525,7 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        // Full restart from the beginning — clear per-run persistent state
+        // Full restart from the beginning â€” clear per-run persistent state
         PlayerPrefs.DeleteKey("PlayerHasArmor");
         PlayerPrefs.DeleteKey("PlayerHasBow");
         PlayerPrefs.Save();
@@ -489,7 +533,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private static Transform FindDeep(Transform parent, string name)
     {
         foreach (Transform child in parent)

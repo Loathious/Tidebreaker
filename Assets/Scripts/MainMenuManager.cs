@@ -245,6 +245,7 @@ public class MainMenuManager : MonoBehaviour
     /// <summary>Clears any existing save and starts a fresh run from Village.</summary>
     public void NewGame()
     {
+        HideMenuButtons();
         SaveManager.Instance?.DeleteSave();
         StartCoroutine(StartGameSequence());
     }
@@ -253,14 +254,26 @@ public class MainMenuManager : MonoBehaviour
     public void LoadGame()
     {
         if (SaveManager.Instance != null && SaveManager.Instance.HasSave)
+        {
+            HideMenuButtons();
             SaveManager.Instance.LoadGame();
+        }
     }
 
     // ── Start Game button handler ─────────────────────────────────────────────
     public void StartGame()
     {
+        HideMenuButtons();
         SaveManager.Instance?.DeleteSave();
         StartCoroutine(StartGameSequence());
+    }
+
+    private void HideMenuButtons()
+    {
+        if (_playButton     != null) _playButton.gameObject.SetActive(false);
+        if (_loadGameButton != null) _loadGameButton.gameObject.SetActive(false);
+        // Bring screenFade to front so it covers everything during transition
+        if (screenFade != null) screenFade.transform.SetAsLastSibling();
     }
 
     IEnumerator StartGameSequence()

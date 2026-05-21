@@ -1,12 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// The Kraken — final boss (Level 5). From spelmanus: 1000 HP, three phases.
-///  • Phase 1 (100–70%): three tentacles attack — the player must destroy all 3.
-///  • Phase 2 (70–30%):  the body is vulnerable; energy blasts + water waves.
-///  • Phase 3 (30–0%):   the heart is exposed — strike it until the Kraken dies.
+/// The Kraken â€” final boss (Level 5). From spelmanus: 1000 HP, three phases.
+///  â€¢ Phase 1 (100â€“70%): three tentacles attack â€” the player must destroy all 3.
+///  â€¢ Phase 2 (70â€“30%):  the body is vulnerable; energy blasts + water waves.
+///  â€¢ Phase 3 (30â€“0%):   the heart is exposed â€” strike it until the Kraken dies.
 /// </summary>
 [RequireComponent(typeof(Health))]
 public class KrakenBoss : MonoBehaviour
@@ -113,13 +113,13 @@ public class KrakenBoss : MonoBehaviour
         RefreshBar();
     }
 
-    // ── Phase 1 ───────────────────────────────────────────────────────────────
+    // â”€â”€ Phase 1 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private IEnumerator EnterPhase1()
     {
         _phase = 1;
         LevelManagerBase.Current?.NotifyCombatStarted();
         _bar = BossHealthBar.Create("THE KRAKEN");
-        _bar?.SetPhase("PHASE 1 — DESTROY THE TENTACLES");
+        _bar?.SetPhase("PHASE 1 â€” DESTROY THE TENTACLES");
 
         _tentaclesRemaining = 0;
         foreach (var t in tentacles)
@@ -140,20 +140,20 @@ public class KrakenBoss : MonoBehaviour
         if (_phase != 1) return;
         _tentaclesRemaining = Mathf.Max(0, _tentaclesRemaining - 1);
         if (loseTentacleClip != null)
-            AudioSource.PlayClipAtPoint(loseTentacleClip, transform.position, 0.9f);
+            SettingsManager.PlaySfxAt(loseTentacleClip, transform.position, 0.9f);
         Camera.main?.GetComponent<CameraShake>()?.Shake(0.2f, 0.25f);
 
         if (_tentaclesRemaining <= 0)
             StartCoroutine(EnterPhase2());
     }
 
-    // ── Phase 2 ───────────────────────────────────────────────────────────────
+    // â”€â”€ Phase 2 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private IEnumerator EnterPhase2()
     {
         _phase = 2;
         _health.SetCurrentHealth(maxHealth * 0.7f);
         if (bodyCollider != null) bodyCollider.enabled = true;
-        _bar?.SetPhase("PHASE 2 — STRIKE THE KRAKEN");
+        _bar?.SetPhase("PHASE 2 â€” STRIKE THE KRAKEN");
         _attackTimer = 2f;
 
         // Roar flash
@@ -166,12 +166,12 @@ public class KrakenBoss : MonoBehaviour
         }
     }
 
-    // ── Phase 3 ───────────────────────────────────────────────────────────────
+    // â”€â”€ Phase 3 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private IEnumerator EnterPhase3()
     {
         _phase = 3;
         _heartStrikes = 0;
-        _bar?.SetPhase("PHASE 3 — STRIKE THE HEART (0/10)");
+        _bar?.SetPhase("PHASE 3 â€” STRIKE THE HEART (0/10)");
         transform.localScale = _baseScale * 1.06f;
 
         for (int i = 0; i < 5; i++)
@@ -196,7 +196,7 @@ public class KrakenBoss : MonoBehaviour
         transform.position = target;
     }
 
-    // ── Attacks (Phase 2 & 3) ─────────────────────────────────────────────────
+    // â”€â”€ Attacks (Phase 2 & 3) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private IEnumerator PhaseAttack()
     {
         if (_isDead) yield break;
@@ -210,7 +210,7 @@ public class KrakenBoss : MonoBehaviour
 
     private IEnumerator EnergyBarrage()
     {
-        if (energyClip != null) AudioSource.PlayClipAtPoint(energyClip, transform.position, 0.8f);
+        if (energyClip != null) SettingsManager.PlaySfxAt(energyClip, transform.position, 0.8f);
         int shots = _phase == 3 ? 5 : 3;
         for (int i = 0; i < shots; i++)
         {
@@ -224,7 +224,7 @@ public class KrakenBoss : MonoBehaviour
 
     private IEnumerator WaveAttack()
     {
-        if (waveClip != null) AudioSource.PlayClipAtPoint(waveClip, transform.position, 0.9f);
+        if (waveClip != null) SettingsManager.PlaySfxAt(waveClip, transform.position, 0.9f);
         if (_player == null) yield break;
 
         // A wide water wave sweeps horizontally across the player's height
@@ -256,11 +256,11 @@ public class KrakenBoss : MonoBehaviour
         if (wave != null) Destroy(wave);
     }
 
-    // ── Health ────────────────────────────────────────────────────────────────
+    // â”€â”€ Health â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private void OnHurt(float dmg)
     {
         if (_isDead) return;
-        if (hurtClip != null) AudioSource.PlayClipAtPoint(hurtClip, transform.position, 0.5f);
+        if (hurtClip != null) SettingsManager.PlaySfxAt(hurtClip, transform.position, 0.5f);
         StartCoroutine(HitFlash());
 
         if (_phase == 2 && _health.CurrentHealth <= maxHealth * 0.3f)
@@ -269,11 +269,11 @@ public class KrakenBoss : MonoBehaviour
             return;
         }
 
-        // Phase 3 — track the 10 heart strikes required to finish the Kraken
+        // Phase 3 â€” track the 10 heart strikes required to finish the Kraken
         if (_phase == 3)
         {
             _heartStrikes++;
-            _bar?.SetPhase($"PHASE 3 — STRIKE THE HEART ({_heartStrikes}/10)");
+            _bar?.SetPhase($"PHASE 3 â€” STRIKE THE HEART ({_heartStrikes}/10)");
             if (_heartStrikes >= 10 && !_isDead)
             {
                 _health.SetCurrentHealth(0f);
@@ -308,7 +308,7 @@ public class KrakenBoss : MonoBehaviour
         _isDead = true;
         _phase  = 4;
         StopAllCoroutines();
-        if (deathClip != null) AudioSource.PlayClipAtPoint(deathClip, transform.position, 1f);
+        if (deathClip != null) SettingsManager.PlaySfxAt(deathClip, transform.position, 1f);
         _bar?.Dismiss();
 
         foreach (Collider2D c in GetComponents<Collider2D>()) c.enabled = false;

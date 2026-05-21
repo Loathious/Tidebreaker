@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Level 3 — Jungle Temple manager.
+/// Level 3 â€” Jungle Temple manager.
 /// Objective: fight through monkeys and vine snakes, defeat the Jungle Guardian
 /// mini-boss, then read the temple inscription. Self-bootstrapping.
 /// </summary>
@@ -20,7 +20,7 @@ public class JungleManager : LevelManagerBase
     private StoryPortal    _templePortal;
     private GameObject     _templeGate;
 
-    // World-space X of the temple gate — guardian always stays left of this.
+    // World-space X of the temple gate â€” guardian always stays left of this.
     private const float GateX = 54.05f;
     private const float GateY = -1.09f;
 
@@ -82,7 +82,7 @@ public class JungleManager : LevelManagerBase
         ObjectiveManager.Instance?.UpdateObjective("Enter the temple");
 
         if (templeOpenClip != null && Camera.main != null)
-            AudioSource.PlayClipAtPoint(templeOpenClip, Camera.main.transform.position, 0.9f);
+            SettingsManager.PlaySfxAt(templeOpenClip, Camera.main.transform.position, 0.9f);
 
         if (_templePortal != null)
             _templePortal.UnlockPortal();
@@ -90,7 +90,7 @@ public class JungleManager : LevelManagerBase
         StartCoroutine(GuardianDownBanner());
     }
 
-    // ── Temple gate & guardian bounds ─────────────────────────────────────────
+    // â”€â”€ Temple gate & guardian bounds â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private void SpawnTempleGate()
     {
@@ -98,14 +98,14 @@ public class JungleManager : LevelManagerBase
         _templeGate.layer = LayerMask.NameToLayer("Ground") >= 0
             ? LayerMask.NameToLayer("Ground") : 3;
 
-        // Absolute position as specified — invisible solid wall blocking the entrance.
+        // Absolute position as specified â€” invisible solid wall blocking the entrance.
         _templeGate.transform.position = new Vector3(GateX, GateY, 0f);
 
         BoxCollider2D col = _templeGate.AddComponent<BoxCollider2D>();
         col.size   = new Vector2(1f, 6f);
         col.offset = Vector2.zero;
 
-        // Add SpriteRenderer but keep it disabled — gate is invisible.
+        // Add SpriteRenderer but keep it disabled â€” gate is invisible.
         var sr = _templeGate.AddComponent<SpriteRenderer>();
         sr.sprite = ProceduralSprite.Box(8, 64, new Color(0.25f, 0.18f, 0.1f));
         sr.sortingOrder = 3;

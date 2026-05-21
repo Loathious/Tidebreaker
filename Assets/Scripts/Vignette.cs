@@ -18,7 +18,10 @@ public class Vignette : MonoBehaviour
     [Tooltip("Health fraction below which the red vignette starts to ramp in (0..1).")]
     [SerializeField, Range(0f, 1f)] private float lowHealthThreshold = 0.4f;
     [SerializeField] private Color lowHealthColor = new Color(0.85f, 0.05f, 0.05f, 1f);
-    [SerializeField] private float pulseSpeed = 2.4f;
+    [Tooltip("Pulse speed at the low-health threshold (calm danger)")]
+    [SerializeField] private float pulseSpeed    = 2.4f;
+    [Tooltip("Pulse speed when health is near zero (frantic danger)")]
+    [SerializeField] private float pulseSpeedMax = 9f;
 
     private Image  _vignetteImg;
     private Health _playerHealth;
@@ -78,8 +81,9 @@ public class Vignette : MonoBehaviour
 
         // 0 = at threshold (no red), 1 = at zero health (full red)
         float danger = 1f - (frac / lowHealthThreshold);
-        // Pulse intensity 0.6..1.0 in sync with a sine wave
-        float pulse  = 0.6f + 0.4f * (Mathf.Sin(Time.time * pulseSpeed) * 0.5f + 0.5f);
+        // Pulse speed scales from pulseSpeed (calm) to pulseSpeedMax (frantic) as HP drops
+        float dynSpeed = Mathf.Lerp(pulseSpeed, pulseSpeedMax, danger);
+        float pulse    = 0.6f + 0.4f * (Mathf.Sin(Time.time * dynSpeed) * 0.5f + 0.5f);
 
         // Blend from neutral dark vignette toward red as danger rises
         Color blended = Color.Lerp(_normalColor, lowHealthColor, danger);

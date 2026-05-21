@@ -100,4 +100,6 @@ InitTestScene*.unity*
 
 # JoA build/test artifacts
 /joa_test_results.txt
-/.claude/worktrees/
+
+# Claude Code local config (not part of the project)
+/.claude/

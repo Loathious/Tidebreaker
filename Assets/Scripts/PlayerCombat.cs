@@ -109,7 +109,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
         // Swing sound on every attack
-        if (swingClip != null) _audio.PlayOneShot(swingClip, swingVolume);
+        if (swingClip != null) _audio.PlayOneShot(swingClip, swingVolume * SettingsManager.SfxVol);
 
         // Capture click point at the moment of click (before damage delay)
         Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -175,7 +175,7 @@ public class PlayerCombat : MonoBehaviour
             if (rock == null) continue;
             if (Vector2.Distance(transform.position, col.transform.position) > attackRange) continue;
             HitSpark.Spawn(col.bounds.center);
-            if (hitClip != null) _audio.PlayOneShot(hitClip, hitVolume);
+            if (hitClip != null) _audio.PlayOneShot(hitClip, hitVolume * SettingsManager.SfxVol);
             rock.Hit();
             hitRock = true;
             break;
@@ -208,7 +208,7 @@ public class PlayerCombat : MonoBehaviour
                         best.GetComponent<Rigidbody2D>()?.AddForce(knockDir, ForceMode2D.Impulse);
                 }
 
-                if (hitClip != null) _audio.PlayOneShot(hitClip, hitVolume);
+                if (hitClip != null) _audio.PlayOneShot(hitClip, hitVolume * SettingsManager.SfxVol);
 
                 if (hitStopDuration > 0f)
                     StartCoroutine(HitStop(hitStopDuration));
@@ -299,7 +299,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void PlaySwingSound()
     {
-        if (swingClip != null) _audio.PlayOneShot(swingClip, swingVolume);
+        if (swingClip != null) _audio.PlayOneShot(swingClip, swingVolume * SettingsManager.SfxVol);
     }
 
     private void SpawnBloodAtPoint(Vector3 pos)

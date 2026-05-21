@@ -26,6 +26,7 @@ public class SettingsManager : MonoBehaviour
 
     private float _musicVolume            = 0.5f;
     private float _sfxVolume              = 0.5f;
+    private float _prevSfxVolume          = 0.5f;
     private bool  _isPaused               = false;
     private bool  _settingsOpenedFromPause = false;
 
@@ -46,8 +47,9 @@ public class SettingsManager : MonoBehaviour
 
     void Start()
     {
-        _musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
-        _sfxVolume   = PlayerPrefs.GetFloat("SFXVolume",   0.5f);
+        _musicVolume   = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+        _sfxVolume     = PlayerPrefs.GetFloat("SFXVolume",   0.5f);
+        _prevSfxVolume = _sfxVolume;
         ApplySettings();
         WireSliderListeners();
         HidePanels();
@@ -259,11 +261,35 @@ public class SettingsManager : MonoBehaviour
             sfxVolumeLabel.text = Mathf.RoundToInt(value * 100) + "%";
         PlayerPrefs.SetFloat("SFXVolume", value);
         PlayerPrefs.Save();
+        ApplySettings();
     }
 
     public void ApplySettings()
     {
         MusicManager.Instance?.SetVolume(_musicVolume);
+
+        // Apply SFX volume to all persistent AudioSources except the music one.
+        // PlayClipAtPoint sources are transient — new ones use SfxVol at call-site.
+        if (MusicManager.Instance == null) return;
+        GameObject musicGO = MusicManager.Instance.gameObject;
+        foreach (AudioSource src in FindObjectsByType<AudioSource>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (src == null || src.gameObject == musicGO) continue;
+            // Scale toward the new target — keep ratio relative to slider max (1.0).
+            // We always clamp so repeated adjustments don't compound errors.
+            src.volume = Mathf.Clamp01(src.volume / Mathf.Max(_prevSfxVolume, 0.001f) * _sfxVolume);
+        }
+        _prevSfxVolume = _sfxVolume;
+    }
+
+    /// <summary>Globally accessible SFX volume (0–1). Use as a multiplier in PlayOneShot / PlayClipAtPoint calls.</summary>
+    public static float SfxVol => Instance != null ? Instance._sfxVolume : 1f;
+
+    /// <summary>Drop-in replacement for AudioSource.PlayClipAtPoint that respects the SFX volume slider.</summary>
+    public static void PlaySfxAt(AudioClip clip, Vector3 pos, float baseVolume = 1f)
+    {
+        if (clip == null) return;
+        AudioSource.PlayClipAtPoint(clip, pos, baseVolume * SfxVol);
     }
 
     // ── Navigation ────────────────────────────────────────────────────────────
