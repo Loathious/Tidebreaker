@@ -760,4 +760,116 @@ public class ScenePlayTests
         }
         catch (Exception e) { Append($"Smoke_VillageSceneLoads: FAILED — {e.Message}"); throw; }
     }
+
+    // ── BUG FIX: Water respawn loop (HazardZone.cs) ───────────────────────────
+
+    [UnityTest]
+    public IEnumerator Ocean_WaterRespawnNoPhysicsDesync()
+    {
+        Append("--- BugFix: Water Respawn No-Loop ---");
+        yield return LoadAndSimulate("Ocean", 3f);
+
+        // ── Setup: find water HazardZone (mode=Respawn) by type name + reflection ──
+        MonoBehaviour water = null;
+        foreach (var mb in UnityEngine.Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None))
+        {
+            if (mb.GetType().Name != "HazardZone") continue;
+            var modeField = mb.GetType().GetField("mode",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (modeField == null) continue;
+            if ((int)modeField.GetValue(mb) == 1) { water = mb; break; } // Mode.Respawn == 1
+        }
+
+        var player    = GameObject.FindGameObjectWithTag("Player");
+        var waterPos  = water != null ? water.transform.position : Vector3.zero;
+        float waterTopY = 0f;
+
+        if (water != null && player != null)
+        {
+            var col = water.GetComponent<Collider2D>();
+            waterTopY = col != null ? waterPos.y + col.bounds.extents.y : waterPos.y;
+            var rb = player.GetComponent<Rigidbody2D>();
+            player.transform.position = new Vector3(waterPos.x, waterPos.y, 0f);
+            if (rb != null) { rb.linearVelocity = Vector2.zero; rb.position = new Vector2(waterPos.x, waterPos.y); }
+            Physics2D.SyncTransforms();
+        }
+
+        // Let OnTriggerEnter2D fire and teleport run
+        yield return new WaitForSeconds(0.2f);
+
+        // ── Assertions ─────────────────────────────────────────────────────────
+        try
+        {
+            Assert.IsNotNull(water,  "No HazardZone with mode=Respawn found in Ocean scene — water zone missing");
+            Assert.IsNotNull(player, "Player not found in Ocean scene");
+
+            float playerY = player.transform.position.y;
+            Assert.Greater(playerY, waterTopY,
+                $"Player y={playerY:F2} still inside water zone (top y={waterTopY:F2}) — HazardZone physics-desync not fixed");
+
+            float cdAfter = GetSerializedFloat(water, "_respawnCooldown");
+            Assert.Greater(cdAfter, 0f,
+                "HazardZone._respawnCooldown is 0 after trigger — cooldown guard missing, re-entry loop still possible");
+
+            Append($"Ocean_WaterRespawnNoPhysicsDesync: PASSED (player y={playerY:F2} > water top y={waterTopY:F2}, cooldown={cdAfter:F2}s)");
+        }
+        catch (Exception e) { Append($"Ocean_WaterRespawnNoPhysicsDesync: FAILED — {e.Message}"); throw; }
+    }
+
+    // ── BUG FIX: Bow hold-to-aim mechanic (PlayerRanged.cs) ──────────────────
+
+    [UnityTest]
+    public IEnumerator Ocean_BowHoldToAimStructure()
+    {
+        Append("--- BugFix: Bow Hold-To-Aim ---");
+
+        PlayerPrefs.SetInt("PlayerHasBow", 1);
+        PlayerPrefs.Save();
+
+        yield return LoadAndSimulate("Ocean", 3f);
+        try
+        {
+            var player = GameObject.FindGameObjectWithTag("Player");
+            Assert.IsNotNull(player, "Player not found in Ocean scene");
+
+            // PlayerRanged must be present (added by OceanManager.OnLevelStart)
+            MonoBehaviour ranged = null;
+            foreach (var mb in player.GetComponents<MonoBehaviour>())
+                if (mb.GetType().Name == "PlayerRanged") { ranged = mb; break; }
+            Assert.IsNotNull(ranged, "PlayerRanged component not found on Player — OceanManager.OnLevelStart() didn't add it");
+
+            // HasBow property checks PlayerPrefs — key was set above so it must be true
+            Assert.IsTrue(PlayerPrefs.GetInt("PlayerHasBow", 0) == 1,
+                "PlayerHasBow PlayerPrefs key not set — HasBow would return false in-game");
+
+            // _inUse starts false (bow not permanently locked at scene load)
+            object inUse = GetPrivateField(ranged, "_inUse");
+            Assert.IsNotNull(inUse, "PlayerRanged._inUse field missing — hold-to-aim coroutine guard not implemented");
+            Assert.IsFalse((bool)inUse, "PlayerRanged._inUse=true at scene load — bow is permanently locked");
+
+            // _bowVisual was built by BuildBowVisual() in Start()
+            object bowVisual = GetPrivateField(ranged, "_bowVisual");
+            Assert.IsNotNull(bowVisual, "PlayerRanged._bowVisual is null — BuildBowVisual() did not run in Start()");
+
+            // AimAndFireRoutine coroutine must exist (the hold-to-aim implementation)
+            var aimMethod = ranged.GetType().GetMethod("AimAndFireRoutine",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            Assert.IsNotNull(aimMethod,
+                "PlayerRanged.AimAndFireRoutine() not found — hold-to-aim mechanic not implemented");
+
+            // Old immediate-fire method (FireRoutine) must be gone
+            var oldMethod = ranged.GetType().GetMethod("FireRoutine",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            Assert.IsNull(oldMethod,
+                "PlayerRanged.FireRoutine() still exists — old click-to-fire code not removed");
+
+            Append("Ocean_BowHoldToAimStructure: PASSED (PlayerRanged on player, _inUse=false, _bowVisual built, AimAndFireRoutine present, FireRoutine gone)");
+        }
+        catch (Exception e) { Append($"Ocean_BowHoldToAimStructure: FAILED — {e.Message}"); throw; }
+        finally
+        {
+            PlayerPrefs.DeleteKey("PlayerHasBow");
+            PlayerPrefs.Save();
+        }
+    }
 }

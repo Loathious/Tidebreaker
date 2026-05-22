@@ -18,7 +18,7 @@ public class HazardZone : MonoBehaviour
     public Transform respawnPoint;
 
     private float _tickTimer;
-    private float _respawnTimer;
+    private float _respawnCooldown;
 
     void Awake()
     {
@@ -27,7 +27,7 @@ public class HazardZone : MonoBehaviour
 
     void Update()
     {
-        if (_respawnTimer > 0f) _respawnTimer -= Time.deltaTime;
+        if (_respawnCooldown > 0f) _respawnCooldown -= Time.deltaTime;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -35,8 +35,8 @@ public class HazardZone : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         if (mode == Mode.Respawn)
         {
-            if (_respawnTimer > 0f) return;
-            _respawnTimer = 1.5f;
+            if (_respawnCooldown > 0f) return;
+            _respawnCooldown = 2.0f;   // extended cooldown to cover the full fall + landing
             RespawnPlayer(other);
         }
     }
@@ -61,13 +61,36 @@ public class HazardZone : MonoBehaviour
         if (hp != null && !hp.IsDead) hp.TakeDamage(damage);
 
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        if (rb != null) rb.linearVelocity = Vector2.zero;
 
-        // Place the player above the respawn marker (or above current position) to avoid
-        // landing back inside the trigger and causing an infinite respawn loop.
-        Vector3 safePos = respawnPoint != null
-            ? respawnPoint.position + Vector3.up * 5f
-            : player.transform.position + Vector3.up * 8f;
+        // Calculate a safe respawn position well above the water.
+        // Use the respawnPoint's position if assigned, otherwise spawn above the
+        // player's current position. Always add enough height to clear the platforms.
+        Vector3 safePos;
+        if (respawnPoint != null)
+        {
+            // Place the player 6 units above the respawn marker's position so they
+            // land on top of it (not inside it) even after a fast fall.
+            safePos = respawnPoint.position + Vector3.up * 6f;
+        }
+        else
+        {
+            // No respawn point: spawn well above current position.
+            safePos = player.transform.position + Vector3.up * 10f;
+        }
+
+        // Reset velocity BEFORE teleporting to avoid carry-over momentum.
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+
+        // Teleport: set BOTH the transform and the Rigidbody2D position so the
+        // physics engine and the rendering are in sync immediately. Only setting
+        // transform.position can cause a one-frame physics desync that pulls the
+        // player back into the trigger, restarting the respawn loop.
         player.transform.position = safePos;
+        if (rb != null)
+            rb.position = new Vector2(safePos.x, safePos.y);
+
+        // Force an immediate physics sync so no stale trigger overlap fires next step.
+        Physics2D.SyncTransforms();
     }
 }

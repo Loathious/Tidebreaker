@@ -103,6 +103,16 @@ public class CaveManager : MonoBehaviour
     {
         if (_isGameOver) return;
         if (_playerHealth != null && _playerHealth.IsDead) OnPlayerDeath();
+
+        // Out-of-bounds recovery: if the player falls below the cave, snap back to spawn.
+        if (_playerHealth != null && _playerHealth.transform.position.y < -12f)
+        {
+            GameObject spawn = GameObject.Find("PlayerSpawn") ?? GameObject.Find("SpawnPoint");
+            Vector3 dest = spawn != null ? spawn.transform.position : new Vector3(-6.5f, -5.5f, 0f);
+            _playerHealth.transform.position = dest;
+            Rigidbody2D rb = _playerHealth.GetComponent<Rigidbody2D>();
+            if (rb != null) { rb.linearVelocity = Vector2.zero; rb.position = new Vector2(dest.x, dest.y); }
+        }
     }
 
     // ── Diamonds & Shrine ─────────────────────────────────────────────────────

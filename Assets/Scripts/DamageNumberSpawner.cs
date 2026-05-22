@@ -32,17 +32,10 @@ public class DamageNumberSpawner : MonoBehaviour
     
     void CreateDamageNumberPrefab()
     {
+        // DamageNumber.Awake() adds its own TextMeshPro in world-space — do NOT add a
+        // TextMeshProUGUI here; Unity forbids two Graphic components on one GameObject
+        // and AddComponent<TextMeshPro>() would throw a NullReferenceException.
         GameObject prefab = new GameObject("DamageNumber");
-        TextMeshProUGUI text = prefab.AddComponent<TextMeshProUGUI>();
-        text.fontSize = 16;
-        text.color = Color.white;
-        text.alignment = TextAlignmentOptions.Center;
-        text.outlineWidth = 0.2f;
-        text.outlineColor = Color.black;
-        
-        RectTransform rect = prefab.GetComponent<RectTransform>();
-        rect.sizeDelta = new Vector2(100, 50);
-        
         prefab.AddComponent<DamageNumber>();
         damageNumberPrefab = prefab;
     }

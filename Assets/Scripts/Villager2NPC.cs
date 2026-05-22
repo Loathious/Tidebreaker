@@ -175,7 +175,7 @@ public class Villager2NPC : MonoBehaviour
         sRt.offsetMin = Vector2.zero;
         sRt.offsetMax = Vector2.zero;
         TextMeshProUGUI subText = sub.AddComponent<TextMeshProUGUI>();
-        subText.text = "Eldenmoor is safe. The dark cave awaits...";
+        subText.text = "Sweetwater is safe. The dark cave awaits...";
         subText.alignment = TextAlignmentOptions.Center;
         subText.fontSize = 8f;
         subText.color = new Color(1f, 1f, 1f, 0f);

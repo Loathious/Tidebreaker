@@ -29,9 +29,9 @@ public class MainMenuManager : MonoBehaviour
     // Shown one paragraph at a time before Village loads
     private static readonly string[] StoryPages = new[]
     {
-        "The once-peaceful village of Eldenmoor was a place of laughter and light.\n\nChildren played in the meadows. Blacksmiths forged tools at the anvil. Birds filled the morning air with song.",
+        "The once-peaceful village of Sweetwater was a place of laughter and light.\n\nChildren played in the meadows. Blacksmiths forged tools at the anvil. Birds filled the morning air with song.",
         "Then, without warning — a roar from the forest.\n\nMonsters poured from the treeline, seizing the villagers in the dead of night.\n\nBy dawn, the village had fallen.",
-        "You are the last hope.\n\nTake up the rusty sword. Defeat the monsters. Free the people of Eldenmoor.\n\nYour journey begins now."
+        "You are the last hope.\n\nTake up the rusty sword. Defeat the monsters. Free the people of Sweetwater.\n\nYour journey begins now."
     };
 
     private static Transform FindDeep(Transform parent, string name)

@@ -2210,10 +2210,10 @@ MonoBehaviour:
   panY: -1
   panDuration: 6.5
   zoomToPlayerTime: 1.6
-  line1: Eldenmoor lay in ruins. The monsters had come at dusk and taken the villagers
+  line1: Sweetwater lay in ruins. The monsters had come at dusk and taken the villagers
     into the dark.
   line2: You are the last who escaped. The last who remembers what this place was.
-  line3: Take up the sword. Save them. Reclaim Eldenmoor.
+  line3: Take up the sword. Save them. Reclaim Sweetwater.
   lineFadeIn: 0.6
   lineHold: 1.9
   lineFadeOut: 0.5

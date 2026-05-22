@@ -39,11 +39,11 @@ public class IntroSequence : MonoBehaviour
 
     [Header("Story text (from spelmanus)")]
     [SerializeField, TextArea(2, 4)] private string line1 =
-        "Eldenmoor lay in ruins. The monsters had come at dusk and taken the villagers into the dark.";
+        "Sweetwater lay in ruins. The monsters had come at dusk and taken the villagers into the dark.";
     [SerializeField, TextArea(2, 4)] private string line2 =
         "You are the last who escaped. The last who remembers what this place was.";
     [SerializeField, TextArea(2, 4)] private string line3 =
-        "Take up the sword. Save them. Reclaim Eldenmoor.";
+        "Take up the sword. Save them. Reclaim Sweetwater.";
 
     [Header("Story text style")]
     [Tooltip("Font asset for the intro story text. Auto-loads PressStart2P-Regular SDF if left empty.")]

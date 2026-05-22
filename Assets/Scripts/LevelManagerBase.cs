@@ -108,6 +108,15 @@ public abstract class LevelManagerBase : MonoBehaviour
             StartCoroutine(RestoreFromSave());
         else
         {
+            // Snap player to the correct spawn position immediately — same frame as Start(),
+            // before any physics ticks. This prevents the player from falling through/off the
+            // map during the 2-frame coroutine delay inside EquipWeaponNextFrame.
+            if (Player != null)
+            {
+                Health hp = Player.GetComponent<Health>() ?? Player.GetComponentInChildren<Health>();
+                hp?.ResetHealth();
+                TeleportPlayerToSceneSpawn();
+            }
             StartCoroutine(EquipWeaponNextFrame());
             // Checkpoint save so "Continue" from the main menu resumes this level
             SaveManager.Instance?.SaveGame();
@@ -133,6 +142,11 @@ public abstract class LevelManagerBase : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && !_isGameOver) TogglePause();
         if (_isGameOver || _isPaused) return;
         if (PlayerHealth != null && PlayerHealth.IsDead) OnPlayerDeath();
+
+        // Out-of-bounds recovery: if the player falls off the bottom of the map,
+        // snap them back to the level's safe spawn point.
+        if (Player != null && Player.transform.position.y < -20f)
+            TeleportPlayerToSceneSpawn();
     }
 
     /// <summary>Per-level setup (spawn enemies, set objective, etc.).</summary>
@@ -327,15 +341,26 @@ public abstract class LevelManagerBase : MonoBehaviour
     {
         if (Player == null) return;
 
-        // Look for an explicitly named spawn marker in the scene.
-        // If none exists, leave the player exactly where they were placed in the scene —
-        // do NOT fall back to the LevelManager's own position.
+        // Prefer an explicitly named spawn marker placed in the scene.
         GameObject spawn = GameObject.Find("PlayerSpawn")
                         ?? GameObject.Find("SpawnPoint");
 
-        if (spawn == null) return; // no marker — keep scene-placed position
+        Vector3 dest;
+        if (spawn != null)
+        {
+            dest = spawn.transform.position;
+        }
+        else
+        {
+            // No marker — use per-scene safe spawn positions that match each scene's
+            // editor-placed Player transform (verified from scene YAML).
+            string scene = SceneManager.GetActiveScene().name.ToLower();
+            if      (scene.Contains("jungle"))  dest = new Vector3( 9.1f, -3.2f, 0f);
+            else if (scene.Contains("desert"))  dest = new Vector3( 4f,   -3f,   0f);
+            else if (scene.Contains("ocean"))   dest = new Vector3( 3f,    0f,   0f);
+            else return; // Cave/Village have their own managers — keep scene-placed position
+        }
 
-        Vector3 dest = spawn.transform.position;
         Player.transform.position = dest;
         Rigidbody2D rb = Player.GetComponent<Rigidbody2D>();
         if (rb != null)

@@ -205,8 +205,7 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// Played once when the player kills the final zombie.
-    /// â€” Brief slow-motion + camera shake hit-stop on the killing blow
-    /// â€” Big "VICTORY" banner fades in / holds / fades out
+    /// â€” Brief slow-motion hit-stop on the killing blow
     /// â€” Sun-glow flash overlay
     /// â€” Then the second villager appears with the next dialogue
     /// </summary>
@@ -226,7 +225,6 @@ public class GameManager : MonoBehaviour
         }
 
         GameObject root = null;
-        TMPro.TextMeshProUGUI banner = null;
         UnityEngine.UI.Image flash = null;
 
         if (canvas != null)
@@ -247,23 +245,6 @@ public class GameManager : MonoBehaviour
             flash = flashGO.AddComponent<UnityEngine.UI.Image>();
             flash.color = new Color(1f, 0.95f, 0.7f, 0f);
             flash.raycastTarget = false;
-
-            // Banner text
-            GameObject txtGO = new GameObject("VictoryText");
-            txtGO.transform.SetParent(root.transform, false);
-            RectTransform tRt = txtGO.AddComponent<RectTransform>();
-            tRt.anchorMin = new Vector2(0f, 0.42f);
-            tRt.anchorMax = new Vector2(1f, 0.62f);
-            tRt.offsetMin = Vector2.zero; tRt.offsetMax = Vector2.zero;
-
-            banner = txtGO.AddComponent<TMPro.TextMeshProUGUI>();
-            banner.text          = "VICTORY";
-            banner.alignment     = TMPro.TextAlignmentOptions.Center;
-            banner.fontSize      = 72f;
-            banner.fontStyle     = TMPro.FontStyles.Normal;   // PressStart2P has no bold variant
-            banner.color         = new Color(1f, 0.92f, 0.45f, 0f);
-            banner.outlineWidth  = 0.32f;
-            banner.outlineColor  = new Color32(0, 0, 0, 255);
         }
 
         // â”€â”€ Slow-motion hit-stop on the killing blow â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -295,45 +276,6 @@ public class GameManager : MonoBehaviour
             {
                 ft += Time.unscaledDeltaTime;
                 flash.color = new Color(1f, 0.95f, 0.7f, Mathf.Lerp(0.55f, 0f, ft / 0.7f));
-                yield return null;
-            }
-        }
-
-        if (banner != null)
-        {
-            // Punch scale + fade in
-            banner.rectTransform.localScale = new Vector3(0.6f, 0.6f, 1f);
-            float bt = 0f;
-            while (bt < 0.55f)
-            {
-                bt += Time.unscaledDeltaTime;
-                float k = Mathf.SmoothStep(0f, 1f, bt / 0.55f);
-                Color c = banner.color; c.a = k; banner.color = c;
-                float scale = Mathf.Lerp(0.6f, 1.15f, k);
-                banner.rectTransform.localScale = new Vector3(scale, scale, 1f);
-                yield return null;
-            }
-            // Settle to 1
-            bt = 0f;
-            while (bt < 0.18f)
-            {
-                bt += Time.unscaledDeltaTime;
-                float k = bt / 0.18f;
-                float scale = Mathf.Lerp(1.15f, 1f, k);
-                banner.rectTransform.localScale = new Vector3(scale, scale, 1f);
-                yield return null;
-            }
-            banner.rectTransform.localScale = Vector3.one;
-
-            // Hold
-            yield return new WaitForSecondsRealtime(1.4f);
-
-            // Fade out
-            bt = 0f;
-            while (bt < 0.6f)
-            {
-                bt += Time.unscaledDeltaTime;
-                Color c = banner.color; c.a = Mathf.Lerp(1f, 0f, bt / 0.6f); banner.color = c;
                 yield return null;
             }
         }
